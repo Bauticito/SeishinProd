@@ -43,8 +43,9 @@ export default function Hero() {
               <span className="text-sm font-semibold text-[var(--text-secondary)]">Liderando la industria 4.0 en México</span>
             </motion.div>
 
-            <h1 className="text-4xl md:text-5xl lg:text-7xl font-extrabold text-[var(--text-primary)] leading-[1.05] mb-8 tracking-tight">
-              Soluciones <span className="gradient-text">Empresariales</span> de Alto Nivel
+            <h1 className="text-4xl md:text-5xl lg:text-7xl font-extrabold text-[var(--text-primary)] leading-[1.1] mb-8 tracking-tight">
+              Soluciones <span className="gradient-text">empresariales</span>,<br />
+              <span className="text-2xl md:text-3xl lg:text-4xl font-bold text-[var(--text-secondary)] mt-4 block">eliminando las barreras del recurso humano</span>
             </h1>
 
             <p className="text-lg md:text-xl text-[var(--text-secondary)] mb-10 leading-relaxed max-w-2xl mx-auto lg:mx-0">
