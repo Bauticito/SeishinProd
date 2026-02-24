@@ -138,14 +138,27 @@
     }
   }
 
-  .card {
-    @apply glass rounded-3xl transition-all duration-500;
-    background: var(--card-bg);
+  .glass {
+    @apply backdrop-blur-[20px] bg-[rgba(255, 255, 255, 0.03)] border border-[rgba(255, 255, 255, 0.1)];
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
   }
 
-  .gradient-text {
-    @apply text-transparent bg-clip-text bg-gradient-to-r from-[var(--text-primary)] via-[var(--accent-primary)] to-[var(--text-secondary)];
-    font-weight: 600;
+  [data-theme='light'] .glass {
+    @apply bg-[rgba(0, 0, 0, 0.03)] border border-[rgba(0, 0, 0, 0.1)];
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+  }
+
+  .card {
+    @apply bg-[rgba(255, 255, 255, 0.02)] backdrop-blur-xl border border-[rgba(255, 255, 255, 0.05)] rounded-[2rem] transition-all duration-500 overflow-hidden;
+  }
+
+  [data-theme='light'] .card {
+    @apply bg-[rgba(0, 0, 0, 0.02)] border border-[rgba(0, 0, 0, 0.05)];
+  }
+
+  .card:hover {
+    @apply border-[var(--accent-primary)]/30;
+    box-shadow: 0 0 40px rgba(227, 30, 36, 0.1);
   }
 
   .preserve-3d {

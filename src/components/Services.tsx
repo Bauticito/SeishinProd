@@ -1,6 +1,6 @@
-import { Users, Forklift, ClipboardCheck, Package, Bot, FileCheck, Languages, Wrench, FileText, Briefcase, FileKey, Sparkles } from 'lucide-react';
+import React, { useState } from 'react';
+import { Users, Forklift, ClipboardCheck, Package, Bot, FileCheck, Languages, Wrench } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
 
 const services = [
   {
