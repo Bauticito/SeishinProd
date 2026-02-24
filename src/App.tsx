@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import AboutPage from './pages/AboutPage';
 import CalculatorPage from './pages/CalculatorPage';
 import GalleryPage from './pages/GalleryPage';
+import SeishinIaPage from './pages/SeishinIaPage';
 import Footer from './components/Footer';
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
           <Route path="/about" element={<AboutPage />} />
           <Route path="/calculator" element={<CalculatorPage />} />
           <Route path="/gallery" element={<GalleryPage />} />
+          <Route path="/seishinia" element={<SeishinIaPage />} />
         </Routes>
         <Footer />
       </div>

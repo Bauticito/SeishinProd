@@ -23,6 +23,7 @@ export default function Navigation() {
     { name: 'Sobre nosotros', href: '/about' },
     { name: 'Servicios', href: '/#services' },
     { name: 'Industria 4.0', href: '/#industry40' },
+    { name: 'SeishinIA', href: '/seishinia' },
     { name: 'Galería', href: '/gallery' },
   ];
 
