@@ -22,7 +22,7 @@ export default function BrandingHighlight() {
                             Próxima Generación
                         </span>
 
-                        <h2 className="text-6xl md:text-8xl lg:text-9xl font-black text-[var(--text-primary)] mb-10 tracking-tighter leading-none">
+                        <h2 className="text-7xl md:text-9xl lg:text-[12rem] font-light text-[var(--text-primary)] mb-10 tracking-tighter leading-none opacity-90">
                             SEISHIN
                         </h2>
 
