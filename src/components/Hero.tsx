@@ -1,19 +1,26 @@
 import { ArrowRight, Play, CheckCircle2 } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
 export default function Hero() {
+  const { scrollY } = useScroll();
+  const y1 = useTransform(scrollY, [0, 500], [0, 200]);
+  const y2 = useTransform(scrollY, [0, 500], [0, -150]);
+  const opacity = useTransform(scrollY, [0, 300], [1, 0]);
+
   return (
     <section className="relative min-h-screen flex items-center justify-center bg-[var(--bg-primary)] overflow-hidden pt-20">
       {/* Dynamic Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
+          style={{ y: y1 }}
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 0.4, scale: 1.2 }}
           transition={{ duration: 3, repeat: Infinity, repeatType: "reverse" }}
           className="absolute top-1/4 -right-20 w-[600px] h-[600px] bg-[#E31E24] rounded-full blur-[160px]"
         />
         <motion.div
+          style={{ y: y2 }}
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 0.3, scale: 1.2 }}
           transition={{ duration: 4, repeat: Infinity, repeatType: "reverse", delay: 0.5 }}
@@ -25,6 +32,7 @@ export default function Hero() {
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           <motion.div
+            style={{ opacity }}
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}

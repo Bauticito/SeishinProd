@@ -1,5 +1,6 @@
 import { Users, Forklift, ClipboardCheck, Package, Bot, FileCheck, Languages, Wrench, FileText, Briefcase, FileKey, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useState } from 'react';
 
 const services = [
   {
@@ -93,29 +94,71 @@ export default function Services() {
           {services.map((service, index) => {
             const Icon = service.icon;
             return (
-              <motion.div
-                key={index}
-                variants={itemVariants}
-                whileHover={{ y: -10 }}
-                className="card p-8 group"
-              >
-                <div className="w-14 h-14 bg-gradient-to-br from-[#E31E24] to-[#c4191f] rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
-                  <Icon className="w-7 h-7 text-white" />
-                </div>
-                <h3 className="text-xl font-bold text-[var(--text-primary)] mb-3 flex items-center gap-2">
-                  {service.title}
-                </h3>
-                <p className="text-[var(--text-secondary)] leading-relaxed text-sm">
-                  {service.text}
-                </p>
-                <div className="mt-6 pt-6 border-t border-[var(--border-color)] opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <span className="text-xs font-bold text-[#E31E24] uppercase tracking-wider cursor-pointer hover:underline">Saber más →</span>
-                </div>
-              </motion.div>
+              <ServiceCard key={index} service={service} Icon={Icon} />
             );
           })}
         </motion.div>
       </div>
     </section>
+  );
+}
+
+function ServiceCard({ service, Icon }: { service: any, Icon: any }) {
+  const [rotateX, setRotateX] = useState(0);
+  const [rotateY, setRotateY] = useState(0);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const rotateXValue = (y - centerY) / 10;
+    const rotateYValue = (centerX - x) / 10;
+    setRotateX(rotateXValue);
+    setRotateY(rotateYValue);
+  };
+
+  const handleMouseLeave = () => {
+    setRotateX(0);
+    setRotateY(0);
+  };
+
+  return (
+    <motion.div
+      variants={itemVariants}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      animate={{ rotateX, rotateY }}
+      whileHover={{ y: -5, scale: 1.02 }}
+      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+      className="card p-8 group relative bg-[var(--card-bg)] backdrop-blur-xl border border-[var(--border-color-light)] overflow-hidden transform-gpu"
+      style={{ transformStyle: 'preserve-3d' }}
+    >
+      <div className="absolute inset-0 bg-gradient-to-br from-[#E31E24]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+
+      <div
+        className="w-14 h-14 bg-gradient-to-br from-[#E31E24] to-[#c4191f] rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300 relative z-10"
+        style={{ transform: 'translateZ(20px)' }}
+      >
+        <Icon className="w-7 h-7 text-white" />
+      </div>
+
+      <h3
+        className="text-xl font-bold text-[var(--text-primary)] mb-3 flex items-center gap-2 relative z-10"
+        style={{ transform: 'translateZ(10px)' }}
+      >
+        {service.title}
+      </h3>
+
+      <p className="text-[var(--text-secondary)] leading-relaxed text-sm relative z-10">
+        {service.text}
+      </p>
+
+      <div className="mt-6 pt-6 border-t border-[var(--border-color-light)] opacity-40 group-hover:opacity-100 transition-all duration-300">
+        <span className="text-xs font-bold text-[#E31E24] uppercase tracking-wider cursor-pointer hover:translate-x-1 transition-transform inline-block">Saber más →</span>
+      </div>
+    </motion.div>
   );
 }

@@ -131,8 +131,16 @@
     @apply bg-transparent border-2 border-[var(--blue-corporate)] hover:bg-[var(--blue-corporate)] text-[var(--blue-corporate)] hover:text-white font-bold px-6 py-3 rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-[var(--shadow-blue)] text-center;
   }
 
+  /* Custom Cursor Support */
+  @media (hover: hover) and (pointer: fine) {
+    * {
+      cursor: none !important;
+    }
+  }
+
   .card {
-    @apply bg-[var(--card-bg)] hover:bg-[var(--card-hover-bg)] border border-[var(--border-color)] hover:border-[var(--border-color-light)] rounded-3xl transition-all duration-500 shadow-sm hover:shadow-2xl backdrop-blur-sm;
+    @apply glass rounded-3xl transition-all duration-500;
+    background: var(--card-bg);
   }
 
   .gradient-text {

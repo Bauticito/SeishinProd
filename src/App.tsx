@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navigation from './components/Navigation';
+import CustomCursor from './components/CustomCursor';
 import Home from './pages/Home';
 import AboutPage from './pages/AboutPage';
 import CalculatorPage from './pages/CalculatorPage';
@@ -9,6 +10,7 @@ import Footer from './components/Footer';
 function App() {
   return (
     <Router>
+      <CustomCursor />
       <div className="min-h-screen bg-[var(--bg-primary)]">
         <Navigation />
         <Routes>

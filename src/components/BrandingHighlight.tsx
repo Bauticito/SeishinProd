@@ -11,7 +11,8 @@ export default function BrandingHighlight() {
             </div>
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                <div className="glass rounded-[3rem] p-12 md:p-24 border border-[var(--border-color-light)] text-center">
+                <div className="bg-[var(--card-bg)] backdrop-blur-3xl rounded-[3rem] p-12 md:p-24 border border-[var(--border-color-light)] text-center shadow-2xl relative overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-br from-[#E31E24]/5 to-transparent pointer-events-none" />
                     <motion.div
                         initial={{ opacity: 0, scale: 0.9 }}
                         whileInView={{ opacity: 1, scale: 1 }}
