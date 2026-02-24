@@ -131,12 +131,6 @@
     @apply bg-transparent border-2 border-[var(--blue-corporate)] hover:bg-[var(--blue-corporate)] text-[var(--blue-corporate)] hover:text-white font-bold px-6 py-3 rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-[var(--shadow-blue)] text-center;
   }
 
-  /* Custom Cursor Support */
-  @media (hover: hover) and (pointer: fine) {
-    * {
-      cursor: none !important;
-    }
-  }
 
   .glass {
     @apply backdrop-blur-[20px] bg-white/5 border border-white/10;
@@ -157,7 +151,7 @@
   }
 
   .card:hover {
-    @apply border-[var(--accent-primary)]/30;
+    @apply border-[#E31E24]/30;
     box-shadow: 0 0 40px rgba(227, 30, 36, 0.1);
   }
 
