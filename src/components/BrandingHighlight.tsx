@@ -6,7 +6,7 @@ export default function BrandingHighlight() {
         <section className="py-24 relative overflow-hidden bg-[var(--bg-primary)]">
             {/* Dynamic Background */}
             <div className="absolute inset-0 pointer-events-none">
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#E31E24] rounded-full blur-[160px] opacity-10 animate-pulse"></div>
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#E31E24] rounded-full blur-[160px] opacity-25 animate-pulse"></div>
                 <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-[#3A3A3A] rounded-full blur-[140px] opacity-20"></div>
             </div>
 

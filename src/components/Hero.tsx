@@ -9,14 +9,14 @@ export default function Hero() {
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 0.15, scale: 1 }}
-          transition={{ duration: 2, repeat: Infinity, repeatType: "reverse" }}
+          animate={{ opacity: 0.4, scale: 1.2 }}
+          transition={{ duration: 3, repeat: Infinity, repeatType: "reverse" }}
           className="absolute top-1/4 -right-20 w-[600px] h-[600px] bg-[#E31E24] rounded-full blur-[160px]"
         />
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 0.1, scale: 1 }}
-          transition={{ duration: 2.5, repeat: Infinity, repeatType: "reverse", delay: 0.5 }}
+          animate={{ opacity: 0.3, scale: 1.2 }}
+          transition={{ duration: 4, repeat: Infinity, repeatType: "reverse", delay: 0.5 }}
           className="absolute -bottom-20 -left-20 w-[500px] h-[500px] bg-[#3A3A3A] rounded-full blur-[140px]"
         />
         <div className="absolute inset-0 bg-[linear-gradient(rgba(227,30,36,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(227,30,36,0.03)_1px,transparent_1px)] bg-[size:50px_50px]"></div>
@@ -97,14 +97,55 @@ export default function Hero() {
             className="relative perspective-1000 hidden lg:block"
           >
             <div className="relative group">
-              <div className="absolute -inset-1 bg-gradient-to-r from-[var(--blue-corporate)] to-[var(--accent-primary)] rounded-[2rem] blur opacity-25 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></div>
-              <div className="relative aspect-square rounded-[2rem] glass flex items-center justify-center overflow-hidden shadow-2xl">
-                <motion.img
-                  animate={{ y: [0, -20, 0] }}
-                  transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                  src="/seishin-SinFondo.png"
-                  alt="Seishin Industry 4.0"
-                  className="w-4/5 h-auto object-contain drop-shadow-[0_20px_50px_rgba(30,64,175,0.3)]"
+              {/* Animated Glow Backdrop */}
+              <motion.div
+                animate={{
+                  scale: [1, 1.1, 1],
+                  opacity: [0.2, 0.35, 0.2]
+                }}
+                transition={{
+                  duration: 4,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+                className="absolute -inset-10 bg-gradient-to-r from-[var(--blue-corporate)] via-[var(--accent-primary)] to-[var(--blue-corporate)] rounded-full blur-[80px]"
+              />
+
+              <div className="relative aspect-square rounded-[3rem] glass flex items-center justify-center overflow-hidden shadow-2xl border border-[var(--border-color-light)]">
+                <motion.div
+                  whileHover={{ rotateY: 15, rotateX: -10, scale: 1.05 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                  className="w-4/5 h-4/5 flex items-center justify-center"
+                >
+                  <motion.img
+                    animate={{
+                      y: [0, -15, 0],
+                      filter: [
+                        "drop-shadow(0 20px 30px rgba(227,30,36,0.2))",
+                        "drop-shadow(0 40px 60px rgba(227,30,36,0.4))",
+                        "drop-shadow(0 20px 30px rgba(227,30,36,0.2))"
+                      ]
+                    }}
+                    transition={{
+                      y: { duration: 5, repeat: Infinity, ease: "easeInOut" },
+                      filter: { duration: 3, repeat: Infinity, ease: "easeInOut" }
+                    }}
+                    src="/seishin-SinFondo.png"
+                    alt="Seishin Industry 4.0"
+                    className="w-full h-auto object-contain"
+                  />
+                </motion.div>
+
+                {/* Decorative Tech Rings */}
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                  className="absolute inset-0 border-2 border-dashed border-[var(--accent-primary)] opacity-10 rounded-full scale-90"
+                />
+                <motion.div
+                  animate={{ rotate: -360 }}
+                  transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+                  className="absolute inset-0 border border-dashed border-[var(--text-secondary)] opacity-5 rounded-full scale-75"
                 />
               </div>
             </div>
