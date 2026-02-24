@@ -139,21 +139,21 @@
   }
 
   .glass {
-    @apply backdrop-blur-[20px] bg-[rgba(255, 255, 255, 0.03)] border border-[rgba(255, 255, 255, 0.1)];
+    @apply backdrop-blur-[20px] bg-white/5 border border-white/10;
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
   }
 
   [data-theme='light'] .glass {
-    @apply bg-[rgba(0, 0, 0, 0.03)] border border-[rgba(0, 0, 0, 0.1)];
+    @apply bg-black/5 border border-black/10;
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
   }
 
   .card {
-    @apply bg-[rgba(255, 255, 255, 0.02)] backdrop-blur-xl border border-[rgba(255, 255, 255, 0.05)] rounded-[2rem] transition-all duration-500 overflow-hidden;
+    @apply bg-white/[0.02] backdrop-blur-xl border border-white/[0.05] rounded-[2rem] transition-all duration-500 overflow-hidden;
   }
 
   [data-theme='light'] .card {
-    @apply bg-[rgba(0, 0, 0, 0.02)] border border-[rgba(0, 0, 0, 0.05)];
+    @apply bg-black/[0.02] border border-black/[0.05];
   }
 
   .card:hover {
