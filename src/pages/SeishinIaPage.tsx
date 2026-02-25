@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ArrowRight, Bot, Brain, Factory, LineChart, ScanSearch, ShieldCheck } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const solutions = [
   {
@@ -52,6 +52,7 @@ const process = [
 ];
 
 type BriefIaForm = {
+  servicio: string;
   nombre: string;
   empresa: string;
   correo: string;
@@ -64,6 +65,7 @@ type BriefIaForm = {
 };
 
 const initialBrief: BriefIaForm = {
+  servicio: '',
   nombre: '',
   empresa: '',
   correo: '',
@@ -76,8 +78,35 @@ const initialBrief: BriefIaForm = {
 };
 
 export default function SeishinIaPage() {
+  const location = useLocation();
   const [brief, setBrief] = useState<BriefIaForm>(initialBrief);
   const [submitted, setSubmitted] = useState(false);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const serviceParam = params.get('servicio');
+
+    if (serviceParam === 'agentes') {
+      setBrief((prev) => ({ ...prev, servicio: 'Agentes IA' }));
+    } else if (serviceParam === 'vision') {
+      setBrief((prev) => ({ ...prev, servicio: 'Vision Computarizada' }));
+    }
+  }, [location.search]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const serviceParam = params.get('servicio');
+    const shouldScrollToBrief = location.hash === '#brief-ia' || serviceParam === 'agentes' || serviceParam === 'vision';
+
+    if (!shouldScrollToBrief) return;
+
+    requestAnimationFrame(() => {
+      const briefSection = document.getElementById('brief-ia');
+      if (briefSection) {
+        briefSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  }, [location.hash, location.search]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -96,6 +125,7 @@ export default function SeishinIaPage() {
       `Correo: ${brief.correo}`,
       `Telefono: ${brief.telefono}`,
       '',
+      `Servicio de interes: ${brief.servicio}`,
       `Proceso a optimizar: ${brief.proceso}`,
       `Volumen actual: ${brief.volumen}`,
       `Objetivo principal: ${brief.objetivo}`,
@@ -197,7 +227,7 @@ export default function SeishinIaPage() {
           </div>
         </section>
 
-        <section className="rounded-3xl p-8 md:p-10 border border-[var(--border-color-light)] bg-[var(--bg-secondary)]">
+        <section id="brief-ia" className="rounded-3xl p-8 md:p-10 border border-[var(--border-color-light)] bg-[var(--bg-secondary)]">
           <div className="mb-8">
             <h2 className="text-3xl md:text-4xl font-extrabold text-[var(--text-primary)] mb-3 tracking-tight">
               Brief IA
@@ -210,6 +240,19 @@ export default function SeishinIaPage() {
 
           {!submitted ? (
             <form onSubmit={handleBriefSubmit} className="grid md:grid-cols-2 gap-5">
+              <select
+                name="servicio"
+                value={brief.servicio}
+                onChange={handleChange}
+                required
+                className="md:col-span-2 w-full px-4 py-3 rounded-xl border border-[var(--border-color)] bg-[var(--bg-primary)] text-[var(--text-primary)]"
+              >
+                <option value="">Servicio de interes</option>
+                <option value="Agentes IA">Agentes IA</option>
+                <option value="Vision Computarizada">Vision Computarizada</option>
+                <option value="Analitica Predictiva">Analitica Predictiva</option>
+              </select>
+
               <input
                 name="nombre"
                 value={brief.nombre}
