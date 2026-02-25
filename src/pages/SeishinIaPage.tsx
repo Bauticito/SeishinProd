@@ -1,8 +1,6 @@
-import { useState } from 'react';
-import { ArrowRight, Bot, Brain, Camera, Factory, LineChart, ScanSearch, ShieldCheck, Eye, Shield, Cpu, Lock, Activity } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import { Wizard } from '@/components/cotizador/Wizard';
-import { PricePanel } from '@/components/cotizador/PricePanel';
+import { useEffect, useState } from 'react';
+import { ArrowRight, Bot, Brain, Factory, LineChart, ScanSearch, ShieldCheck } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
 
 const solutions = [
   {
@@ -22,39 +20,6 @@ const solutions = [
     description:
       'Pronostico de demanda operativa, cobertura de personal y deteccion temprana de cuellos de botella.',
     icon: LineChart,
-  },
-];
-
-const vigilanciaFeatures = [
-  {
-    title: 'Detección en tiempo real',
-    description: 'Análisis de video continuo con modelos de visión computarizada entrenados para cada entorno.',
-    icon: Eye,
-  },
-  {
-    title: 'Alertas automáticas',
-    description: 'Notificaciones inmediatas ante eventos críticos: intrusión, permanencia en zonas, comportamiento anómalo.',
-    icon: Shield,
-  },
-  {
-    title: 'Inferencia en el borde',
-    description: 'Procesamiento local con dispositivos Jetson — sin latencia de nube, máxima privacidad.',
-    icon: Cpu,
-  },
-  {
-    title: 'Acceso seguro',
-    description: 'Portal de vigilancia con autenticación por roles. Cada operador ve solo lo que le corresponde.',
-    icon: Lock,
-  },
-  {
-    title: 'Logs y auditoría',
-    description: 'Registro completo de eventos, capturas y acciones del sistema para trazabilidad total.',
-    icon: Activity,
-  },
-  {
-    title: 'Integración de cámaras',
-    description: 'Compatible con cámaras IP existentes (RTSP/ONVIF). Sin necesidad de reemplazar infraestructura.',
-    icon: Camera,
   },
 ];
 
@@ -87,6 +52,7 @@ const process = [
 ];
 
 type BriefIaForm = {
+  servicio: string;
   nombre: string;
   empresa: string;
   correo: string;
@@ -99,6 +65,7 @@ type BriefIaForm = {
 };
 
 const initialBrief: BriefIaForm = {
+  servicio: '',
   nombre: '',
   empresa: '',
   correo: '',
@@ -111,8 +78,35 @@ const initialBrief: BriefIaForm = {
 };
 
 export default function SeishinIaPage() {
+  const location = useLocation();
   const [brief, setBrief] = useState<BriefIaForm>(initialBrief);
   const [submitted, setSubmitted] = useState(false);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const serviceParam = params.get('servicio');
+
+    if (serviceParam === 'agentes') {
+      setBrief((prev) => ({ ...prev, servicio: 'Agentes IA' }));
+    } else if (serviceParam === 'vision') {
+      setBrief((prev) => ({ ...prev, servicio: 'Vision Computarizada' }));
+    }
+  }, [location.search]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const serviceParam = params.get('servicio');
+    const shouldScrollToBrief = location.hash === '#brief-ia' || serviceParam === 'agentes' || serviceParam === 'vision';
+
+    if (!shouldScrollToBrief) return;
+
+    requestAnimationFrame(() => {
+      const briefSection = document.getElementById('brief-ia');
+      if (briefSection) {
+        briefSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  }, [location.hash, location.search]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -131,6 +125,7 @@ export default function SeishinIaPage() {
       `Correo: ${brief.correo}`,
       `Telefono: ${brief.telefono}`,
       '',
+      `Servicio de interes: ${brief.servicio}`,
       `Proceso a optimizar: ${brief.proceso}`,
       `Volumen actual: ${brief.volumen}`,
       `Objetivo principal: ${brief.objetivo}`,
@@ -146,8 +141,6 @@ export default function SeishinIaPage() {
   return (
     <div className="min-h-screen bg-[var(--bg-primary)] pt-28 pb-24 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto space-y-14">
-
-        {/* Hero */}
         <section className="rounded-3xl border border-[var(--border-color-light)] glass p-8 md:p-14 overflow-hidden relative">
           <div className="absolute -top-20 -right-16 w-72 h-72 bg-[#E31E24] rounded-full blur-[110px] opacity-10" />
           <div className="relative z-10">
@@ -167,17 +160,16 @@ export default function SeishinIaPage() {
                 Cotizar servicio
                 <ArrowRight className="w-5 h-5" />
               </Link>
-              <Link
-                to="/jetson/landing"
+              <a
+                href="mailto:fabian.noel@seishin.com.mx"
                 className="btn-secondary inline-flex items-center justify-center gap-2 px-8 py-4"
               >
-                Acceder al portal
-              </Link>
+                Hablar con especialista IA
+              </a>
             </div>
           </div>
         </section>
 
-        {/* Soluciones */}
         <section>
           <h2 className="text-3xl md:text-4xl font-extrabold text-[var(--text-primary)] mb-8 tracking-tight">
             Soluciones clave
@@ -201,58 +193,6 @@ export default function SeishinIaPage() {
           </div>
         </section>
 
-        {/* Vigilancia SeishinIA */}
-        <section>
-          <div className="mb-8">
-            <span className="inline-flex items-center gap-2 text-xs font-bold tracking-[0.2em] uppercase text-[#E31E24] mb-3">
-              <Camera className="w-4 h-4" />
-              Vigilancia SeishinIA
-            </span>
-            <h2 className="text-3xl md:text-4xl font-extrabold text-[var(--text-primary)] tracking-tight">
-              Visión inteligente para entornos críticos
-            </h2>
-            <p className="text-[var(--text-secondary)] text-lg mt-3 max-w-3xl leading-relaxed">
-              Sistema de vigilancia con IA corriendo en el borde. Detecta, alerta y registra — todo sin depender de la nube.
-              Diseñado para industria, manufactura y operaciones de alto riesgo.
-            </p>
-          </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {vigilanciaFeatures.map((item) => {
-              const Icon = item.icon;
-              return (
-                <article
-                  key={item.title}
-                  className="rounded-2xl p-7 border border-[var(--border-color-light)] bg-[var(--card-bg)] hover:border-[#E31E24]/30 transition-all duration-300 group"
-                >
-                  <div className="w-12 h-12 rounded-xl bg-[#E31E24]/10 text-[#E31E24] flex items-center justify-center mb-5 group-hover:bg-[#E31E24]/20 transition-colors">
-                    <Icon className="w-6 h-6" />
-                  </div>
-                  <h3 className="text-lg font-bold text-[var(--text-primary)] mb-2">{item.title}</h3>
-                  <p className="text-[var(--text-secondary)] leading-relaxed text-sm">{item.description}</p>
-                </article>
-              );
-            })}
-          </div>
-        </section>
-
-        {/* Cotizador */}
-        <section id="cotizador" className="scroll-mt-24">
-          <div className="mb-8">
-            <span className="text-xs font-bold tracking-[0.2em] uppercase text-[#E31E24]">Cotizador</span>
-            <h2 className="text-3xl md:text-4xl font-extrabold text-[var(--text-primary)] mt-2 mb-3 tracking-tight">
-              Estima tu inversión
-            </h2>
-            <p className="text-[var(--text-secondary)] text-lg max-w-2xl leading-relaxed">
-              Respondé 4 preguntas sobre tu operación y generamos una estimación de costo inicial y mensual en tiempo real.
-            </p>
-          </div>
-          <div className="grid lg:grid-cols-[1fr_320px] gap-6 items-start">
-            <Wizard />
-            <PricePanel />
-          </div>
-        </section>
-
-        {/* Industrias + Proceso */}
         <section className="grid lg:grid-cols-2 gap-6">
           <div className="rounded-2xl p-8 border border-[var(--border-color-light)] bg-[var(--bg-secondary)]">
             <h3 className="text-2xl font-bold text-[var(--text-primary)] mb-5 flex items-center gap-2">
@@ -287,8 +227,7 @@ export default function SeishinIaPage() {
           </div>
         </section>
 
-        {/* Brief IA */}
-        <section className="rounded-3xl p-8 md:p-10 border border-[var(--border-color-light)] bg-[var(--bg-secondary)]">
+        <section id="brief-ia" className="rounded-3xl p-8 md:p-10 border border-[var(--border-color-light)] bg-[var(--bg-secondary)]">
           <div className="mb-8">
             <h2 className="text-3xl md:text-4xl font-extrabold text-[var(--text-primary)] mb-3 tracking-tight">
               Brief IA
@@ -301,6 +240,19 @@ export default function SeishinIaPage() {
 
           {!submitted ? (
             <form onSubmit={handleBriefSubmit} className="grid md:grid-cols-2 gap-5">
+              <select
+                name="servicio"
+                value={brief.servicio}
+                onChange={handleChange}
+                required
+                className="md:col-span-2 w-full px-4 py-3 rounded-xl border border-[var(--border-color)] bg-[var(--bg-primary)] text-[var(--text-primary)]"
+              >
+                <option value="">Servicio de interes</option>
+                <option value="Agentes IA">Agentes IA</option>
+                <option value="Vision Computarizada">Vision Computarizada</option>
+                <option value="Analitica Predictiva">Analitica Predictiva</option>
+              </select>
+
               <input
                 name="nombre"
                 value={brief.nombre}
@@ -415,7 +367,6 @@ export default function SeishinIaPage() {
           )}
         </section>
 
-        {/* CTA final */}
         <section className="rounded-3xl p-8 md:p-12 bg-gradient-to-br from-[#3A3A3A] to-[#1c1c1c] text-white">
           <h2 className="text-3xl md:text-4xl font-extrabold mb-4">Resultados esperados</h2>
           <p className="text-white/80 text-lg leading-relaxed max-w-3xl mb-8">
@@ -435,7 +386,6 @@ export default function SeishinIaPage() {
             </Link>
           </div>
         </section>
-
       </div>
     </div>
   );

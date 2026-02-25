@@ -61,6 +61,7 @@ export default function Calculator() {
     const [step, setStep] = useState(1);
     const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
     const [selectedSubService, setSelectedSubService] = useState<any>(null);
+    const [showAgentsIaDetails, setShowAgentsIaDetails] = useState(false);
     const [inputValue, setInputValue] = useState(10); // Generic input (employees or hours)
     const [months, setMonths] = useState(6);
 
@@ -77,6 +78,14 @@ export default function Calculator() {
     const handleSubSelect = (sub: any) => {
         setSelectedSubService(sub);
         setStep(2);
+    };
+
+    const handleAiSubClick = (sub: any) => {
+        if (sub.id === 'agents') {
+            setShowAgentsIaDetails((prev) => !prev);
+            return;
+        }
+        handleSubSelect(sub);
     };
 
     const calculateEstimate = () => {
@@ -103,6 +112,7 @@ export default function Calculator() {
         setStep(1);
         setSelectedCategory(null);
         setSelectedSubService(null);
+        setShowAgentsIaDetails(false);
         setInputValue(10);
         setMonths(6);
     };
@@ -174,14 +184,65 @@ export default function Calculator() {
                             </h3>
                             <div className="grid gap-4">
                                 {(subServices[selectedCategory as keyof typeof subServices] || []).map((sub: any) => (
-                                    <button
-                                        key={sub.id}
-                                        onClick={() => handleSubSelect(sub)}
-                                        className="flex justify-between items-center p-6 rounded-2xl glass border border-[var(--border-color-light)] hover:border-[#E31E24] transition-all group"
-                                    >
-                                        <span className="text-lg font-bold text-[var(--text-primary)]">{sub.title}</span>
-                                        <ArrowRight className="w-5 h-5 text-[#E31E24] group-hover:translate-x-2 transition-transform" />
-                                    </button>
+                                    <div key={sub.id} className="space-y-3">
+                                        <button
+                                            onClick={() =>
+                                                selectedCategory === 'ai' ? handleAiSubClick(sub) : handleSubSelect(sub)
+                                            }
+                                            className="w-full flex justify-between items-center p-6 rounded-2xl glass border border-[var(--border-color-light)] hover:border-[#E31E24] transition-all group"
+                                        >
+                                            <span className="text-lg font-bold text-[var(--text-primary)]">{sub.title}</span>
+                                            <ArrowRight className="w-5 h-5 text-[#E31E24] group-hover:translate-x-2 transition-transform" />
+                                        </button>
+
+                                        {selectedCategory === 'ai' && sub.id === 'agents' && showAgentsIaDetails && (
+                                            <div className="rounded-2xl border border-[#E31E24]/30 bg-[#E31E24]/5 p-6 sm:p-7 space-y-5">
+                                                <div>
+                                                    <h4 className="text-xl font-bold text-[var(--text-primary)] mb-2">
+                                                        Agentes IA para Operaciones y RH
+                                                    </h4>
+                                                    <p className="text-[var(--text-secondary)] leading-relaxed">
+                                                        Automatiza tareas repetitivas (seguimiento de candidatos, reportes,
+                                                        validaciones y atencion interna) con agentes conectados a tus procesos.
+                                                    </p>
+                                                </div>
+
+                                                <div>
+                                                    <p className="text-sm font-bold text-[#E31E24] uppercase tracking-wider mb-2">
+                                                        Que incluye
+                                                    </p>
+                                                    <ul className="space-y-2 text-[var(--text-secondary)]">
+                                                        <li>1. Levantamiento de proceso y mapa de tareas.</li>
+                                                        <li>2. Diseno del agente por rol (RH, calidad, operacion, administracion).</li>
+                                                        <li>3. Integracion con correo, WhatsApp, ERP o Google Sheets.</li>
+                                                        <li>4. Tablero de metricas (tiempo ahorrado, SLA, volumen).</li>
+                                                        <li>5. Capacitacion y soporte inicial.</li>
+                                                    </ul>
+                                                </div>
+
+                                                <p className="text-sm font-semibold text-[var(--text-primary)]">
+                                                    Resultado esperado: reduccion de 30% a 60% en tiempo operativo administrativo.
+                                                </p>
+
+                                                <div className="flex flex-col sm:flex-row gap-3">
+                                                    <a
+                                                        href="/seishinia?servicio=agentes#brief-ia"
+                                                        className="btn-primary px-6 py-3 text-sm uppercase tracking-wider text-center"
+                                                    >
+                                                        Solicitar diagnostico de Agentes IA
+                                                    </a>
+                                                    <a
+                                                        href="https://wa.me/524491155269?text=Hola%2C%20quiero%20solicitar%20diagnostico%20de%20Agentes%20IA%20para%20mi%20operacion."
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="px-6 py-3 text-sm uppercase tracking-wider text-center rounded-xl border border-[var(--border-color-light)] text-[var(--text-primary)] hover:border-[#E31E24] hover:text-[#E31E24] transition-colors"
+                                                    >
+                                                        Hablar por WhatsApp
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
                                 ))}
                             </div>
                         </motion.div>
