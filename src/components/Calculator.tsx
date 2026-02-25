@@ -11,6 +11,9 @@ import {
     Zap,
     Clock
 } from 'lucide-react';
+import { Wizard } from './cotizador/Wizard';
+import { PricePanel } from './cotizador/PricePanel';
+
 
 type Category = 'machinery' | 'translation' | 'ai';
 
@@ -184,7 +187,29 @@ export default function Calculator() {
                         </motion.div>
                     )}
 
-                    {step === 2 && selectedSubService && (
+                    {/* Visión Computarizada: muestra el Wizard del cotizador */}
+                    {step === 2 && selectedSubService?.id === 'vision' && (
+                        <motion.div
+                            key="step-vision"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -20 }}
+                        >
+                            <button
+                                onClick={() => setStep(1.5)}
+                                className="flex items-center text-[var(--text-secondary)] hover:text-[#E31E24] font-bold mb-6"
+                            >
+                                <ArrowLeft className="w-5 h-5 mr-2" /> Volver
+                            </button>
+                            <div className="grid lg:grid-cols-[1fr_320px] gap-6 items-start">
+                                <Wizard />
+                                <PricePanel />
+                            </div>
+                        </motion.div>
+                    )}
+
+                    {/* Otros servicios: flujo existente */}
+                    {step === 2 && selectedSubService && selectedSubService.id !== 'vision' && (
                         <motion.div
                             key="step2"
                             initial={{ opacity: 0, scale: 0.95 }}

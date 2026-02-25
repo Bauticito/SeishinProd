@@ -122,6 +122,20 @@ export default function Navigation() {
               </a>
             </motion.div>
 
+            <motion.div
+              whileHover={{ y: -2 }}
+              whileTap={{ scale: 0.98 }}
+              className="whitespace-nowrap"
+            >
+              <Link
+                to="/jetson/landing"
+                className="flex items-center gap-2 px-5 lg:px-6 py-2.5 rounded-full bg-[#E31E24]/10 border border-[#E31E24]/30 text-[#E31E24] font-medium text-[10px] lg:text-xs hover:bg-[#E31E24] hover:text-white transition-all duration-300 tracking-widest uppercase"
+              >
+                Portal IA
+                <span className="w-1 h-1 rounded-full bg-[#E31E24]"></span>
+              </Link>
+            </motion.div>
+
             <div className="h-6 w-px bg-[var(--border-color-light)] opacity-20 mx-2"></div>
 
             <button

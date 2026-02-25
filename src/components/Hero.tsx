@@ -1,4 +1,4 @@
-import { ArrowRight, Play, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, Play, CheckCircle2, Camera } from 'lucide-react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
@@ -80,6 +80,18 @@ export default function Hero() {
                 >
                   Calcula tu servicio
                   <Play className="w-4 h-4 fill-current" />
+                </Link>
+              </motion.div>
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Link
+                  to="/vigilancia"
+                  className="flex items-center justify-center gap-3 px-8 py-4 text-base rounded-xl border border-[var(--border-color-light)] bg-[var(--card-bg)] text-[var(--text-primary)] hover:border-[#E31E24]/50 hover:bg-[#E31E24]/5 transition-all duration-300 font-medium"
+                >
+                  <Camera className="w-5 h-5 text-[#E31E24]" />
+                  Vigilancia SeishinIA
                 </Link>
               </motion.div>
             </div>
