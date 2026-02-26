@@ -18,6 +18,44 @@ const videoModules = import.meta.glob('../../img/*.mp4', {
   import: 'default',
 });
 
+const normalizeName = (value: string) => value.normalize('NFC');
+
+const getFileName = (value: string) => {
+  const sanitized = value.split('?')[0].split('#')[0];
+  return sanitized.split('/').pop() ?? sanitized;
+};
+
+const buildMediaNameMap = () => {
+  const map = new Map<string, string>();
+  const addEntries = (entries: [string, unknown][]) => {
+    entries.forEach(([modulePath, assetUrl]) => {
+      const moduleFileName = getFileName(modulePath);
+      const decodedModuleName = decodeURIComponent(moduleFileName);
+      const src = assetUrl as string;
+
+      map.set(normalizeName(moduleFileName), src);
+      map.set(normalizeName(decodedModuleName), src);
+    });
+  };
+
+  addEntries(Object.entries(imageModules));
+  addEntries(Object.entries(videoModules));
+
+  return map;
+};
+
+const mediaNameMap = buildMediaNameMap();
+
+export const resolveBundledMediaSrc = (src: string) => {
+  const fileName = getFileName(src);
+  const decodedName = decodeURIComponent(fileName);
+  return (
+    mediaNameMap.get(normalizeName(fileName)) ??
+    mediaNameMap.get(normalizeName(decodedName)) ??
+    src
+  );
+};
+
 const toTitle = (fileName: string) =>
   fileName
     .replace(/\.[^/.]+$/, '')

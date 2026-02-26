@@ -11,6 +11,7 @@ import {
     Zap,
     Clock
 } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { Wizard } from './cotizador/Wizard';
 import { PricePanel } from './cotizador/PricePanel';
 
@@ -20,9 +21,15 @@ type Category = 'machinery' | 'translation' | 'ai';
 interface CategoryData {
     id: Category;
     title: string;
-    icon: any;
+    icon: LucideIcon;
     description: string;
 }
+
+type SubService = {
+    id: string;
+    title: string;
+    basePrice: number;
+};
 
 const categories: CategoryData[] = [
     {
@@ -45,7 +52,7 @@ const categories: CategoryData[] = [
     }
 ];
 
-const subServices = {
+const subServices: Record<Exclude<Category, 'translation'>, SubService[]> = {
     machinery: [
         { id: 'forklift', title: 'Montacargas', basePrice: 45 },
         { id: 'conveyor', title: 'Transportadoras', basePrice: 40 },
@@ -60,7 +67,7 @@ const subServices = {
 export default function Calculator() {
     const [step, setStep] = useState(1);
     const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
-    const [selectedSubService, setSelectedSubService] = useState<any>(null);
+    const [selectedSubService, setSelectedSubService] = useState<SubService | null>(null);
     const [showAgentsIaDetails, setShowAgentsIaDetails] = useState(false);
     const [inputValue, setInputValue] = useState(10); // Generic input (employees or hours)
     const [months, setMonths] = useState(6);
@@ -75,12 +82,12 @@ export default function Calculator() {
         }
     };
 
-    const handleSubSelect = (sub: any) => {
+    const handleSubSelect = (sub: SubService) => {
         setSelectedSubService(sub);
         setStep(2);
     };
 
-    const handleAiSubClick = (sub: any) => {
+    const handleAiSubClick = (sub: SubService) => {
         if (sub.id === 'agents') {
             setShowAgentsIaDetails((prev) => !prev);
             return;
@@ -183,7 +190,7 @@ export default function Calculator() {
                                 Especifique el servicio de <span className="text-[#E31E24]">{categories.find(c => c.id === selectedCategory)?.title}</span>
                             </h3>
                             <div className="grid gap-4">
-                                {(subServices[selectedCategory as keyof typeof subServices] || []).map((sub: any) => (
+                                {(subServices[selectedCategory as keyof typeof subServices] || []).map((sub) => (
                                     <div key={sub.id} className="space-y-3">
                                         <button
                                             onClick={() =>

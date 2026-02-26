@@ -60,7 +60,7 @@ const ChartContainer = React.forwardRef<
 ChartContainer.displayName = "Chart";
 
 const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
-  const colorConfig = Object.entries(config).filter(([_, config]) => config.theme || config.color);
+  const colorConfig = Object.entries(config).filter(([, itemConfig]) => itemConfig.theme || itemConfig.color);
 
   if (!colorConfig.length) {
     return null;
@@ -90,8 +90,11 @@ ${colorConfig
 
 const ChartTooltip = RechartsPrimitive.Tooltip;
 
+type TooltipValue = number | string | Array<number | string>;
+type TooltipName = number | string;
+
 type ChartTooltipContentProps = React.ComponentProps<"div"> &
-  TooltipContentProps<any, any> & {
+  TooltipContentProps<TooltipValue, TooltipName> & {
     hideLabel?: boolean;
     hideIndicator?: boolean;
     indicator?: "line" | "dot" | "dashed";
@@ -124,7 +127,10 @@ const ChartTooltipContent = React.forwardRef<
   ) => {
     const { config } = useChart();
 
-    const typedPayload = (payload ?? []) as ReadonlyArray<TooltipPayloadEntry<any, any>>;
+    const typedPayload = React.useMemo(
+      () => (payload ?? []) as ReadonlyArray<TooltipPayloadEntry<TooltipValue, TooltipName>>,
+      [payload],
+    );
 
     const tooltipLabel = React.useMemo(() => {
       if (hideLabel || !typedPayload.length) {
@@ -140,7 +146,9 @@ const ChartTooltipContent = React.forwardRef<
           : itemConfig?.label;
 
       if (labelFormatter) {
-        return <div className={cn("font-medium", labelClassName)}>{labelFormatter(value, typedPayload as any[])}</div>;
+        return (
+          <div className={cn("font-medium", labelClassName)}>{labelFormatter(value, Array.from(typedPayload))}</div>
+        );
       }
 
       if (!value) {
@@ -166,7 +174,7 @@ const ChartTooltipContent = React.forwardRef<
       >
         {!nestLabel ? tooltipLabel : null}
         <div className="grid gap-1.5">
-          {typedPayload.map((item: TooltipPayloadEntry<any, any>, index: number) => {
+          {typedPayload.map((item: TooltipPayloadEntry<TooltipValue, TooltipName>, index: number) => {
             const key = `${nameKey || item.name || item.dataKey || "value"}`;
             const itemConfig = getPayloadConfigFromPayload(config, item, key);
             const itemPayload = asRecord(item.payload);
@@ -182,7 +190,7 @@ const ChartTooltipContent = React.forwardRef<
                 )}
               >
                 {formatter && item?.value !== undefined && item.name ? (
-                  formatter(item.value, item.name, item, index, typedPayload as TooltipPayloadEntry<any, any>[])
+                  formatter(item.value, item.name, item, index, Array.from(typedPayload))
                 ) : (
                   <>
                     {itemConfig?.icon ? (

@@ -21,3 +21,11 @@ dist-ssr
 *.sln
 *.sw?
 .env
+.env.local
+.env.*.local
+.dev.vars
+cloudflare/worker/.dev.vars
+cloudflare/worker/.wrangler/
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal

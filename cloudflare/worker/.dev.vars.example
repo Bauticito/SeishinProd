@@ -1,0 +1,2 @@
+ADMIN_TOKEN=replace_with_local_admin_token
+CORS_ORIGIN=*
