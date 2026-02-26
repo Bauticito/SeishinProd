@@ -56,6 +56,7 @@ export function PermissionGate({
  */
 export function usePermission(permission: string): boolean {
   const { user } = useAuth();
+  if (!permission) return true;
   if (!user) return false;
   return hasPermission(user.role, permission);
 }

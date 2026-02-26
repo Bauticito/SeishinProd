@@ -51,7 +51,8 @@ export function ConfirmAction({
   const [countdown, setCountdown] = useState(timeout);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  const hasPerms = permission ? usePermission(permission) : true;
+  const permissionAllowed = usePermission(permission ?? "");
+  const hasPerms = permission ? permissionAllowed : true;
 
   const cancel = useCallback(() => {
     setPending(false);

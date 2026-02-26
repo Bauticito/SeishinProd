@@ -8,7 +8,12 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "typecheck": "tsc --noEmit -p tsconfig.app.json"
+    "typecheck": "tsc --noEmit -p tsconfig.app.json",
+    "cf:dev": "npx wrangler dev --config cloudflare/worker/wrangler.toml --var ADMIN_TOKEN:seishin_local_admin_2026_A9kR7pLmQ2vX --var CORS_ORIGIN:*",
+    "cf:deploy": "npx wrangler deploy --config cloudflare/worker/wrangler.toml",
+    "cf:d1:migrate:local": "npx wrangler d1 migrations apply seishin_media --local --config cloudflare/worker/wrangler.toml",
+    "cf:d1:migrate:remote": "npx wrangler d1 migrations apply seishin_media --remote --config cloudflare/worker/wrangler.toml",
+    "cf:d1:seed:generate": "node scripts/generate-media-seed.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

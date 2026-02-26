@@ -10,14 +10,50 @@ import {
   X,
 } from 'lucide-react';
 import { localGalleryItems, type MediaItem } from '../lib/localGalleryItems';
+import { fetchMediaItems, hasMediaApiConfigured } from '../lib/mediaApi';
 
 type MediaType = 'image' | 'video';
 type FilterType = 'all' | MediaType;
 
 export default function GalleryPage() {
-  const [galleryItems] = useState<MediaItem[]>(localGalleryItems);
+  const [galleryItems, setGalleryItems] = useState<MediaItem[]>(localGalleryItems);
+  const [isLoadingFromApi, setIsLoadingFromApi] = useState(false);
+  const [apiError, setApiError] = useState<string | null>(null);
   const [activeFilter, setActiveFilter] = useState<FilterType>('all');
   const [activeItemId, setActiveItemId] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (!hasMediaApiConfigured) return;
+
+    let isMounted = true;
+
+    const loadMedia = async () => {
+      setIsLoadingFromApi(true);
+      setApiError(null);
+      try {
+        const apiItems = await fetchMediaItems();
+        if (isMounted) {
+          setGalleryItems(apiItems);
+        }
+      } catch (error) {
+        if (isMounted) {
+          const message =
+            error instanceof Error ? error.message : 'No se pudo cargar la galeria desde Cloudflare.';
+          setApiError(message);
+        }
+      } finally {
+        if (isMounted) {
+          setIsLoadingFromApi(false);
+        }
+      }
+    };
+
+    void loadMedia();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const filteredItems = useMemo(() => {
     if (activeFilter === 'all') return galleryItems;
@@ -119,6 +155,18 @@ export default function GalleryPage() {
             <Film className="w-4 h-4" /> Videos ({videoCount})
           </button>
         </div>
+
+        {isLoadingFromApi && (
+          <div className="text-center text-[var(--text-secondary)] mb-8">
+            Cargando galeria desde Cloudflare...
+          </div>
+        )}
+
+        {apiError && (
+          <div className="text-center text-amber-400 mb-8">
+            Error en API Cloudflare: {apiError}. Mostrando archivos locales.
+          </div>
+        )}
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredItems.map((item, index) => (

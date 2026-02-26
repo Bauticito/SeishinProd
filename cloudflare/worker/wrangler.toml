@@ -1,0 +1,12 @@
+name = "seishin-media-api"
+main = "src/index.ts"
+compatibility_date = "2025-01-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "seishin_media"
+database_id = "3f879dc2-0466-40e7-89b1-9afca487e81e"
+
+[vars]
+CORS_ORIGIN = "*"
+ADMIN_TOKEN = "seishin_local_admin_2026_A9kR7pLmQ2vX"

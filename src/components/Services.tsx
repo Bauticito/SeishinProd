@@ -1,8 +1,15 @@
 import React, { useState } from 'react';
 import { Users, Forklift, ClipboardCheck, Package, Bot, FileCheck, Languages, Wrench } from 'lucide-react';
 import { motion } from 'framer-motion';
+import type { LucideIcon } from 'lucide-react';
 
-const services = [
+type Service = {
+  title: string;
+  text: string;
+  icon: LucideIcon;
+};
+
+const services: Service[] = [
   {
     title: 'Planificación estratégica de personal',
     text: 'Gestión estratégica de recursos humanos con análisis predictivo.',
@@ -103,7 +110,7 @@ export default function Services() {
   );
 }
 
-function ServiceCard({ service, Icon }: { service: any, Icon: any }) {
+function ServiceCard({ service, Icon }: { service: Service; Icon: LucideIcon }) {
   const [rotateX, setRotateX] = useState(0);
   const [rotateY, setRotateY] = useState(0);
 
