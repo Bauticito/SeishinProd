@@ -2,6 +2,9 @@ import { useState } from "react";
 import { useQuoteStore } from "@/lib/store";
 import { Breakdown } from "./Breakdown";
 import { ProgressBar } from "./ProgressBar";
+import { ProposalModal } from "./ProposalModal";
+import { FileDown } from "lucide-react";
+import { generateQuotePDF } from "@/lib/generateQuotePDF";
 
 function formatMXN(value: number) {
   return new Intl.NumberFormat("es-MX", {
@@ -13,35 +16,74 @@ function formatMXN(value: number) {
 
 function PricePanelCard() {
   const quote = useQuoteStore((s) => s.quote);
+  const answers = useQuoteStore((s) => s.answers);
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const visionContext = {
+    service: "Visión Computarizada",
+    subService: "Análisis de Seguridad",
+    quantity: answers.cameraRange,
+    estimate: `${formatMXN(quote.setup)} setup + ${formatMXN(quote.monthly)}/mes`,
+    setup: quote.setup,
+    monthly: quote.monthly,
+    riskScore: quote.riskScore,
+    coverageLabel: quote.coverageLabel,
+    breakdown: quote.breakdown as unknown as Record<string, number>,
+    orderLines: [
+      { name: "Visión Computarizada – Inversión inicial", qty: 1, price: quote.setup },
+      { name: "Visión Computarizada – Costo mensual estimado", qty: 1, price: quote.monthly },
+    ],
+  };
+
+  const handleDownloadPDF = () => {
+    generateQuotePDF(visionContext);
+  };
 
   return (
-    <div className="bg-gradient-to-br from-[#3A3A3A] to-[#1c1c1c] rounded-[2rem] p-6 md:p-8 text-white space-y-6 shadow-2xl border border-white/5">
-      {/* Inversión inicial */}
-      <div>
-        <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/40 mb-1">
-          Inversión inicial estimada
-        </p>
-        <p className="text-3xl font-black text-white">{formatMXN(quote.setup)}</p>
+    <>
+      <div className="bg-gradient-to-br from-[#3A3A3A] to-[#1c1c1c] rounded-[2rem] p-6 md:p-8 text-white space-y-6 shadow-2xl border border-white/5">
+        {/* Inversión inicial */}
+        <div>
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/40 mb-1">
+            Inversión inicial estimada
+          </p>
+          <p className="text-3xl font-black text-white">{formatMXN(quote.setup)}</p>
+        </div>
+
+        {/* Costo mensual */}
+        <div className="border-t border-white/10 pt-4">
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#E31E24] mb-1">
+            Costo mensual estimado
+          </p>
+          <p className="text-5xl font-black text-white">{formatMXN(quote.monthly)}</p>
+        </div>
+
+        <ProgressBar value={quote.riskScore} label={quote.coverageLabel} />
+        <Breakdown breakdown={quote.breakdown} />
+
+        <div className="flex flex-col gap-2">
+          <button
+            onClick={() => setModalOpen(true)}
+            className="btn-primary flex items-center justify-center gap-2 w-full py-3 text-sm"
+          >
+            Solicitar propuesta
+          </button>
+          <button
+            onClick={handleDownloadPDF}
+            className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl border border-white/10 text-white/60 text-sm font-medium hover:border-[#E31E24]/40 hover:text-white transition-colors"
+          >
+            <FileDown className="w-4 h-4" />
+            Descargar PDF
+          </button>
+        </div>
       </div>
 
-      {/* Costo mensual */}
-      <div className="border-t border-white/10 pt-4">
-        <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#E31E24] mb-1">
-          Costo mensual estimado
-        </p>
-        <p className="text-5xl font-black text-white">{formatMXN(quote.monthly)}</p>
-      </div>
-
-      <ProgressBar value={quote.riskScore} label={quote.coverageLabel} />
-      <Breakdown breakdown={quote.breakdown} />
-
-      <a
-        href="#contact"
-        className="btn-primary flex items-center justify-center gap-2 w-full py-3 text-sm"
-      >
-        Solicitar propuesta
-      </a>
-    </div>
+      <ProposalModal
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        quoteContext={visionContext}
+      />
+    </>
   );
 }
 

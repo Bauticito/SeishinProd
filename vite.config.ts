@@ -13,4 +13,14 @@ export default defineConfig({
   optimizeDeps: {
     exclude: ['lucide-react'],
   },
+  server: {
+    proxy: {
+      '/odoo-api': {
+        target: 'https://srv.seishin.com.mx',
+        changeOrigin: true,
+        secure: true,
+        rewrite: (path) => path.replace(/^\/odoo-api/, ''),
+      },
+    },
+  },
 });

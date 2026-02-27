@@ -14,6 +14,8 @@ import {
 import type { LucideIcon } from 'lucide-react';
 import { Wizard } from './cotizador/Wizard';
 import { PricePanel } from './cotizador/PricePanel';
+import { ProposalModal } from './cotizador/ProposalModal';
+import { useQuoteStore } from '@/lib/store';
 
 
 type Category = 'machinery' | 'translation' | 'ai';
@@ -71,6 +73,8 @@ export default function Calculator() {
     const [showAgentsIaDetails, setShowAgentsIaDetails] = useState(false);
     const [inputValue, setInputValue] = useState(10); // Generic input (employees or hours)
     const [months, setMonths] = useState(6);
+    const [modalOpen, setModalOpen] = useState(false);
+    const resetQuoteStore = useQuoteStore((s) => s.reset);
 
     const handleCategorySelect = (catId: Category) => {
         setSelectedCategory(catId);
@@ -83,6 +87,7 @@ export default function Calculator() {
     };
 
     const handleSubSelect = (sub: SubService) => {
+        if (sub.id === 'vision') resetQuoteStore();
         setSelectedSubService(sub);
         setStep(2);
     };
@@ -383,15 +388,15 @@ export default function Calculator() {
                                 </div>
 
                                 <div className="grid gap-4">
-                                    <motion.a
+                                    <motion.button
                                         whileHover={{ scale: 1.02 }}
                                         whileTap={{ scale: 0.98 }}
-                                        href="#contact"
+                                        onClick={() => setModalOpen(true)}
                                         className="btn-primary py-5 text-lg flex items-center justify-center gap-3 bg-white text-[#3A3A3A] hover:bg-[#E31E24] hover:text-white"
                                     >
                                         Solicitar Propuesta
                                         <ArrowRight className="w-5 h-5" />
-                                    </motion.a>
+                                    </motion.button>
                                     <button onClick={reset} className="text-white/40 text-sm font-bold hover:text-white transition-colors">
                                         Empezar de nuevo
                                     </button>
@@ -401,6 +406,32 @@ export default function Calculator() {
                     )}
                 </AnimatePresence>
             </div>
+
+            <ProposalModal
+                open={modalOpen}
+                onClose={() => setModalOpen(false)}
+                quoteContext={{
+                    service: selectedCategory ? categories.find(c => c.id === selectedCategory)?.title ?? '' : '',
+                    subService: selectedSubService?.title ?? '',
+                    quantity: inputValue,
+                    months: selectedCategory === 'machinery' ? months : undefined,
+                    estimate: calculateEstimate(),
+                    orderLines:
+                        selectedCategory === 'machinery' && selectedSubService
+                            ? [{
+                                name: `${selectedSubService.title} (${months} mes${months !== 1 ? 'es' : ''})`,
+                                qty: inputValue,
+                                price: selectedSubService.basePrice * months,
+                              }]
+                        : selectedCategory === 'translation'
+                            ? [{
+                                name: 'Traducción Japonés / Español',
+                                qty: inputValue,
+                                price: 300,
+                              }]
+                        : undefined,
+                }}
+            />
         </section>
     );
 }
