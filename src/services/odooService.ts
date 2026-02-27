@@ -129,3 +129,54 @@ export async function createOdooQuotation(quoteData: OdooQuoteData): Promise<num
 
   return orderId;
 }
+
+export interface ContactFormData {
+  nombre: string;
+  correo: string;
+  empresa: string;
+  mensaje: string;
+}
+
+export async function createContactMessage(form: ContactFormData): Promise<number> {
+  await authenticate();
+
+  let partnerId: number;
+  const existing = await callKw<number[]>('res.partner', 'search', [
+    [['email', '=', form.correo]],
+  ]);
+
+  if (existing.length > 0) {
+    partnerId = existing[0];
+  } else {
+    partnerId = await callKw<number>('res.partner', 'create', [
+      {
+        name: form.nombre,
+        email: form.correo,
+        company_name: form.empresa || undefined,
+        customer_rank: 1,
+      },
+    ]);
+  }
+
+  const note = [
+    `<p><strong>── Información de formulario de contacto ──</strong></p>`,
+    `<p><strong>Nombre:</strong> ${form.nombre}</p>`,
+    `<p><strong>Correo:</strong> ${form.correo}</p>`,
+    form.empresa ? `<p><strong>Empresa:</strong> ${form.empresa}</p>` : '',
+    `<p><br/></p>`,
+    `<p><strong>Mensaje:</strong></p>`,
+    `<p>${form.mensaje.replace(/\n/g, '<br/>')}</p>`,
+  ]
+    .filter(Boolean)
+    .join('');
+
+  const orderId = await callKw<number>('sale.order', 'create', [
+    {
+      partner_id: partnerId,
+      client_order_ref: 'Web - Formulario de Contacto',
+      note,
+    },
+  ]);
+
+  return orderId;
+}

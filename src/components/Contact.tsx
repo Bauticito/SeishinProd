@@ -1,5 +1,8 @@
 import { useState } from 'react';
-import { Send, CheckCircle, Phone, Mail, Clock, MapPin } from 'lucide-react';
+import { Send, CheckCircle, Phone, Mail, Clock, MapPin, Loader2, AlertCircle } from 'lucide-react';
+import { createContactMessage } from '@/services/odooService';
+
+type Status = 'idle' | 'loading' | 'success' | 'error';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -8,15 +11,21 @@ export default function Contact() {
     empresa: '',
     mensaje: '',
   });
-  const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState<Status>('idle');
+  const [errorMsg, setErrorMsg] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
-    setTimeout(() => {
-      setSubmitted(false);
+    setStatus('loading');
+    setErrorMsg('');
+    try {
+      await createContactMessage(formData);
+      setStatus('success');
       setFormData({ nombre: '', correo: '', empresa: '', mensaje: '' });
-    }, 3000);
+    } catch (err) {
+      setStatus('error');
+      setErrorMsg(err instanceof Error ? err.message : 'Error desconocido');
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -91,7 +100,23 @@ export default function Contact() {
           </div>
 
           <div className="lg:col-span-3 bg-[var(--bg-secondary)] p-6 sm:p-8 lg:p-10 rounded-2xl border border-[var(--border-color)]">
-            {!submitted ? (
+            {status === 'success' ? (
+              <div className="py-8 sm:py-12 text-center">
+                <CheckCircle className="w-12 h-12 sm:w-16 sm:h-16 text-[#f97316] mx-auto mb-4" />
+                <h3 className="text-xl sm:text-2xl font-bold text-[var(--text-primary)] mb-2">
+                  ¡Mensaje Enviado!
+                </h3>
+                <p className="text-[var(--text-secondary)] text-sm sm:text-base">
+                  Tu mensaje fue registrado. Te responderemos pronto.
+                </p>
+                <button
+                  onClick={() => setStatus('idle')}
+                  className="mt-6 text-sm text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors"
+                >
+                  Enviar otro mensaje
+                </button>
+              </div>
+            ) : (
               <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
                 <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
                   <div>
@@ -137,7 +162,6 @@ export default function Contact() {
                     name="empresa"
                     value={formData.empresa}
                     onChange={handleChange}
-                    required
                     className="w-full px-4 py-3 rounded-lg border border-[var(--border-color)] bg-[var(--bg-primary)] text-[var(--text-primary)] focus:border-[var(--accent-primary)] focus:ring-2 focus:ring-[var(--accent-primary)]/20 outline-none transition-colors duration-200"
                     placeholder="Nombre de tu empresa"
                   />
@@ -159,24 +183,33 @@ export default function Contact() {
                   />
                 </div>
 
+                {status === 'error' && (
+                  <div className="flex items-start gap-3 rounded-lg bg-red-500/10 border border-red-500/20 px-4 py-3">
+                    <AlertCircle className="w-4 h-4 text-red-400 mt-0.5 shrink-0" />
+                    <p className="text-sm text-red-300">
+                      {errorMsg || 'No se pudo enviar el mensaje. Intenta de nuevo.'}
+                    </p>
+                  </div>
+                )}
+
                 <button
                   type="submit"
-                  className="w-full bg-[#f97316] hover:bg-[#ea580c] hover:shadow-lg hover:shadow-[#f97316]/50 text-white font-bold px-8 py-4 rounded-lg transition-all duration-200 flex items-center justify-center gap-3"
+                  disabled={status === 'loading'}
+                  className="w-full bg-[#f97316] hover:bg-[#ea580c] hover:shadow-lg hover:shadow-[#f97316]/50 text-white font-bold px-8 py-4 rounded-lg transition-all duration-200 flex items-center justify-center gap-3 disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  <Send className="w-5 h-5" />
-                  Enviar Mensaje
+                  {status === 'loading' ? (
+                    <>
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                      Enviando...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-5 h-5" />
+                      Enviar Mensaje
+                    </>
+                  )}
                 </button>
               </form>
-            ) : (
-              <div className="py-8 sm:py-12 text-center">
-                <CheckCircle className="w-12 h-12 sm:w-16 sm:h-16 text-[#f97316] mx-auto mb-4" />
-                <h3 className="text-xl sm:text-2xl font-bold text-[var(--text-primary)] mb-2">
-                  ¡Mensaje Enviado!
-                </h3>
-                <p className="text-[var(--text-secondary)] text-sm sm:text-base">
-                  Te responderemos pronto.
-                </p>
-              </div>
             )}
           </div>
         </div>
