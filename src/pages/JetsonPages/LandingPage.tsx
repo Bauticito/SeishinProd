@@ -103,13 +103,18 @@ export default function LandingPage() {
 
             {/* CTA */}
             <div className="flex flex-col sm:flex-row gap-3">
-              <Link
-                to="/jetson/login"
-                className="btn-primary inline-flex items-center justify-center gap-2 px-8 py-3.5 text-sm font-bold"
-              >
-                Acceder al portal
-                <ArrowRight className="w-5 h-5" />
-              </Link>
+              <div className="relative inline-flex">
+                <button
+                  disabled
+                  className="btn-primary inline-flex items-center justify-center gap-2 px-8 py-3.5 text-sm font-bold opacity-50 cursor-not-allowed"
+                >
+                  Acceder al portal
+                  <ArrowRight className="w-5 h-5" />
+                </button>
+                <span className="absolute -top-2 -right-2 text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-[#E31E24] text-white tracking-wide">
+                  PRONTO
+                </span>
+              </div>
               <Link
                 to="/vigilancia"
                 className="inline-flex items-center justify-center gap-2 px-8 py-3.5 text-sm font-bold rounded-xl border border-[var(--border-color-light)] text-[var(--text-secondary)] hover:border-[#E31E24]/50 hover:text-[var(--text-primary)] transition-all duration-300"
@@ -152,13 +157,18 @@ export default function LandingPage() {
                 </p>
               </div>
 
-              <Link
-                to="/jetson/login"
-                className="btn-primary flex items-center justify-center gap-2 w-full py-3 text-sm font-bold"
-              >
-                INICIAR SESIÓN
-                <ArrowRight className="w-4 h-4" />
-              </Link>
+              <div className="relative">
+                <button
+                  disabled
+                  className="btn-primary flex items-center justify-center gap-2 w-full py-3 text-sm font-bold opacity-50 cursor-not-allowed"
+                >
+                  INICIAR SESIÓN
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+                <span className="absolute -top-2 -right-2 text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-[#E31E24] text-white tracking-wide">
+                  PRONTO
+                </span>
+              </div>
 
               <div className="h-px bg-gradient-to-r from-transparent via-[#E31E24]/30 to-transparent" />
 

@@ -24,7 +24,7 @@ export default function Contact() {
       setFormData({ nombre: '', correo: '', empresa: '', mensaje: '' });
     } catch (err) {
       setStatus('error');
-      setErrorMsg(err instanceof Error ? err.message : 'Error desconocido');
+      setErrorMsg(err instanceof Error ? err.message : 'No se pudo enviar el mensaje. Intenta de nuevo.');
     }
   };
 
