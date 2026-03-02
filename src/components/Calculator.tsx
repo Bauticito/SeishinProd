@@ -11,15 +11,27 @@ import {
     Zap,
     Clock
 } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
+import { Wizard } from './cotizador/Wizard';
+import { PricePanel } from './cotizador/PricePanel';
+import { ProposalModal } from './cotizador/ProposalModal';
+import { useQuoteStore } from '@/lib/store';
+
 
 type Category = 'machinery' | 'translation' | 'ai';
 
 interface CategoryData {
     id: Category;
     title: string;
-    icon: any;
+    icon: LucideIcon;
     description: string;
 }
+
+type SubService = {
+    id: string;
+    title: string;
+    basePrice: number;
+};
 
 const categories: CategoryData[] = [
     {
@@ -42,7 +54,7 @@ const categories: CategoryData[] = [
     }
 ];
 
-const subServices = {
+const subServices: Record<Exclude<Category, 'translation'>, SubService[]> = {
     machinery: [
         { id: 'forklift', title: 'Montacargas', basePrice: 45 },
         { id: 'conveyor', title: 'Transportadoras', basePrice: 40 },
@@ -57,9 +69,12 @@ const subServices = {
 export default function Calculator() {
     const [step, setStep] = useState(1);
     const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
-    const [selectedSubService, setSelectedSubService] = useState<any>(null);
+    const [selectedSubService, setSelectedSubService] = useState<SubService | null>(null);
+    const [showAgentsIaDetails, setShowAgentsIaDetails] = useState(false);
     const [inputValue, setInputValue] = useState(10); // Generic input (employees or hours)
     const [months, setMonths] = useState(6);
+    const [modalOpen, setModalOpen] = useState(false);
+    const resetQuoteStore = useQuoteStore((s) => s.reset);
 
     const handleCategorySelect = (catId: Category) => {
         setSelectedCategory(catId);
@@ -71,9 +86,18 @@ export default function Calculator() {
         }
     };
 
-    const handleSubSelect = (sub: any) => {
+    const handleSubSelect = (sub: SubService) => {
+        if (sub.id === 'vision') resetQuoteStore();
         setSelectedSubService(sub);
         setStep(2);
+    };
+
+    const handleAiSubClick = (sub: SubService) => {
+        if (sub.id === 'agents') {
+            setShowAgentsIaDetails((prev) => !prev);
+            return;
+        }
+        handleSubSelect(sub);
     };
 
     const calculateEstimate = () => {
@@ -100,6 +124,7 @@ export default function Calculator() {
         setStep(1);
         setSelectedCategory(null);
         setSelectedSubService(null);
+        setShowAgentsIaDetails(false);
         setInputValue(10);
         setMonths(6);
     };
@@ -170,21 +195,94 @@ export default function Calculator() {
                                 Especifique el servicio de <span className="text-[#E31E24]">{categories.find(c => c.id === selectedCategory)?.title}</span>
                             </h3>
                             <div className="grid gap-4">
-                                {(subServices[selectedCategory as keyof typeof subServices] || []).map((sub: any) => (
-                                    <button
-                                        key={sub.id}
-                                        onClick={() => handleSubSelect(sub)}
-                                        className="flex justify-between items-center p-6 rounded-2xl glass border border-[var(--border-color-light)] hover:border-[#E31E24] transition-all group"
-                                    >
-                                        <span className="text-lg font-bold text-[var(--text-primary)]">{sub.title}</span>
-                                        <ArrowRight className="w-5 h-5 text-[#E31E24] group-hover:translate-x-2 transition-transform" />
-                                    </button>
+                                {(subServices[selectedCategory as keyof typeof subServices] || []).map((sub) => (
+                                    <div key={sub.id} className="space-y-3">
+                                        <button
+                                            onClick={() =>
+                                                selectedCategory === 'ai' ? handleAiSubClick(sub) : handleSubSelect(sub)
+                                            }
+                                            className="w-full flex justify-between items-center p-6 rounded-2xl glass border border-[var(--border-color-light)] hover:border-[#E31E24] transition-all group"
+                                        >
+                                            <span className="text-lg font-bold text-[var(--text-primary)]">{sub.title}</span>
+                                            <ArrowRight className="w-5 h-5 text-[#E31E24] group-hover:translate-x-2 transition-transform" />
+                                        </button>
+
+                                        {selectedCategory === 'ai' && sub.id === 'agents' && showAgentsIaDetails && (
+                                            <div className="rounded-2xl border border-[#E31E24]/30 bg-[#E31E24]/5 p-6 sm:p-7 space-y-5">
+                                                <div>
+                                                    <h4 className="text-xl font-bold text-[var(--text-primary)] mb-2">
+                                                        Agentes IA para Operaciones y RH
+                                                    </h4>
+                                                    <p className="text-[var(--text-secondary)] leading-relaxed">
+                                                        Automatiza tareas repetitivas (seguimiento de candidatos, reportes,
+                                                        validaciones y atencion interna) con agentes conectados a tus procesos.
+                                                    </p>
+                                                </div>
+
+                                                <div>
+                                                    <p className="text-sm font-bold text-[#E31E24] uppercase tracking-wider mb-2">
+                                                        Que incluye
+                                                    </p>
+                                                    <ul className="space-y-2 text-[var(--text-secondary)]">
+                                                        <li>1. Levantamiento de proceso y mapa de tareas.</li>
+                                                        <li>2. Diseno del agente por rol (RH, calidad, operacion, administracion).</li>
+                                                        <li>3. Integracion con correo, WhatsApp, ERP o Google Sheets.</li>
+                                                        <li>4. Tablero de metricas (tiempo ahorrado, SLA, volumen).</li>
+                                                        <li>5. Capacitacion y soporte inicial.</li>
+                                                    </ul>
+                                                </div>
+
+                                                <p className="text-sm font-semibold text-[var(--text-primary)]">
+                                                    Resultado esperado: reduccion de 30% a 60% en tiempo operativo administrativo.
+                                                </p>
+
+                                                <div className="flex flex-col sm:flex-row gap-3">
+                                                    <a
+                                                        href="/seishinia?servicio=agentes#brief-ia"
+                                                        className="btn-primary px-6 py-3 text-sm uppercase tracking-wider text-center"
+                                                    >
+                                                        Solicitar diagnostico de Agentes IA
+                                                    </a>
+                                                    <a
+                                                        href="https://wa.me/524491155269?text=Hola%2C%20quiero%20solicitar%20diagnostico%20de%20Agentes%20IA%20para%20mi%20operacion."
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="px-6 py-3 text-sm uppercase tracking-wider text-center rounded-xl border border-[var(--border-color-light)] text-[var(--text-primary)] hover:border-[#E31E24] hover:text-[#E31E24] transition-colors"
+                                                    >
+                                                        Hablar por WhatsApp
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
                                 ))}
                             </div>
                         </motion.div>
                     )}
 
-                    {step === 2 && selectedSubService && (
+                    {/* Visión Computarizada: muestra el Wizard del cotizador */}
+                    {step === 2 && selectedSubService?.id === 'vision' && (
+                        <motion.div
+                            key="step-vision"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -20 }}
+                        >
+                            <button
+                                onClick={() => setStep(1.5)}
+                                className="flex items-center text-[var(--text-secondary)] hover:text-[#E31E24] font-bold mb-6"
+                            >
+                                <ArrowLeft className="w-5 h-5 mr-2" /> Volver
+                            </button>
+                            <div className="grid lg:grid-cols-[1fr_320px] gap-6 items-start">
+                                <Wizard />
+                                <PricePanel />
+                            </div>
+                        </motion.div>
+                    )}
+
+                    {/* Otros servicios: flujo existente */}
+                    {step === 2 && selectedSubService && selectedSubService.id !== 'vision' && (
                         <motion.div
                             key="step2"
                             initial={{ opacity: 0, scale: 0.95 }}
@@ -290,15 +388,15 @@ export default function Calculator() {
                                 </div>
 
                                 <div className="grid gap-4">
-                                    <motion.a
+                                    <motion.button
                                         whileHover={{ scale: 1.02 }}
                                         whileTap={{ scale: 0.98 }}
-                                        href="#contact"
+                                        onClick={() => setModalOpen(true)}
                                         className="btn-primary py-5 text-lg flex items-center justify-center gap-3 bg-white text-[#3A3A3A] hover:bg-[#E31E24] hover:text-white"
                                     >
                                         Solicitar Propuesta
                                         <ArrowRight className="w-5 h-5" />
-                                    </motion.a>
+                                    </motion.button>
                                     <button onClick={reset} className="text-white/40 text-sm font-bold hover:text-white transition-colors">
                                         Empezar de nuevo
                                     </button>
@@ -308,6 +406,32 @@ export default function Calculator() {
                     )}
                 </AnimatePresence>
             </div>
+
+            <ProposalModal
+                open={modalOpen}
+                onClose={() => setModalOpen(false)}
+                quoteContext={{
+                    service: selectedCategory ? categories.find(c => c.id === selectedCategory)?.title ?? '' : '',
+                    subService: selectedSubService?.title ?? '',
+                    quantity: inputValue,
+                    months: selectedCategory === 'machinery' ? months : undefined,
+                    estimate: calculateEstimate(),
+                    orderLines:
+                        selectedCategory === 'machinery' && selectedSubService
+                            ? [{
+                                name: `${selectedSubService.title} (${months} mes${months !== 1 ? 'es' : ''})`,
+                                qty: inputValue,
+                                price: selectedSubService.basePrice * months,
+                              }]
+                        : selectedCategory === 'translation'
+                            ? [{
+                                name: 'Traducción Japonés / Español',
+                                qty: inputValue,
+                                price: 300,
+                              }]
+                        : undefined,
+                }}
+            />
         </section>
     );
 }

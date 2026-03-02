@@ -23,10 +23,11 @@ export default function Navigation() {
     { name: 'Sobre nosotros', href: '/about' },
     { name: 'Servicios', href: '/#services' },
     { name: 'Industria 4.0', href: '/#industry40' },
+    { name: 'SeishinIA', href: '/seishinia' },
     { name: 'Galería', href: '/gallery' },
   ];
 
-  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+  const handleLinkClick = (e: React.MouseEvent<HTMLElement>, href: string) => {
     if (href.startsWith('/#')) {
       if (location.pathname !== '/') {
         // Redirect to home will be handled by Link normally, but we might need manual logic for hashes
@@ -77,7 +78,7 @@ export default function Navigation() {
                 <a
                   key={link.name}
                   href={link.href}
-                  onClick={(e) => handleLinkClick(e as any, link.href)}
+                  onClick={(e) => handleLinkClick(e, link.href)}
                   className={`text-sm font-medium tracking-wide transition-all duration-300 hover:text-[#E31E24] relative group px-2 py-1 whitespace-nowrap ${location.pathname === link.href || (location.pathname === '/' && location.hash === link.href)
                     ? 'text-[#E31E24]'
                     : 'text-[var(--text-primary)]'
@@ -121,6 +122,20 @@ export default function Navigation() {
               </a>
             </motion.div>
 
+            <motion.div
+              whileHover={{ y: -2 }}
+              whileTap={{ scale: 0.98 }}
+              className="whitespace-nowrap"
+            >
+              <Link
+                to="/jetson/landing"
+                className="flex items-center gap-2 px-5 lg:px-6 py-2.5 rounded-full bg-[#E31E24]/10 border border-[#E31E24]/30 text-[#E31E24] font-medium text-[10px] lg:text-xs hover:bg-[#E31E24] hover:text-white transition-all duration-300 tracking-widest uppercase"
+              >
+                Portal IA
+                <span className="w-1 h-1 rounded-full bg-[#E31E24]"></span>
+              </Link>
+            </motion.div>
+
             <div className="h-6 w-px bg-[var(--border-color-light)] opacity-20 mx-2"></div>
 
             <button
@@ -137,7 +152,7 @@ export default function Navigation() {
             >
               <a
                 href="/#contact"
-                onClick={(e) => handleLinkClick(e as any, '/#contact')}
+                onClick={(e) => handleLinkClick(e, '/#contact')}
                 className="btn-primary px-6 py-3 text-xs font-semibold tracking-widest uppercase whitespace-nowrap"
               >
                 Contacto
@@ -163,9 +178,9 @@ export default function Navigation() {
               <div className="p-6 space-y-4">
                 {navLinks.map((link) => (
                   <Link
-                    key={link.name}
-                    to={link.href}
-                    onClick={(e) => handleLinkClick(e as any, link.href)}
+                  key={link.name}
+                  to={link.href}
+                  onClick={(e) => handleLinkClick(e, link.href)}
                     className="block text-lg font-bold text-[var(--text-primary)] hover:text-[var(--accent-primary)] transition-colors"
                   >
                     {link.name}
@@ -189,7 +204,7 @@ export default function Navigation() {
                   </a>
                   <a
                     href="/#contact"
-                    onClick={(e) => handleLinkClick(e as any, '/#contact')}
+                    onClick={(e) => handleLinkClick(e, '/#contact')}
                     className="btn-primary block w-full py-4 text-center"
                   >
                     Contáctanos

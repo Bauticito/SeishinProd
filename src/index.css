@@ -10,6 +10,22 @@
 @tailwind utilities;
 
 :root[data-theme='dark'] {
+  /* ── Shadcn/ui compat vars (used by JetsonConsole widgets) ── */
+  --primary: #E31E24;
+  --primary-foreground: #ffffff;
+  --foreground: #f5f5f5;
+  --muted-foreground: #B1B3B6;
+  --background: #1c1c1c;
+  --card-foreground: #f5f5f5;
+  --border: rgba(177, 179, 182, 0.2);
+  --sidebar: #262626;
+  --sidebar-border: rgba(177, 179, 182, 0.2);
+  --sidebar-accent: #3A3A3A;
+  --sidebar-foreground: #B1B3B6;
+  --status-ok: #22C55E;
+  --status-warning: #F59E0B;
+  --status-error: #E31E24;
+
   --bg-primary: #1c1c1c;
   /* Refined Dark Anthracite */
   --bg-secondary: #262626;
@@ -46,6 +62,22 @@
 }
 
 :root[data-theme='light'] {
+  /* ── Shadcn/ui compat vars (used by JetsonConsole widgets) ── */
+  --primary: #E31E24;
+  --primary-foreground: #ffffff;
+  --foreground: #3A3A3A;
+  --muted-foreground: #5a5a5a;
+  --background: #ffffff;
+  --card-foreground: #3A3A3A;
+  --border: rgba(58, 58, 58, 0.15);
+  --sidebar: #f8f8f8;
+  --sidebar-border: rgba(58, 58, 58, 0.15);
+  --sidebar-accent: #e8e8e8;
+  --sidebar-foreground: #5a5a5a;
+  --status-ok: #16A34A;
+  --status-warning: #D97706;
+  --status-error: #E31E24;
+
   --bg-primary: #ffffff;
   --bg-secondary: #f8f8f8;
   --bg-tertiary: #B1B3B6;
@@ -159,6 +191,40 @@
     transform-style: preserve-3d;
     perspective: 1000px;
   }
+
+  /* ── JetsonConsole widget primitives ── */
+  .metric-card {
+    @apply rounded-2xl border border-[var(--border-color-light)] p-5 backdrop-blur-md;
+    background: var(--card-bg);
+  }
+
+  .metric-label {
+    @apply text-[10px] font-mono font-bold tracking-[0.2em] uppercase text-[var(--text-secondary)];
+  }
+
+  .metric-value {
+    @apply text-2xl font-mono font-black text-[var(--text-primary)];
+  }
+
+  .status-indicator {
+    @apply flex items-center gap-1.5 text-[10px] font-mono px-2 py-1 rounded-lg
+           bg-[var(--bg-tertiary)] border border-[var(--border-color-light)];
+  }
+
+  .glow-line {
+    @apply h-px;
+    background: linear-gradient(90deg, transparent, rgba(227,30,36,0.35), transparent);
+  }
+
+  /* Status text colors */
+  .text-status-ok    { color: var(--status-ok); }
+  .text-status-warning { color: var(--status-warning); }
+  .text-status-error { color: var(--status-error); }
+
+  /* Status bg colors */
+  .bg-status-ok    { background-color: var(--status-ok); }
+  .bg-status-warning { background-color: var(--status-warning); }
+  .bg-status-error { background-color: var(--status-error); }
 }
 
 @layer utilities {

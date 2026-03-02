@@ -25,3 +25,10 @@ dist-ssr
 **/.dev.vars
 .wrangler/
 **/.wrangler/
+.env.local
+.env.*.local
+cloudflare/worker/.dev.vars
+cloudflare/worker/.wrangler/
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal

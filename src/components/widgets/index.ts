@@ -1,0 +1,10 @@
+export { VideoFeedWidget } from "./VideoFeedWidget";
+export { ContentionWidget } from "./ContentionWidget";
+export { MetricsWidget } from "./MetricsWidget";
+export { CapturesWidget } from "./CapturesWidget";
+export { ZonesWidget } from "./ZonesWidget";
+export { AlertsWidget } from "./AlertsWidget";
+export { LiveRamWidget } from "./LiveRamWidget";
+export { LiveFpsWidget } from "./LiveFpsWidget";
+export { PerformanceProfileWidget } from "./PerformanceProfileWidget";
+export { WidgetCatalog } from "./WidgetCatalog";
