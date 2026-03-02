@@ -8,7 +8,9 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "typecheck": "tsc --noEmit -p tsconfig.app.json"
+    "typecheck": "tsc --noEmit -p tsconfig.app.json",
+    "cf:dev": "npx wrangler pages dev dist",
+    "cf:deploy": "npx wrangler pages deploy dist --project-name seishinmx"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.57.4",
