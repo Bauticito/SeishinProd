@@ -139,7 +139,6 @@ export default function Industry40() {
                       <p className="text-white/70 text-sm">{item.desc}</p>
                     </div>
                   </div>
-                  <ArrowRight className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </motion.div>
               ))}
             </div>

@@ -1,5 +1,6 @@
 import { ArrowRight, ShieldCheck, Server, Cpu, Lock, Activity } from "lucide-react";
 import { Link } from "react-router-dom";
+import Navigation from "../../components/Navigation";
 
 const stats = [
   { icon: Server,   label: "NODOS ACTIVOS",    value: "12"     },
@@ -20,6 +21,7 @@ const capabilities = [
 export default function LandingPage() {
   return (
     <div className="min-h-screen bg-[var(--bg-primary)] overflow-hidden relative">
+      <Navigation />
 
       {/* Ambient glows */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
@@ -28,7 +30,7 @@ export default function LandingPage() {
         <div className="absolute inset-0 bg-[linear-gradient(rgba(227,30,36,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(227,30,36,0.02)_1px,transparent_1px)] bg-[size:40px_40px]" />
       </div>
 
-      <div className="relative max-w-7xl mx-auto px-6 py-10 md:py-16 space-y-16">
+      <div className="relative max-w-7xl mx-auto px-6 pt-32 pb-16 space-y-16">
 
         {/* ── Header ── */}
         <header className="flex items-center justify-between">
@@ -202,19 +204,11 @@ export default function LandingPage() {
         </section>
 
         {/* ── Footer ── */}
-        <footer className="flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-[var(--border-color-light)] pt-8">
-          <div className="flex items-center gap-3">
-            <img src="/seishin-SinFondo.png" alt="Seishin" className="h-8 w-auto opacity-80" />
-            <span className="text-xs text-[var(--text-tertiary)] font-mono">
-              © 2026 Seishin — Todos los derechos reservados
-            </span>
-          </div>
-          <Link
-            to="/"
-            className="text-xs text-[var(--text-tertiary)] hover:text-[#E31E24] transition-colors font-mono"
-          >
-            ← Volver al sitio principal
-          </Link>
+        <footer className="flex items-center justify-center gap-3 border-t border-[var(--border-color-light)] pt-8">
+          <img src="/seishin-SinFondo.png" alt="Seishin" className="h-8 w-auto opacity-80" />
+          <span className="text-xs text-[var(--text-tertiary)] font-mono">
+            © 2026 Seishin — Todos los derechos reservados
+          </span>
         </footer>
 
       </div>

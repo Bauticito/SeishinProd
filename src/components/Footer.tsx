@@ -1,7 +1,23 @@
 import { Mail, Linkedin, Facebook, Twitter, Instagram } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 export default function Footer() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const goToSection = (sectionId: string) => (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (location.pathname === '/') {
+      document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      navigate('/');
+      setTimeout(() => {
+        document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
+      }, 300);
+    }
+  };
+
   return (
     <footer className="bg-[var(--bg-secondary)] py-8 sm:py-12 lg:py-16 px-4 sm:px-6 border-t border-[var(--border-color-light)] shadow-inner">
       <div className="max-w-7xl mx-auto">
@@ -27,22 +43,22 @@ export default function Footer() {
             <h4 className="text-base sm:text-lg font-bold text-[var(--text-primary)] mb-3 sm:mb-4">Enlaces</h4>
             <ul className="space-y-2 sm:space-y-3">
               <li>
-                <a href="#services" className="text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors duration-300 hover:translate-x-1 inline-block">
+                <a href="/#services" onClick={goToSection('services')} className="text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors duration-300 hover:translate-x-1 inline-block">
                   Servicios
                 </a>
               </li>
               <li>
-                <a href="#about" className="text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors duration-300 hover:translate-x-1 inline-block">
+                <a href="/about" className="text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors duration-300 hover:translate-x-1 inline-block">
                   Nosotros
                 </a>
               </li>
               <li>
-                <a href="#contact" className="text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors duration-300 hover:translate-x-1 inline-block">
+                <a href="/#contact" onClick={goToSection('contact')} className="text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors duration-300 hover:translate-x-1 inline-block">
                   Contacto
                 </a>
               </li>
               <li>
-                <a href="https://srv.seishin.com.mx" target="_blank" rel="noopener noreferrer" className="text-[#E31E24] font-bold hover:underline transition-all duration-300 hover:translate-x-1 inline-block">
+                <a href="https://srv.seishin.com.mx/web/login" target="_blank" rel="noopener noreferrer" className="text-[#E31E24] font-bold hover:underline transition-all duration-300 hover:translate-x-1 inline-block">
                   Acceso ERP
                 </a>
               </li>
@@ -57,7 +73,7 @@ export default function Footer() {
                 className="flex items-center gap-2 text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-all duration-300 justify-center sm:justify-start text-sm sm:text-base hover:translate-x-1"
               >
                 <Mail className="w-4 h-4 sm:w-5 sm:h-5" />
-                hello@seishin.ai
+                fabian.noel@seishin.com.mx
               </a>
 
               <div className="pt-2">
@@ -106,19 +122,19 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-[var(--border-color)] pt-6 sm:pt-8">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-center sm:text-left text-[var(--text-secondary)] text-xs sm:text-sm">
+          <div className="flex flex-col items-center gap-4">
+            <p className="text-center text-[var(--text-secondary)] text-xs sm:text-sm">
               © 2025 Seishin. Todos los derechos reservados.
             </p>
             <div className="flex gap-4 sm:gap-6">
               <a
-                href="#privacy"
+                href="/privacidad"
                 className="text-[var(--text-secondary)] hover:text-[var(--accent-primary)] text-xs sm:text-sm transition-colors duration-300 underline-offset-4 hover:underline"
               >
                 Aviso de Privacidad
               </a>
               <a
-                href="#terms"
+                href="/terminos"
                 className="text-[var(--text-secondary)] hover:text-[var(--accent-primary)] text-xs sm:text-sm transition-colors duration-300 underline-offset-4 hover:underline"
               >
                 Términos de Uso
