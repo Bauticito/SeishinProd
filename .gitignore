@@ -29,3 +29,4 @@ cloudflare/worker/.wrangler/
 *.sqlite
 *.sqlite-shm
 *.sqlite-wal
+.gitnexus
