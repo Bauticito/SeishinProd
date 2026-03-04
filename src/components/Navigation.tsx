@@ -2,13 +2,27 @@ import { Menu, X, Sun, Moon } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 export default function Navigation() {
   const { theme, toggleTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const goToContact = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setMobileMenuOpen(false);
+    if (location.pathname === '/') {
+      document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      navigate('/');
+      setTimeout(() => {
+        document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+      }, 300);
+    }
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -112,7 +126,7 @@ export default function Navigation() {
               className="whitespace-nowrap"
             >
               <a
-                href="https://srv.seishin.com.mx"
+                href="https://srv.seishin.com.mx/web/login"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 px-5 lg:px-6 py-2.5 rounded-full bg-[var(--bg-tertiary)] border border-[var(--border-color-light)] text-[var(--text-primary)] font-medium text-[10px] lg:text-xs hover:bg-[var(--bg-secondary)] transition-all duration-300 tracking-widest uppercase"
@@ -152,7 +166,7 @@ export default function Navigation() {
             >
               <a
                 href="/#contact"
-                onClick={(e) => handleLinkClick(e, '/#contact')}
+                onClick={goToContact}
                 className="btn-primary px-6 py-3 text-xs font-semibold tracking-widest uppercase whitespace-nowrap"
               >
                 Contacto
@@ -195,7 +209,7 @@ export default function Navigation() {
                     Calcula tu servicio
                   </Link>
                   <a
-                    href="https://srv.seishin.com.mx"
+                    href="https://srv.seishin.com.mx/web/login"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="block w-full py-4 text-center bg-[var(--bg-tertiary)] text-[var(--text-primary)] rounded-xl font-bold border border-[var(--border-color-light)]"
@@ -204,7 +218,7 @@ export default function Navigation() {
                   </a>
                   <a
                     href="/#contact"
-                    onClick={(e) => handleLinkClick(e, '/#contact')}
+                    onClick={goToContact}
                     className="btn-primary block w-full py-4 text-center"
                   >
                     Contáctanos

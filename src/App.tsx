@@ -6,6 +6,7 @@ import { AuditProvider } from './context/AuditContext';
 // Marketing layout
 import Navigation from './components/Navigation';
 import Footer from './components/Footer';
+import ScrollToTopButton from './components/ScrollToTopButton';
 
 // Marketing pages
 import Home from './pages/Home';
@@ -14,6 +15,8 @@ import CalculatorPage from './pages/CalculatorPage';
 import GalleryPage from './pages/GalleryPage';
 import SeishinIaPage from './pages/SeishinIaPage';
 import VigilanciaPage from './pages/VigilanciaPage';
+import PrivacyPage from './pages/PrivacyPage';
+import TermsPage from './pages/TermsPage';
 
 // JetsonConsole layout + components
 import { AppLayout } from './components/JetsonConsole/AppLayout';
@@ -72,6 +75,8 @@ function AppRoutes() {
         <Route path="/gallery" element={<GalleryPage />} />
         <Route path="/seishinia" element={<SeishinIaPage />} />
         <Route path="/vigilancia" element={<VigilanciaPage />} />
+        <Route path="/privacidad" element={<PrivacyPage />} />
+        <Route path="/terminos" element={<TermsPage />} />
       </Route>
 
       {/* ── JetsonConsole public pages ── */}
@@ -123,6 +128,7 @@ function App() {
       <Router>
         <AuthProvider>
           <AppRoutes />
+          <ScrollToTopButton />
         </AuthProvider>
       </Router>
     </QueryClientProvider>

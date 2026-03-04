@@ -21,9 +21,12 @@ dist-ssr
 *.sln
 *.sw?
 .env
+.dev.vars
+**/.dev.vars
+.wrangler/
+**/.wrangler/
 .env.local
 .env.*.local
-.dev.vars
 cloudflare/worker/.dev.vars
 cloudflare/worker/.wrangler/
 *.sqlite

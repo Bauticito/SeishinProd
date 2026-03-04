@@ -401,13 +401,6 @@ export function Wizard() {
                 </button>
                 <button
                   type="button"
-                  className="rounded-xl border border-[var(--border-color-light)] px-4 py-2 text-xs font-bold text-[var(--text-tertiary)] opacity-50 cursor-not-allowed"
-                  disabled
-                >
-                  Exportar PDF (próximamente)
-                </button>
-                <button
-                  type="button"
                   onClick={reset}
                   className="rounded-xl border border-[var(--border-color-light)] px-4 py-2 text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[#E31E24]/30 transition-colors"
                 >

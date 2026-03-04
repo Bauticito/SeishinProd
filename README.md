@@ -33,3 +33,9 @@ Flujo rapido:
 npm run cf:d1:migrate:local
 npm run cf:dev
 ```
+
+## Cloudflare Pages (frontend estatico)
+
+Guia rapida:
+
+`CLOUDFLARE_SETUP.md`
