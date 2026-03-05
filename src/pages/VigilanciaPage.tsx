@@ -1,7 +1,6 @@
 import { ArrowRight, Camera, Shield, Eye, Cpu, Lock, Activity } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { Wizard } from '@/components/cotizador/Wizard';
-import { PricePanel } from '@/components/cotizador/PricePanel';
+import CotizadorWizard from '../components/cotizador/CotizadorWizard';
 
 const features = [
   {
@@ -111,10 +110,7 @@ export default function VigilanciaPage() {
               Respondé 4 preguntas sobre tu operación y generamos una estimación de costo inicial y mensual en tiempo real.
             </p>
           </div>
-          <div className="grid lg:grid-cols-[1fr_320px] gap-6 items-start">
-            <Wizard />
-            <PricePanel />
-          </div>
+          <CotizadorWizard />
         </section>
 
         {/* CTA final */}
