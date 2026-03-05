@@ -23,7 +23,20 @@ async function postJson<T>(path: string, body: unknown): Promise<T> {
       });
 
       const text = await res.text();
-      const data = text ? (JSON.parse(text) as T & { error?: string }) : ({} as T & { error?: string });
+      let data = {} as T & { error?: string };
+      if (text) {
+        try {
+          data = JSON.parse(text) as T & { error?: string };
+        } catch {
+          // Non-JSON/invalid JSON response: keep fallback flow without leaking parser errors.
+          if (!res.ok) {
+            lastError = `Servidor devolvió una respuesta inválida (${res.status})`;
+            continue;
+          }
+          lastError = "Respuesta inválida del servidor";
+          continue;
+        }
+      }
 
       if (!res.ok) {
         const message = (data as { error?: string }).error ?? `Request failed (${res.status})`;
@@ -37,7 +50,7 @@ async function postJson<T>(path: string, body: unknown): Promise<T> {
     }
   }
 
-  throw new Error(lastError);
+  throw new Error(lastError || "No se pudo enviar la solicitud");
 }
 
 export interface OdooOrderLine {
