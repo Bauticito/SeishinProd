@@ -1,2 +1,6 @@
 ADMIN_TOKEN=replace_with_local_admin_token
-CORS_ORIGIN=*
+CORS_ORIGIN=http://localhost:5173
+ODOO_BASE_URL=https://srv.seishin.com.mx
+ODOO_DB=replace_with_odoo_db
+ODOO_USER=replace_with_odoo_user
+ODOO_PASSWORD=replace_with_odoo_password

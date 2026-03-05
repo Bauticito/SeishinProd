@@ -6,11 +6,15 @@
 - Build output directory: `dist`
 - Node.js version: `20` (recomendado)
 
-## 2) Variables de entorno (si usas Supabase en cliente)
-- `VITE_SUPABASE_URL`
-- `VITE_SUPABASE_ANON_KEY`
+## 2) Variables de entorno frontend
+- `VITE_MEDIA_API_URL`
+- `VITE_LEADS_API_URL`
 
 Agregalas en `Pages > Settings > Environment variables`.
+
+Si usas Supabase en cliente, agrega tambien:
+- `VITE_SUPABASE_URL`
+- `VITE_SUPABASE_ANON_KEY`
 
 ## 3) SPA routing
 Este proyecto usa React Router, por eso se agrego:

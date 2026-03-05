@@ -13,6 +13,10 @@ Copy-Item .env.example .env.local
 npm run dev
 ```
 
+Variables frontend usadas:
+- `VITE_MEDIA_API_URL`
+- `VITE_LEADS_API_URL`
+
 ## Validaciones antes de subir a Git
 
 ```powershell

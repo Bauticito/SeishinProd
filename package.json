@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit -p tsconfig.app.json",
-    "cf:dev": "npx wrangler dev --config cloudflare/worker/wrangler.toml --var ADMIN_TOKEN:seishin_local_admin_2026_A9kR7pLmQ2vX --var CORS_ORIGIN:*",
+    "cf:dev": "npx wrangler dev --config cloudflare/worker/wrangler.toml",
     "cf:deploy": "npx wrangler deploy --config cloudflare/worker/wrangler.toml",
     "cf:pages:dev": "npx wrangler pages dev dist",
     "cf:pages:deploy": "npx wrangler pages deploy dist --project-name seishinmx",
