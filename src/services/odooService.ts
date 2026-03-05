@@ -1,6 +1,7 @@
 const LEADS_API_BASE =
   import.meta.env.VITE_LEADS_API_URL?.trim() ||
   "https://seishin-media-api.seishin-media-api.workers.dev";
+const FALLBACK_WORKER_BASE = "https://seishin-media-api.seishin-media-api.workers.dev";
 
 const buildUrl = (path: string): string => {
   if (!LEADS_API_BASE) return path;
@@ -8,19 +9,35 @@ const buildUrl = (path: string): string => {
 };
 
 async function postJson<T>(path: string, body: unknown): Promise<T> {
-  const res = await fetch(buildUrl(path), {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
-  });
+  const endpoints = [buildUrl(path), `${FALLBACK_WORKER_BASE}${path}`].filter(
+    (url, idx, arr) => arr.indexOf(url) === idx
+  );
 
-  const data = (await res.json()) as T & { error?: string };
-  if (!res.ok) {
-    const message = (data as { error?: string }).error ?? `Request failed (${res.status})`;
-    throw new Error(message);
+  let lastError = "Unknown request error";
+  for (const endpoint of endpoints) {
+    try {
+      const res = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+
+      const text = await res.text();
+      const data = text ? (JSON.parse(text) as T & { error?: string }) : ({} as T & { error?: string });
+
+      if (!res.ok) {
+        const message = (data as { error?: string }).error ?? `Request failed (${res.status})`;
+        lastError = message;
+        continue;
+      }
+
+      return data as T;
+    } catch (error) {
+      lastError = error instanceof Error ? error.message : "Network error";
+    }
   }
 
-  return data;
+  throw new Error(lastError);
 }
 
 export interface OdooOrderLine {
