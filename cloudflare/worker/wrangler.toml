@@ -8,4 +8,4 @@ database_name = "seishin_media"
 database_id = "3f879dc2-0466-40e7-89b1-9afca487e81e"
 
 [vars]
-CORS_ORIGIN = "http://localhost:5173,https://seishin.com.mx,https://www.seishin.com.mx"
+CORS_ORIGIN = "http://localhost:5173,https://seishin.com.mx,https://www.seishin.com.mx,https://seishinmx.pages.dev,https://d5847500.seishinmx.pages.dev"
