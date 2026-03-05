@@ -1,4 +1,6 @@
-const LEADS_API_BASE = import.meta.env.VITE_LEADS_API_URL?.trim() ?? "";
+const LEADS_API_BASE =
+  import.meta.env.VITE_LEADS_API_URL?.trim() ||
+  "https://seishin-media-api.seishin-media-api.workers.dev";
 
 const buildUrl = (path: string): string => {
   if (!LEADS_API_BASE) return path;
