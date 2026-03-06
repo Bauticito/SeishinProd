@@ -69,14 +69,14 @@ export async function createContactMessage(data: ContactPayload) {
 
 export async function createOdooQuotation(data: QuotePayload) {
   return postLead('/api/leads/quote', {
-    nombre: data.customerName,
-    correo: data.customerEmail,
-    telefono: data.customerPhone || '',
-    empresa: data.company || '',
-    servicio: data.service,
-    sub_servicio: data.subService || '',
-    cantidad: data.quantity || '',
-    estimado: data.estimate || '',
-    mensaje: data.notes || '',
+    customerName: data.customerName,
+    customerEmail: data.customerEmail,
+    customerPhone: data.customerPhone || '',
+    company: data.company || '',
+    service: data.service,
+    subService: data.subService || '',
+    quantity: data.quantity || '',
+    estimate: data.estimate || '',
+    notes: data.notes || '',
   });
 }
