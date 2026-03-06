@@ -68,6 +68,97 @@ export interface ContactFormData {
   telefono?: string;
 }
 
+// ── Reclutamiento ─────────────────────────────────────────────────────────────
+export interface JobPosition {
+  id:   number;
+  name: string;
+}
+
+export interface JobApplicantData {
+  nombre:   string;
+  correo:   string;
+  telefono: string;
+  mensaje?: string;
+  jobId?:   number;
+  jobName?: string;
+}
+
+const ALLOWED_JOBS = [
+  'Desarrollador con experiencia',
+  'Inspector de control de calidad',
+  'Director ejecutivo',
+  'Consultor',
+  'Gerente de recursos humanos',
+  'Gerente de marketing y comunicación',
+  'Aprendiz',
+  'Técnico de mantenimiento',
+  'Director técnico',
+];
+
+const normalize = (s: string) =>
+  s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+
+export async function getJobPositions(): Promise<JobPosition[]> {
+  await authenticate();
+  const all = await callKw<JobPosition[]>(
+    'hr.job', 'search_read',
+    [[]],
+    { fields: ['id', 'name'] },
+  );
+  return ALLOWED_JOBS
+    .map(label => all.find(j => normalize(j.name) === normalize(label)))
+    .filter((j): j is JobPosition => !!j);
+}
+
+export async function createJobApplicant(data: JobApplicantData): Promise<number> {
+  await authenticate();
+
+  // 0. Resolver job_id: usar el provisto, buscar por nombre o crear hr.job si no existe
+  let resolvedJobId = data.jobId;
+  if (!resolvedJobId && data.jobName) {
+    const existing = await callKw<JobPosition[]>(
+      'hr.job', 'search_read',
+      [[['name', '=ilike', data.jobName]]],
+      { fields: ['id', 'name'], limit: 1 },
+    );
+    if (existing.length > 0) {
+      resolvedJobId = existing[0].id;
+    } else {
+      resolvedJobId = await callKw<number>('hr.job', 'create', [{ name: data.jobName }]);
+    }
+  }
+
+  // 1. Crear candidato (hr.candidate)
+  const candidateVals: Record<string, unknown> = {
+    partner_name: data.nombre,
+    email_from:   data.correo,
+  };
+  if (data.telefono) candidateVals.partner_phone = data.telefono;
+
+  const candidateId = await callKw<number>('hr.candidate', 'create', [candidateVals]);
+
+  if (!candidateId || typeof candidateId !== 'number') {
+    throw new Error(`No se pudo crear el candidato (ID: ${candidateId})`);
+  }
+
+  const appVals: Record<string, unknown> = {
+    candidate_id:  candidateId,
+    partner_name:  data.nombre,
+    email_from:    data.correo,
+    partner_phone: data.telefono || false,
+  };
+  if (resolvedJobId) appVals.job_id          = resolvedJobId;
+  if (data.mensaje) appVals.applicant_notes  = `<p>${data.mensaje}</p>`;
+
+  const applicantId = await callKw<number>('hr.applicant', 'create', [appVals]);
+
+  if (!applicantId || typeof applicantId !== 'number') {
+    throw new Error(`No se pudo crear la postulación (ID: ${applicantId})`);
+  }
+
+  return candidateId;
+}
+
 // ── Cotización (calculadora de precio) ───────────────────────────────────────
 export async function createOdooQuotation(quoteData: OdooQuoteData): Promise<number> {
   await authenticate();

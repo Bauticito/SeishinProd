@@ -7,6 +7,7 @@ import { AuditProvider } from './context/AuditContext';
 import Navigation from './components/Navigation';
 import Footer from './components/Footer';
 import ScrollToTopButton from './components/ScrollToTopButton';
+import RecruiterNotification from './components/RecruiterNotification';
 
 // Marketing pages
 import Home from './pages/Home';
@@ -52,6 +53,7 @@ function MarketingLayout() {
       <Navigation />
       <Outlet />
       <Footer />
+      <RecruiterNotification />
     </div>
   );
 }

@@ -5,7 +5,6 @@ import ValueProposition from '../components/ValueProposition';
 import Industry40 from '../components/Industry40';
 import BrandingHighlight from '../components/BrandingHighlight';
 import Contact from '../components/Contact';
-
 export default function Home() {
     return (
         <>
