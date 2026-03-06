@@ -113,7 +113,7 @@ export async function getJobPositions(): Promise<JobPosition[]> {
 export async function createJobApplicant(data: JobApplicantData): Promise<number> {
   await authenticate();
 
-  // 0. Resolver job_id: usar el provisto, buscar por nombre o crear hr.job si no existe
+  // 0a. Resolver job_id: usar el provisto, buscar por nombre o crear hr.job si no existe
   let resolvedJobId = data.jobId;
   if (!resolvedJobId && data.jobName) {
     const existing = await callKw<JobPosition[]>(
@@ -127,6 +127,17 @@ export async function createJobApplicant(data: JobApplicantData): Promise<number
       resolvedJobId = await callKw<number>('hr.job', 'create', [{ name: data.jobName }]);
     }
   }
+
+  // 0b. Obtener el stage_id de "Nuevo" (primera etapa del pipeline de reclutamiento)
+  let newStageId: number | undefined;
+  try {
+    const stages = await callKw<{ id: number; name: string }[]>(
+      'hr.recruitment.stage', 'search_read',
+      [[['fold', '=', false]]],
+      { fields: ['id', 'name'], limit: 1, order: 'sequence asc' },
+    );
+    if (stages.length > 0) newStageId = stages[0].id;
+  } catch { /* best-effort */ }
 
   // 1. Crear candidato (hr.candidate)
   const candidateVals: Record<string, unknown> = {
@@ -148,7 +159,8 @@ export async function createJobApplicant(data: JobApplicantData): Promise<number
     partner_phone: data.telefono || false,
   };
   if (resolvedJobId) appVals.job_id          = resolvedJobId;
-  if (data.mensaje) appVals.applicant_notes  = `<p>${data.mensaje}</p>`;
+  if (newStageId)    appVals.stage_id         = newStageId;
+  if (data.mensaje)  appVals.applicant_notes  = `<p>${data.mensaje}</p>`;
 
   const applicantId = await callKw<number>('hr.applicant', 'create', [appVals]);
 
