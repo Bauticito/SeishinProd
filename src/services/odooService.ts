@@ -83,31 +83,13 @@ export interface JobApplicantData {
   jobName?: string;
 }
 
-const ALLOWED_JOBS = [
-  'Desarrollador con experiencia',
-  'Inspector de control de calidad',
-  'Director ejecutivo',
-  'Consultor',
-  'Gerente de recursos humanos',
-  'Gerente de marketing y comunicación',
-  'Aprendiz',
-  'Técnico de mantenimiento',
-  'Director técnico',
-];
-
-const normalize = (s: string) =>
-  s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
-
 export async function getJobPositions(): Promise<JobPosition[]> {
   await authenticate();
-  const all = await callKw<JobPosition[]>(
+  return callKw<JobPosition[]>(
     'hr.job', 'search_read',
     [[]],
-    { fields: ['id', 'name'] },
+    { fields: ['id', 'name'], order: 'name asc' },
   );
-  return ALLOWED_JOBS
-    .map(label => all.find(j => normalize(j.name) === normalize(label)))
-    .filter((j): j is JobPosition => !!j);
 }
 
 export async function createJobApplicant(data: JobApplicantData): Promise<number> {
