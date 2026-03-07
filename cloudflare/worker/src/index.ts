@@ -52,6 +52,8 @@ type ContactPayload = {
   mensaje: string;
 };
 
+const LEAD_TYPE_QUOTE = "cotización";
+
 const json = (data: unknown, status = 200, origin = "*") =>
   new Response(JSON.stringify(data), {
     status,
@@ -272,7 +274,6 @@ const syncContactToOdoo = async (env: Env, payload: ContactPayload) => {
   const normalizedName = payload.nombre.trim();
   const normalizedEmail = payload.correo.trim().toLowerCase();
   const normalizedCompany = toOptionalString(payload.empresa, 200);
-  const normalizedMessage = payload.mensaje.trim();
   const { baseUrl, cookie } = await odooAuthenticate(env);
 
   const partnerId = await ensurePartner(
@@ -284,33 +285,7 @@ const syncContactToOdoo = async (env: Env, payload: ContactPayload) => {
     normalizedCompany
   );
 
-  const safeMessage = escapeHtml(normalizedMessage).replaceAll("\n", "<br/>");
-  const note = [
-    "<p><strong>Formulario de contacto web</strong></p>",
-    `<p><strong>Nombre:</strong> ${escapeHtml(normalizedName)}</p>`,
-    `<p><strong>Correo:</strong> ${escapeHtml(normalizedEmail)}</p>`,
-    normalizedCompany ? `<p><strong>Empresa:</strong> ${escapeHtml(normalizedCompany)}</p>` : "",
-    "<p><strong>Mensaje:</strong></p>",
-    `<p>${safeMessage}</p>`,
-  ]
-    .filter(Boolean)
-    .join("");
-
-  const saleOrderId = await odooCallKw<number>(
-    baseUrl,
-    cookie,
-    "sale.order",
-    "create",
-    [
-      {
-        partner_id: partnerId,
-        client_order_ref: "Web - Formulario de Contacto",
-        note,
-      },
-    ]
-  );
-
-  return { partnerId, saleOrderId };
+  return { partnerId };
 };
 
 const normalizeOrderLines = (value: unknown): QuoteOrderLine[] => {
@@ -471,7 +446,6 @@ export default {
         });
         syncStatus = "synced";
         odooPartnerId = sync.partnerId;
-        odooSaleOrderId = sync.saleOrderId;
       } catch (error) {
         syncStatus = "error";
         syncError = error instanceof Error ? error.message.slice(0, 1000) : "Unknown sync error";
@@ -552,7 +526,7 @@ export default {
          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
       )
         .bind(
-          "quote",
+          LEAD_TYPE_QUOTE,
           payload.customerName,
           payload.customerEmail.toLowerCase(),
           payload.customerPhone ?? null,
@@ -676,7 +650,6 @@ export default {
             mensaje: String(lead.message ?? ""),
           });
           odooPartnerId = sync.partnerId;
-          odooSaleOrderId = sync.saleOrderId;
         } else {
           const parsedOrderLines = (() => {
             try {
