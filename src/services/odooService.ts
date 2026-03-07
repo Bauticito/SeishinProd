@@ -113,7 +113,7 @@ export async function getJobPositions(): Promise<JobPosition[]> {
 export async function createJobApplicant(data: JobApplicantData): Promise<number> {
   await authenticate();
 
-  // 0a. Resolver job_id: usar el provisto, buscar por nombre o crear hr.job si no existe
+  // 0a. Usar jobId del formulario (ID real de Odoo); fallback a búsqueda por nombre si no hay ID
   let resolvedJobId = data.jobId;
   if (!resolvedJobId && data.jobName) {
     const existing = await callKw<JobPosition[]>(
@@ -121,11 +121,7 @@ export async function createJobApplicant(data: JobApplicantData): Promise<number
       [[['name', '=ilike', data.jobName]]],
       { fields: ['id', 'name'], limit: 1 },
     );
-    if (existing.length > 0) {
-      resolvedJobId = existing[0].id;
-    } else {
-      resolvedJobId = await callKw<number>('hr.job', 'create', [{ name: data.jobName }]);
-    }
+    if (existing.length > 0) resolvedJobId = existing[0].id;
   }
 
   // 0b. Obtener el stage_id de "Nuevo" (primera etapa del pipeline de reclutamiento)

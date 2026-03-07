@@ -1,35 +1,23 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Briefcase, ArrowRight, Loader2, CheckCircle2, ChevronLeft, Sparkles, Zap, Users } from 'lucide-react';
-import { createJobApplicant, getJobPositions } from '../services/odooService';
+import { createJobApplicant, getJobPositions, JobPosition } from '../services/odooService';
 
 type View = 'card' | 'form' | 'success';
 
-const JOBS = [
-  'Desarrollador con experiencia',
-  'Inspector de control de calidad',
-  'Director ejecutivo',
-  'Consultor',
-  'Gerente de recursos humanos',
-  'Gerente de marketing y comunicación',
-  'Aprendiz',
-  'Técnico de mantenimiento',
-  'Director técnico',
-];
-
-const emptyForm = { nombre: '', correo: '', telefono: '', mensaje: '', jobName: '' };
+const emptyForm = { nombre: '', correo: '', telefono: '', mensaje: '', jobId: '' };
 
 export default function RecruiterNotification() {
-  const [visible, setVisible] = useState(false);
-  const [view, setView]       = useState<View>('card');
-  const [loading, setLoading] = useState(false);
-  const [error, setError]     = useState('');
-  const [form, setForm]       = useState(emptyForm);
-  const [jobMap, setJobMap]   = useState<Record<string, number>>({});
+  const [visible, setVisible]         = useState(false);
+  const [view, setView]               = useState<View>('card');
+  const [loading, setLoading]         = useState(false);
+  const [error, setError]             = useState('');
+  const [form, setForm]               = useState(emptyForm);
+  const [jobPositions, setJobPositions] = useState<JobPosition[]>([]);
 
   useEffect(() => {
     getJobPositions()
-      .then(jobs => setJobMap(Object.fromEntries(jobs.map(j => [j.name, j.id]))))
+      .then(setJobPositions)
       .catch(() => {});
   }, []);
 
@@ -71,8 +59,7 @@ export default function RecruiterNotification() {
         correo:   form.correo,
         telefono: form.telefono,
         mensaje:  form.mensaje,
-        jobId:    jobMap[form.jobName],
-        jobName:  form.jobName || undefined,
+        jobId:    form.jobId ? Number(form.jobId) : undefined,
       });
       setView('success');
     } catch (err) {
@@ -183,14 +170,14 @@ export default function RecruiterNotification() {
                 />
                 <select
                   required
-                  value={form.jobName}
-                  onChange={e => setForm(f => ({ ...f, jobName: e.target.value }))}
+                  value={form.jobId}
+                  onChange={e => setForm(f => ({ ...f, jobId: e.target.value }))}
                   className="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-sm text-white focus:outline-none focus:border-[#E31E24] transition-colors appearance-none"
                   style={{ colorScheme: 'dark' }}
                 >
                   <option value="" disabled className="bg-[#1a1a1a]">Puesto de interes *</option>
-                  {JOBS.map(job => (
-                    <option key={job} value={job} className="bg-[#1a1a1a]">{job}</option>
+                  {jobPositions.map(job => (
+                    <option key={job.id} value={job.id} className="bg-[#1a1a1a]">{job.name}</option>
                   ))}
                 </select>
                 <textarea
