@@ -1,8 +1,51 @@
+import { useState } from 'react'
+import { validateRazonSocial, validateRFC, filterRFC } from '../../lib/formValidation'
+
+const emptyErrors = { company_name: '', rfc: '', cp: '', address: '' }
+
 export default function Step1({ formData, onChange }) {
+  const [errors, setErrors] = useState(emptyErrors)
+
+  const validate = (name, value) => {
+    if (name === 'company_name') return validateRazonSocial(value)
+    if (name === 'rfc')          return validateRFC(value)
+    if (name === 'cp')           return /^\d{5}$/.test(value.trim()) ? '' : 'Debe tener exactamente 5 dígitos'
+    if (name === 'address')      return value.trim() ? '' : 'La dirección es requerida'
+    return ''
+  }
+
+  const handleChange = (e) => {
+    const { name } = e.target
+    let value = e.target.value
+
+    // RFC: forzar mayúsculas y filtrar caracteres inválidos
+    if (name === 'rfc') {
+      value = filterRFC(value)
+      // Crear evento sintético con el valor filtrado
+      const syntheticEvent = { ...e, target: { ...e.target, name, value } }
+      onChange(syntheticEvent)
+      setErrors(prev => ({ ...prev, rfc: validateRFC(value) }))
+      return
+    }
+
+    onChange(e)
+    if (name in emptyErrors) {
+      setErrors(prev => ({ ...prev, [name]: validate(name, value) }))
+    }
+  }
+
+  const err = (field) => errors[field]
+    ? <p style={{ color: '#f87171', fontSize: '0.75rem', marginTop: '0.25rem' }}>{errors[field]}</p>
+    : null
+
+  const inputClass = (field) =>
+    errors[field] ? 'input-error' : ''
+
   return (
     <div className="step-content">
       <h2 className="section-title"><span>1.</span> Datos de la Empresa</h2>
       <div className="form-grid">
+
         <div className="field-group full-width">
           <label htmlFor="company_name">Razón Social *</label>
           <input
@@ -11,9 +54,12 @@ export default function Step1({ formData, onChange }) {
             name="company_name"
             placeholder="Ej. Seishin Solutions S.A. de C.V."
             value={formData.company_name}
-            onChange={onChange}
+            onChange={handleChange}
+            maxLength={40}
+            className={inputClass('company_name')}
             required
           />
+          {err('company_name')}
         </div>
 
         <div className="field-group">
@@ -24,9 +70,13 @@ export default function Step1({ formData, onChange }) {
             name="rfc"
             placeholder="ABCD123456XYZ"
             value={formData.rfc}
-            onChange={onChange}
+            onChange={handleChange}
+            maxLength={13}
+            className={inputClass('rfc')}
+            style={{ textTransform: 'uppercase', letterSpacing: '0.08em' }}
             required
           />
+          {err('rfc')}
         </div>
 
         <div className="field-group">
@@ -38,9 +88,11 @@ export default function Step1({ formData, onChange }) {
             placeholder="76000"
             maxLength={5}
             value={formData.cp}
-            onChange={onChange}
+            onChange={handleChange}
+            className={inputClass('cp')}
             required
           />
+          {err('cp')}
         </div>
 
         <div className="field-group">
@@ -72,9 +124,11 @@ export default function Step1({ formData, onChange }) {
             rows={2}
             placeholder="Estado, Ciudad, Parque Industrial..."
             value={formData.address}
-            onChange={onChange}
+            onChange={handleChange}
+            className={inputClass('address')}
             required
           />
+          {err('address')}
         </div>
 
         <div className="field-group">
@@ -102,6 +156,7 @@ export default function Step1({ formData, onChange }) {
             </label>
           </div>
         </div>
+
       </div>
     </div>
   )

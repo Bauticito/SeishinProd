@@ -29,22 +29,54 @@ const FY  = PH - 12;       // 285
 const ROW = 6.5;
 
 // ─── tipos ───────────────────────────────────────────────────────────────────
+export interface WizardSnapshot {
+  services:          string[];
+  start_date:        string;
+  urgency:           string;
+  otros_descripcion?: string;
+  company_name:      string;
+  rfc:               string;
+  cp:                string;
+  industry:          string;
+  size:              string;
+  address:           string;
+  japanese:          string;
+  contact_name:      string;
+  position:          string;
+  email:             string;
+  phone:             string;
+  preferred_channel: string;
+  approver:          string;
+  branches:          string[];
+  op_type:           string;
+  supervision:       string;
+  activities:        string;
+  insp_type:         string;
+  part_name:         string;
+  notes:             string;
+  requires_po:       string;
+  payment_terms:     string;
+  billing_freq:      string;
+  currency:          string;
+}
+
 export interface PDFQuoteData {
-  service: string;
-  subService: string;
-  quantity: number | string;
-  months?: number;
-  estimate: string;
-  customerName?: string;
+  service:        string;
+  subService:     string;
+  quantity:       number | string;
+  months?:        number;
+  estimate:       string;
+  customerName?:  string;
   customerEmail?: string;
   customerPhone?: string;
-  company?: string;
-  notes?: string;
-  setup?: number;
-  monthly?: number;
-  riskScore?: number;
+  company?:       string;
+  notes?:         string;
+  setup?:         number;
+  monthly?:       number;
+  riskScore?:     number;
   coverageLabel?: string;
-  breakdown?: Record<string, number>;
+  breakdown?:     Record<string, number>;
+  wizardSnapshot?: WizardSnapshot;
 }
 
 // ─── utilidades ──────────────────────────────────────────────────────────────
@@ -63,7 +95,90 @@ const mkFolio = () => {
   return `COT-${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}-${Math.floor(Math.random() * 900) + 100}`;
 };
 
-// Tarjeta izquierda con franja roja
+const URGENCY_MAP: Record<string, string> = {
+  low:    'Solo cotización (Planeación)',
+  medium: 'Media (15–30 días)',
+  high:   'Alta (Inmediato)',
+};
+
+const INDUSTRY_MAP: Record<string, string> = {
+  automotriz:    'Automotriz',
+  logistica:     'Logística',
+  metalmecanica: 'Metalmecánica',
+  servicios:     'Servicios',
+  otro:          'Otro',
+};
+
+const POSITION_MAP: Record<string, string> = {
+  rh:        'Recursos Humanos',
+  compras:   'Compras',
+  operacion: 'Operaciones',
+  direccion: 'Dirección',
+  otro:      'Otro',
+};
+
+const CHANNEL_MAP: Record<string, string> = {
+  email:     'Correo',
+  whatsapp:  'WhatsApp',
+  llamada:   'Llamada',
+};
+
+const OPTYPE_MAP: Record<string, string> = {
+  produccion:            'Producción',
+  retrabajo:             'Retrabajo',
+  almacenista:           'Almacenista',
+  patinero:              'Patinero',
+  recepcionista:         'Recepcionista',
+  facturista:            'Facturista',
+  soldador:              'Soldador',
+  sorteo:                'Sorteo',
+  inspector_visual:      'Inspector visual',
+  servicios_generales:   'Servicios generales',
+  mantenimiento_edificio:'Mantenimiento de edificio',
+  vigilante:             'Vigilante',
+  ayudante_produccion:   'Ayudante de producción',
+  empacador:             'Empacador',
+  limpieza:              'Limpieza',
+  picking:               'Picking',
+  montacarguista:        'Montacarguista',
+  gruista:               'Gruista',
+  operador_torno:        'Operadores de torno',
+  supervisor:            'Supervisor',
+  chofer:                'Chofer',
+  jardinero:             'Jardinero',
+};
+
+const SUPERVISION_MAP: Record<string, string> = {
+  client:          'Cliente supervisa',
+  seishin_partial: 'SEISHIN parcial',
+  seishin_total:   'SEISHIN total',
+};
+
+const INSP_MAP: Record<string, string> = {
+  visual:      'Visual',
+  dimensional: 'Dimensional',
+  sorting:     'Sorting / Contención',
+};
+
+const FREQ_MAP: Record<string, string> = {
+  monthly:    'Mensual',
+  biweekly:   'Quincenal',
+  weekly:     'Semanal',
+};
+
+const SERVICES_LABELS: Record<string, string> = {
+  outsourcing_op:  'Servicio especializado Operativo',
+  outsourcing_adm: 'Servicio especializado Administrativo',
+  inspeccion:      'Inspección de Calidad',
+  traduccion:      'Traducción (Evento/Planta)',
+  consultoria:     'Consultoría LFT/SAT/REPSE',
+  reclutamiento:   'Reclutamiento y Selección',
+  transporte:      'Transporte de Personal',
+  servicios_de_IA: 'Servicios de IA',
+  otros:           'Otros',
+};
+
+// ─── helpers de dibujo ───────────────────────────────────────────────────────
 function card(doc: jsPDF, x: number, y: number, w: number, h: number): void {
   doc.setFillColor(...C.red);
   doc.rect(x, y, 2.5, h, 'F');
@@ -71,18 +186,16 @@ function card(doc: jsPDF, x: number, y: number, w: number, h: number): void {
   doc.rect(x + 2.5, y, w - 2.5, h, 'F');
 }
 
-// Título dentro de tarjeta
-function cardTitle(doc: jsPDF, x: number, y: number, text: string): number {
+function cardTitle(doc: jsPDF, x: number, y: number, text: string, w: number): number {
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(7);
   doc.setTextColor(...C.red);
   doc.text(text.toUpperCase(), x + 5, y);
   doc.setFillColor(...C.border);
-  doc.rect(x + 5, y + 1.5, LW - 8, 0.25, 'F');
+  doc.rect(x + 5, y + 1.5, w - 8, 0.25, 'F');
   return y + 6.5;
 }
 
-// Título columna derecha
 function rTitle(doc: jsPDF, x: number, y: number, text: string, w: number): number {
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(7);
@@ -93,7 +206,6 @@ function rTitle(doc: jsPDF, x: number, y: number, text: string, w: number): numb
   return y + 6.5;
 }
 
-// Fila de datos (etiqueta + valor)
 function row(
   doc: jsPDF,
   x: number, y: number,
@@ -110,7 +222,6 @@ function row(
   doc.setFontSize(6.5);
   doc.setTextColor(...C.gray);
   doc.text(lbl, x, y);
-
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(7.5);
   doc.setTextColor(...C.dark);
@@ -119,7 +230,22 @@ function row(
   return lines.length > 1 ? lines.length * 4.2 + 1.5 : ROW;
 }
 
-// Footer rojo
+// Dibuja una tarjeta completa con filas y devuelve la Y final
+function drawCard(
+  doc: jsPDF,
+  x: number, startY: number, w: number,
+  title: string,
+  rows: [string, string][],
+): number {
+  const h = 11 + rows.length * ROW + 2;
+  card(doc, x, startY, w, h);
+  let y = cardTitle(doc, x, startY + 5, title, w);
+  rows.forEach(([lbl, val], i) => {
+    y += row(doc, x + 5, y, lbl, val, x + 28, w - 33, i, x, w);
+  });
+  return startY + h + 6;
+}
+
 function drawFooter(doc: jsPDF): void {
   doc.setFillColor(...C.red);
   doc.rect(0, FY, PW, 12, 'F');
@@ -135,62 +261,56 @@ function drawFooter(doc: jsPDF): void {
 export function generateQuotePDF(data: PDFQuoteData): void {
   const doc = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
   const ref = mkFolio();
+  const wiz = data.wizardSnapshot;
+
+  const servicesLabel = wiz
+    ? wiz.services.map(s => SERVICES_LABELS[s] || s).join(' · ') || 'Solicitud de cotización'
+    : data.subService;
 
   // ══ HEADER ════════════════════════════════════════════════════════════════
   doc.setFillColor(...C.dark);
   doc.rect(0, 0, PW, 37, 'F');
-
-  // Franja roja lateral derecha
   doc.setFillColor(...C.red);
   doc.rect(PW - 6, 0, 6, 37, 'F');
-
-  // Punto rojo decorativo
   doc.setFillColor(...C.red);
   doc.ellipse(ML + 1.4, 13.5, 1.8, 1.8, 'F');
 
-  // Logo SEISHIN
   doc.setTextColor(...C.white);
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(23);
   doc.text('SEISHIN', ML + 6, 16.5);
 
-  // Taglines
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(6.5);
   doc.setTextColor(...C.lgray);
   doc.text('Soluciones Globales de Servicios', ML + 6, 22.5);
-  doc.text('Maquinaria  ·  Traducciones  ·  Inteligencia Artificial', ML + 6, 28);
+  doc.text('Outsourcing  ·  Inspección  ·  Reclutamiento  ·  IA', ML + 6, 28);
 
-  // COTIZACIÓN (derecha)
   doc.setTextColor(...C.white);
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(17);
   doc.text('COTIZACIÓN', PW - 10, 15, { align: 'right' });
-
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(6.5);
   doc.setTextColor(...C.lgray);
-  doc.text(ref,      PW - 10, 22, { align: 'right' });
+  doc.text(ref,       PW - 10, 22, { align: 'right' });
   doc.text(fmtDate(), PW - 10, 28, { align: 'right' });
 
-  // Separador rojo
   doc.setFillColor(...C.red);
   doc.rect(0, 37, PW, 2, 'F');
 
   // ══ INFO STRIP ════════════════════════════════════════════════════════════
   doc.setFillColor(...C.infobar);
   doc.rect(0, 39, PW, 13, 'F');
-
   doc.setFillColor(...C.border);
   doc.rect(0, 52, PW, 0.3, 'F');
 
   const colW3 = (PW - ML * 2) / 3;
   const strips: [string, string][] = [
-    ['FOLIO',    ref],
-    ['SERVICIO', data.subService],
-    ['FECHA',    fmtDate()],
+    ['FOLIO',   ref],
+    ['SERVICIO', doc.splitTextToSize(servicesLabel, colW3 - 4)[0]],
+    ['FECHA',   fmtDate()],
   ];
-
   strips.forEach(([lbl, val], i) => {
     const cx = ML + i * colW3;
     doc.setFont('helvetica', 'bold');
@@ -200,11 +320,7 @@ export function generateQuotePDF(data: PDFQuoteData): void {
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(7.5);
     doc.setTextColor(...C.dark);
-    // Truncar si es muy largo
-    const truncated = doc.splitTextToSize(val, colW3 - 4)[0];
-    doc.text(truncated, cx, 50);
-
-    // divisor vertical (salvo el último)
+    doc.text(val, cx, 50);
     if (i < 2) {
       doc.setFillColor(...C.border);
       doc.rect(cx + colW3 - 1, 40, 0.3, 11, 'F');
@@ -216,72 +332,112 @@ export function generateQuotePDF(data: PDFQuoteData): void {
   let lY = TOP;
   let rY = TOP;
 
-  // ─ IZQUIERDA ─────────────────────────────────────────────────────────────
-  const hasContact =
-    data.customerName || data.customerEmail || data.customerPhone || data.company;
+  // ── IZQUIERDA ─────────────────────────────────────────────────────────────
+  if (wiz) {
+    // 1. Datos del contacto
+    const contactRows: [string, string][] = [
+      ['Nombre',   wiz.contact_name || data.customerName || ''],
+      ['Cargo',    POSITION_MAP[wiz.position] || wiz.position],
+      ['Correo',   wiz.email || data.customerEmail || ''],
+      ['Teléfono', wiz.phone || data.customerPhone || ''],
+      ['Canal',    CHANNEL_MAP[wiz.preferred_channel] || wiz.preferred_channel],
+      ...(wiz.approver ? [['Autorizador', wiz.approver] as [string, string]] : []),
+    ].filter(([, v]) => v) as [string, string][];
 
-  const contactRows: [string, string][] = hasContact ? [
-    ...(data.customerName  ? [['Nombre',   data.customerName]  as [string, string]] : []),
-    ...(data.company       ? [['Empresa',  data.company]       as [string, string]] : []),
-    ...(data.customerEmail ? [['Correo',   data.customerEmail] as [string, string]] : []),
-    ...(data.customerPhone ? [['Teléfono', data.customerPhone] as [string, string]] : []),
-  ] : [];
+    if (contactRows.length > 0) {
+      lY = drawCard(doc, LX, lY, LW, '● Datos del contacto', contactRows);
+    }
 
-  const qtyStr = typeof data.quantity === 'string'
-    ? `${data.quantity} cámaras`
-    : data.service.toLowerCase().includes('traductor') || data.service.toLowerCase().includes('traducción')
-      ? `${data.quantity} hora${data.quantity !== 1 ? 's' : ''}`
+    // 2. Datos de la empresa
+    const empresaRows: [string, string][] = [
+      ['Razón Social', wiz.company_name],
+      ['RFC',          wiz.rfc],
+      ['C.P.',         wiz.cp],
+      ['Industria',    INDUSTRY_MAP[wiz.industry] || wiz.industry],
+      ['Tamaño',       wiz.size + ' empleados'],
+      ['Dirección',    wiz.address],
+      ['HQ',           wiz.japanese === 'yes' ? 'Sí' : 'No'],
+    ].filter(([, v]) => v) as [string, string][];
+
+    lY = drawCard(doc, LX, lY, LW, '● Datos de la empresa', empresaRows);
+
+    // 3. Detalle del servicio (condicional por branch)
+    const detailRows: [string, string][] = [];
+    if (wiz.branches.includes('A')) {
+      detailRows.push(['Operación', OPTYPE_MAP[wiz.op_type] || wiz.op_type]);
+      detailRows.push(['Supervisión', SUPERVISION_MAP[wiz.supervision] || wiz.supervision]);
+      if (wiz.activities) detailRows.push(['Actividades', wiz.activities]);
+    }
+    if (wiz.branches.includes('B')) {
+      detailRows.push(['Inspección', INSP_MAP[wiz.insp_type] || wiz.insp_type]);
+      if (wiz.part_name) detailRows.push(['Parte/Producto', wiz.part_name]);
+    }
+    if (wiz.notes) detailRows.push(['Notas', wiz.notes]);
+    if (wiz.otros_descripcion) detailRows.push(['Otros', wiz.otros_descripcion]);
+
+    if (detailRows.length > 0) {
+      lY = drawCard(doc, LX, lY, LW, '● Detalle del servicio', detailRows);
+    }
+
+    // 4. Notas adicionales del modal
+    if (data.notes) {
+      const noteLines = doc.splitTextToSize(data.notes, LW - 14);
+      const nh = 11 + noteLines.length * 4 + 4;
+      card(doc, LX, lY, LW, nh);
+      let ny = cardTitle(doc, LX, lY + 5, '● Notas adicionales', LW);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(7);
+      doc.setTextColor(...C.dark);
+      doc.text(noteLines, LX + 5, ny);
+      lY += nh + 6;
+    }
+
+  } else {
+    // Modo legacy (sin wizard snapshot)
+    const hasContact = data.customerName || data.customerEmail || data.customerPhone || data.company;
+    const contactRows: [string, string][] = hasContact ? [
+      ...(data.customerName  ? [['Nombre',   data.customerName]  as [string, string]] : []),
+      ...(data.company       ? [['Empresa',  data.company]       as [string, string]] : []),
+      ...(data.customerEmail ? [['Correo',   data.customerEmail] as [string, string]] : []),
+      ...(data.customerPhone ? [['Teléfono', data.customerPhone] as [string, string]] : []),
+    ] : [];
+
+    const qtyStr = typeof data.quantity === 'string'
+      ? data.quantity
       : `${data.quantity} persona${data.quantity !== 1 ? 's' : ''}`;
 
-  const serviceRows: [string, string][] = [
-    ['Servicio',     data.service],
-    ['Sub-servicio', data.subService],
-    ['Cantidad',     qtyStr],
-    ...(data.months ? [['Duración', `${data.months} mes${data.months !== 1 ? 'es' : ''}`] as [string, string]] : []),
-  ];
+    const serviceRows: [string, string][] = [
+      ['Servicio',     data.service],
+      ['Sub-servicio', data.subService],
+      ['Cantidad',     qtyStr],
+      ...(data.months ? [['Duración', `${data.months} mes${data.months !== 1 ? 'es' : ''}`] as [string, string]] : []),
+    ];
 
-  // Tarjeta cliente
-  if (contactRows.length > 0) {
-    const h = 11 + contactRows.length * ROW + 2;
-    card(doc, LX, lY, LW, h);
-    lY = cardTitle(doc, LX, lY + 5, '● Datos del cliente');
-    contactRows.forEach(([lbl, val], i) => {
-      lY += row(doc, LX + 5, lY, lbl, val, LX + 27, LW - 32, i, LX, LW);
-    });
-    lY += 7;
+    if (contactRows.length > 0) {
+      lY = drawCard(doc, LX, lY, LW, '● Datos del cliente', contactRows);
+    }
+    lY = drawCard(doc, LX, lY, LW, '● Detalle del servicio', serviceRows);
+
+    if (data.notes) {
+      const noteLines = doc.splitTextToSize(data.notes, LW - 14);
+      const nh = 11 + noteLines.length * 4 + 4;
+      card(doc, LX, lY, LW, nh);
+      let ny = cardTitle(doc, LX, lY + 5, '● Notas adicionales', LW);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(7);
+      doc.setTextColor(...C.dark);
+      doc.text(noteLines, LX + 5, ny);
+      lY += nh + 6;
+    }
   }
 
-  // Tarjeta servicio
-  const sh = 11 + serviceRows.length * ROW + 2;
-  card(doc, LX, lY, LW, sh);
-  lY = cardTitle(doc, LX, lY + 5, '● Detalle del servicio');
-  serviceRows.forEach(([lbl, val], i) => {
-    lY += row(doc, LX + 5, lY, lbl, val, LX + 28, LW - 33, i, LX, LW);
-  });
-  lY += 7;
-
-  // Tarjeta notas
-  if (data.notes) {
-    const noteLines = doc.splitTextToSize(data.notes, LW - 14);
-    const nh = 11 + noteLines.length * 4 + 2;
-    card(doc, LX, lY, LW, nh);
-    lY = cardTitle(doc, LX, lY + 5, '● Notas adicionales');
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(7);
-    doc.setTextColor(...C.dark);
-    doc.text(noteLines, LX + 5, lY);
-    lY += noteLines.length * 4 + 6;
-  }
-
-  // ─ DERECHA ───────────────────────────────────────────────────────────────
+  // ── DERECHA ───────────────────────────────────────────────────────────────
+  // 1. Estimación
   const isVision = data.monthly !== undefined && data.setup !== undefined;
   const cardH = isVision ? 46 : 36;
 
-  // Tarjeta precio (oscura)
   doc.setFillColor(...C.dark2);
   doc.roundedRect(RX, rY, RW, cardH, 2, 2, 'F');
-
-  // Label + línea roja interna
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(6);
   doc.setTextColor(...C.lgray);
@@ -291,8 +447,6 @@ export function generateQuotePDF(data: PDFQuoteData): void {
 
   if (isVision) {
     const mid = RX + RW / 2;
-
-    // Setup
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(6.5);
     doc.setTextColor(...C.lgray);
@@ -301,12 +455,8 @@ export function generateQuotePDF(data: PDFQuoteData): void {
     doc.setFontSize(14);
     doc.setTextColor(...C.white);
     doc.text(fmt(data.setup!), RX + 4, rY + 23);
-
-    // Divisor
     doc.setFillColor(...C.dark3);
     doc.rect(mid - 0.3, rY + 10, 0.5, 30, 'F');
-
-    // Monthly
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(6.5);
     doc.setTextColor(...C.red);
@@ -315,8 +465,6 @@ export function generateQuotePDF(data: PDFQuoteData): void {
     doc.setFontSize(20);
     doc.setTextColor(...C.white);
     doc.text(fmt(data.monthly!), mid + 4, rY + 25);
-
-    // Badge cobertura
     if (data.coverageLabel && data.riskScore !== undefined) {
       doc.setFillColor(...C.dark3);
       doc.roundedRect(RX + 4, rY + cardH - 10, RW - 8, 8, 1, 1, 'F');
@@ -329,7 +477,6 @@ export function generateQuotePDF(data: PDFQuoteData): void {
       );
     }
   } else {
-    // Estimación simple
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(17);
     doc.setTextColor(...C.white);
@@ -340,10 +487,67 @@ export function generateQuotePDF(data: PDFQuoteData): void {
     doc.setTextColor(...C.lgray);
     doc.text('Sujeto a ajuste tras diagnóstico.', RX + 4, rY + cardH - 4);
   }
-
   rY += cardH + 7;
 
-  // ··· Desglose mensual
+  // 2. Info de solicitud (wizard)
+  if (wiz) {
+    rY = rTitle(doc, RX, rY, '● Solicitud', RW);
+
+    const infoRows: [string, string][] = [
+      ['Servicios', servicesLabel],
+      ['Inicio estimado', wiz.start_date || 'Por definir'],
+      ['Urgencia', URGENCY_MAP[wiz.urgency] || wiz.urgency],
+    ];
+
+    infoRows.forEach(([lbl, val], i) => {
+      if (i % 2 === 0) {
+        doc.setFillColor(...C.strip);
+        doc.rect(RX, rY - 4.5, RW, ROW + 0.5, 'F');
+      }
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(6.5);
+      doc.setTextColor(...C.gray);
+      doc.text(lbl, RX + 2, rY);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(7);
+      doc.setTextColor(...C.dark);
+      const lines = doc.splitTextToSize(val, RW - 28);
+      doc.text(lines, RX + 26, rY);
+      rY += lines.length > 1 ? lines.length * 4.2 + 1.5 : ROW;
+    });
+
+    rY += 7;
+
+    // 3. Facturación
+    rY = rTitle(doc, RX, rY, '● Facturación', RW);
+
+    const billingRows: [string, string][] = [
+      ['Requiere OC',  wiz.requires_po === 'si' ? 'Sí' : 'No'],
+      ['Plazo',        wiz.payment_terms + ' días'],
+      ['Frecuencia',   FREQ_MAP[wiz.billing_freq] || wiz.billing_freq],
+      ['Moneda',       wiz.currency.toUpperCase()],
+    ];
+
+    billingRows.forEach(([lbl, val], i) => {
+      if (i % 2 === 0) {
+        doc.setFillColor(...C.strip);
+        doc.rect(RX, rY - 4.5, RW, ROW + 0.5, 'F');
+      }
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(6.5);
+      doc.setTextColor(...C.gray);
+      doc.text(lbl, RX + 2, rY);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(7.5);
+      doc.setTextColor(...C.dark);
+      doc.text(val, RX + 26, rY);
+      rY += ROW;
+    });
+
+    rY += 7;
+  }
+
+  // 4. Desglose mensual (modo vision)
   if (data.breakdown) {
     rY = rTitle(doc, RX, rY, '● Desglose mensual', RW);
 
@@ -362,7 +566,6 @@ export function generateQuotePDF(data: PDFQuoteData): void {
     for (const [key, lbl] of bMap) {
       const v = data.breakdown[key];
       if (v === undefined) continue;
-
       if (bi % 2 === 0) {
         doc.setFillColor(...C.strip);
         doc.rect(RX, rY - 4.5, RW, ROW + 0.5, 'F');
@@ -371,26 +574,18 @@ export function generateQuotePDF(data: PDFQuoteData): void {
       doc.setFontSize(7);
       doc.setTextColor(...C.mid);
       doc.text(lbl, RX + 2, rY);
-
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(7);
-      if (v < 0) {
-        doc.setTextColor(...C.green);
-      } else {
-        doc.setTextColor(...C.dark);
-      }
+      doc.setTextColor(v < 0 ? C.green[0] : C.dark[0], v < 0 ? C.green[1] : C.dark[1], v < 0 ? C.green[2] : C.dark[2]);
       doc.text(fmt(v), RX + RW - 2, rY, { align: 'right' });
-
       rY += ROW;
       bi++;
     }
 
-    // Línea total
     rY += 2;
     doc.setFillColor(...C.dark);
     doc.rect(RX, rY, RW, 0.4, 'F');
     rY += 5;
-
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(8);
     doc.setTextColor(...C.red);
@@ -417,6 +612,6 @@ export function generateQuotePDF(data: PDFQuoteData): void {
 
   drawFooter(doc);
 
-  const slug = data.subService.replace(/[\s/–—]+/g, '-').toLowerCase();
+  const slug = servicesLabel.replace(/[\s/–—·]+/g, '-').toLowerCase().slice(0, 40);
   doc.save(`cotizacion-seishin-${slug}.pdf`);
 }

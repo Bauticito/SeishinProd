@@ -1,7 +1,6 @@
-import { Mail, Linkedin, Facebook, Twitter, Instagram } from 'lucide-react';
+import { Mail, Linkedin, Facebook, Instagram } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useNavigate, useLocation } from 'react-router-dom';
-
 export default function Footer() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -76,7 +75,7 @@ export default function Footer() {
                 className="flex items-center gap-2 text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-all duration-300 justify-center sm:justify-start text-sm sm:text-base hover:translate-x-1"
               >
                 <Mail className="w-4 h-4 sm:w-5 sm:h-5" />
-                fabian.noel@seishin.com.mx
+                info@seishin.com.mx
               </a>
 
               <div className="pt-2">
@@ -101,13 +100,15 @@ export default function Footer() {
                     <Facebook className="w-5 h-5" />
                   </a>
                   <a
-                    href="https://twitter.com/seishin_ia"
+                    href="https://x.com/seishin_ia"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-10 h-10 flex items-center justify-center rounded-full bg-[var(--card-bg)] hover:bg-[var(--accent-primary)] text-[var(--text-secondary)] hover:text-white transition-all duration-300 hover:scale-110 shadow-sm"
-                    aria-label="Twitter"
+                    aria-label="X"
                   >
-                    <Twitter className="w-5 h-5" />
+                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.736-8.851L1.254 2.25H8.08l4.253 5.622 5.911-5.622Zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                    </svg>
                   </a>
                   <a
                     href="https://instagram.com/seishin.ia"

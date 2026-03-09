@@ -12,8 +12,8 @@ export default function MissionVision() {
               </div>
               <h3 className="text-2xl sm:text-3xl font-bold text-[var(--text-primary)]">Misión</h3>
             </div>
-            <p className="text-[var(--text-secondary)] text-base sm:text-lg leading-relaxed">
-              Hacer que el factor humano no sea una barrera en las actividades del día a día. Disminuyendo y mejorando tiempos de producción. Facilitando las labores de nuestros clientes en las actividades de recurso humano, colaborando al máximo para alcanzar sus objetivos de negocio y sociales. Integrando herramientas de inteligencia artificial como aliado del talento humano que optimicen la gestión y la productividad operativa.
+            <p className="text-[var(--text-secondary)] text-base sm:text-lg leading-relaxed text-justify">
+              Hacer que el factor humano no sea una barrera en las actividades del día a día, disminuyendo y mejorando los tiempos de producción. Facilitar las labores de nuestros clientes en las actividades de recurso humano, colaborando al máximo para alcanzar sus objetivos de negocio y sociales. Integrar herramientas de inteligencia artificial como aliadas del talento humano que optimicen la gestión y la productividad operativa.
             </p>
           </div>
 
@@ -24,8 +24,8 @@ export default function MissionVision() {
               </div>
               <h3 className="text-2xl sm:text-3xl font-bold text-[var(--text-primary)]">Visión</h3>
             </div>
-            <p className="text-[var(--text-secondary)] text-base sm:text-lg leading-relaxed">
-              Tener una red de personal especializado en la operación del sector que nuestros clientes lo soliciten a lo largo del país. Consolidándonos como una empresa líder en la rama a través de un trabajo honesto y comprometido con nuestros clientes. Incorporando tecnologías emergentes como soluciones que impulsen la innovación y la mejora continua en nuestros servicios.
+            <p className="text-[var(--text-secondary)] text-base sm:text-lg leading-relaxed text-justify">
+              Tener una red de personal especializado en la operación del sector que nuestros clientes soliciten a lo largo del país. Consolidarnos como una empresa líder en la rama a través de un trabajo honesto y comprometido con nuestros clientes. Incorporar tecnologías emergentes como soluciones que impulsen la innovación y la mejora continua en nuestros servicios.
             </p>
           </div>
         </div>

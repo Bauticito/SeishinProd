@@ -82,8 +82,8 @@ export default function TermsPage() {
             <h2 className="text-lg font-bold text-[var(--text-primary)] mb-2">8. Contacto</h2>
             <p>
               Para cualquier duda relacionada con estos términos, contáctenos en{' '}
-              <a href="mailto:fabian.noel@seishin.com.mx" className="text-[#E31E24] hover:underline">
-                fabian.noel@seishin.com.mx
+              <a href="mailto:info@seishin.com.mx" className="text-[#E31E24] hover:underline">
+                info@seishin.com.mx
               </a>.
             </p>
           </section>

@@ -9,6 +9,7 @@ import {
   validateMensaje,
   filterTelefono,
 } from '../lib/formValidation';
+import { SwalError } from '../lib/swal';
 
 type View = 'card' | 'form' | 'success';
 
@@ -19,7 +20,6 @@ export default function RecruiterNotification() {
   const [visible, setVisible]           = useState(false);
   const [view, setView]                 = useState<View>('card');
   const [loading, setLoading]           = useState(false);
-  const [error, setError]               = useState('');
   const [form, setForm]                 = useState(emptyForm);
   const [errors, setErrors]             = useState(emptyErrors);
   const [jobPositions, setJobPositions] = useState<JobPosition[]>([]);
@@ -36,7 +36,6 @@ export default function RecruiterNotification() {
       setView('card');
       setForm(emptyForm);
       setErrors(emptyErrors);
-      setError('');
       const timer = setTimeout(() => setVisible(true), 800);
       return timer;
     };
@@ -73,7 +72,6 @@ export default function RecruiterNotification() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateAll()) return;
-    setError('');
     setLoading(true);
     try {
       await createJobApplicant({
@@ -87,7 +85,7 @@ export default function RecruiterNotification() {
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
       console.error('[RecruiterNotification] Error:', msg);
-      setError(msg);
+      SwalError('No se pudo enviar', msg);
     } finally {
       setLoading(false);
     }
@@ -147,8 +145,7 @@ export default function RecruiterNotification() {
               </h3>
 
               <p className="text-sm text-gray-400 leading-relaxed mb-5">
-                Trabajamos en vision computacional e inteligencia artificial de alto impacto.
-                Si tienes talento y pasion, queremos conocerte.
+              Buscamos personas apasionadas, creativas y comprometidas con el crecimiento real. Si quieres unirte a nuestro equipo, ¡Esta es tu oportunidad!
               </p>
 
               <div className="grid grid-cols-3 gap-2 mb-5">
@@ -254,7 +251,6 @@ export default function RecruiterNotification() {
                   </div>
                 </div>
 
-                {error && <p className="text-xs text-red-400">{error}</p>}
 
                 <button
                   type="submit"

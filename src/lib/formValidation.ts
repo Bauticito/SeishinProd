@@ -53,6 +53,32 @@ export function validateEmpresa(value: string, required = false): string {
   return '';
 }
 
+// Razón social del cotizador: letras/números/puntos/comas/guiones, máx 40 chars, mínimo lógico
+export function validateRazonSocial(value: string): string {
+  if (!value.trim()) return 'La razón social es requerida';
+  if (value.length > 40) return 'Máximo 40 caracteres';
+  if (/[^a-zA-ZáéíóúüñÁÉÍÓÚÜÑ0-9\s.,&\-()'"/]/.test(value))
+    return 'No se permiten caracteres especiales';
+  if (!/[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ]/.test(value))
+    return 'Debe contener al menos una letra';
+  if (value.trim().length < 3) return 'Mínimo 3 caracteres';
+  return '';
+}
+
+// RFC mexicano: 12 (persona moral) o 13 (persona física) chars alfanuméricos en mayúsculas
+export function validateRFC(value: string): string {
+  if (!value.trim()) return 'El RFC es requerido';
+  if (/[^A-Z0-9]/.test(value)) return 'Solo letras mayúsculas y números';
+  if (value.length < 12) return 'Mínimo 12 caracteres';
+  if (value.length > 13) return 'Máximo 13 caracteres';
+  return '';
+}
+
+// Convierte RFC a mayúsculas y filtra caracteres no válidos
+export function filterRFC(value: string): string {
+  return value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 13);
+}
+
 // Mensaje / notas: máx 500 chars, sin caracteres especiales
 export function validateMensaje(value: string, required = true): string {
   if (!value.trim()) return required ? 'El mensaje es requerido' : '';

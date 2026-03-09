@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Send, CheckCircle, FileDown, AlertCircle } from 'lucide-react';
+import { X, Send, CheckCircle, FileDown } from 'lucide-react';
+import { SwalSuccess, SwalError } from '../../lib/swal';
 import { createOdooQuotation } from '../../services/odooService';
-import { generateQuotePDF } from '../../lib/generateQuotePDF';
+import { generateQuotePDF, type WizardSnapshot } from '../../lib/generateQuotePDF';
 import {
   validateNombre,
   validateCorreo,
@@ -20,38 +21,11 @@ const SERVICES_MAP: Record<string, string> = {
   consultoria:     'Consultoría LFT/SAT/REPSE',
   reclutamiento:   'Reclutamiento y Selección',
   transporte:      'Transporte de Personal',
+  servicios_de_IA: 'Servicios de IA',
   otros:           'Otros',
 };
 
-export interface WizardSnapshot {
-  services:      string[];
-  start_date:    string;
-  urgency:       string;
-  company_name:  string;
-  rfc:           string;
-  cp:            string;
-  industry:      string;
-  size:          string;
-  address:       string;
-  japanese:      string;
-  contact_name:  string;
-  position:      string;
-  email:         string;
-  phone:         string;
-  preferred_channel: string;
-  approver:      string;
-  op_type:       string;
-  supervision:   string;
-  activities:    string;
-  insp_type:     string;
-  part_name:     string;
-  notes:         string;
-  requires_po:   string;
-  payment_terms: string;
-  billing_freq:  string;
-  currency:      string;
-  branches:      string[];
-}
+export type { WizardSnapshot };
 
 interface Props {
   open:         boolean;
@@ -74,8 +48,7 @@ export default function ProposalModal({ open, onClose, wizardData }: Props) {
   const [company, setCompany] = useState('');
   const [notes,   setNotes]   = useState('');
   const [errors,  setErrors]  = useState(emptyErrors);
-  const [status,  setStatus]  = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-  const [errorMsg, setErrorMsg] = useState('');
+  const [status,  setStatus]  = useState<'idle' | 'loading' | 'success'>('idle');
 
   useEffect(() => {
     if (open) {
@@ -85,7 +58,6 @@ export default function ProposalModal({ open, onClose, wizardData }: Props) {
       setCompany(wizardData.company_name || '');
       setNotes('');
       setStatus('idle');
-      setErrorMsg('');
       setErrors(emptyErrors);
     }
   }, [open, wizardData]);
@@ -110,7 +82,6 @@ export default function ProposalModal({ open, onClose, wizardData }: Props) {
     e.preventDefault();
     if (!validateAll()) return;
     setStatus('loading');
-    setErrorMsg('');
 
     try {
       const lines = [
@@ -162,23 +133,24 @@ export default function ProposalModal({ open, onClose, wizardData }: Props) {
       });
 
       setStatus('success');
+      SwalSuccess('¡Cotización enviada!', 'Un asesor te contactará pronto.');
     } catch (err) {
-      setErrorMsg(err instanceof Error ? err.message : 'Error al enviar la solicitud');
-      setStatus('error');
+      SwalError('No se pudo enviar', err instanceof Error ? err.message : 'Error al enviar la solicitud');
     }
   };
 
   const handleDownloadPDF = () => {
     generateQuotePDF({
-      service:       servicesLabel,
-      subService:    servicesLabel,
-      quantity:      wizardData.size || 'N/A',
-      estimate:      'Cotización en proceso — nuestro equipo te contactará pronto',
-      customerName:  name,
-      customerEmail: email,
-      customerPhone: phone,
+      service:        servicesLabel,
+      subService:     servicesLabel,
+      quantity:       wizardData.size || 'N/A',
+      estimate:       'Cotización en proceso — nuestro equipo te contactará pronto',
+      customerName:   name,
+      customerEmail:  email,
+      customerPhone:  phone,
       company,
-      notes:         notes || wizardData.notes || undefined,
+      notes:          notes || undefined,
+      wizardSnapshot: { ...wizardData, contact_name: name, email, phone, company_name: company || wizardData.company_name },
     });
   };
 
@@ -377,14 +349,6 @@ export default function ProposalModal({ open, onClose, wizardData }: Props) {
                         <span className="text-xs text-[var(--text-tertiary)] ml-auto">{notes.length}/500</span>
                       </div>
                     </div>
-
-                    {/* Error */}
-                    {status === 'error' && (
-                      <div className="flex items-center gap-2 p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-sm">
-                        <AlertCircle className="w-4 h-4 shrink-0" />
-                        {errorMsg}
-                      </div>
-                    )}
 
                     {/* Submit */}
                     <button

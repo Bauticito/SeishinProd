@@ -1,15 +1,34 @@
-import { Menu, X, Sun, Moon } from 'lucide-react';
+import { Menu, X, Sun, Moon, Languages } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+const LANGUAGES = [
+  { code: 'es', label: 'Español',  flag: '🇲🇽' },
+  { code: 'en', label: 'English',  flag: '🇺🇸' },
+  { code: 'ja', label: '日本語',   flag: '🇯🇵' },
+];
 
 export default function Navigation() {
   const { theme, toggleTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const location = useLocation();
-  const navigate = useNavigate();
+  const [scrolled, setScrolled]             = useState(false);
+  const [lang, setLang]                     = useState('es');
+  const [langOpen, setLangOpen]             = useState(false);
+  const langRef                             = useRef<HTMLDivElement>(null);
+  const location  = useLocation();
+  const navigate  = useNavigate();
+
+  // Cerrar dropdown al hacer clic fuera
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (langRef.current && !langRef.current.contains(e.target as Node)) {
+        setLangOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
 
   const goToContact = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -33,12 +52,12 @@ export default function Navigation() {
   }, []);
 
   const navLinks = [
-    { name: 'Inicio', href: '/' },
-    { name: 'Sobre nosotros', href: '/about' },
-    { name: 'Servicios', href: '/#services' },
+    { name: 'Inicio',        href: '/' },
+    { name: 'Sobre nosotros',href: '/about' },
+    { name: 'Servicios',     href: '/#services' },
     { name: 'Industria 4.0', href: '/#industry40' },
-    { name: 'SeishinIA', href: '/seishinia' },
-    { name: 'Galería', href: '/gallery' },
+    { name: 'SeishinIA',     href: '/seishinia' },
+    { name: 'Galería',       href: '/gallery' },
   ];
 
   const handleLinkClick = (e: React.MouseEvent<HTMLElement>, href: string) => {
@@ -62,8 +81,10 @@ export default function Navigation() {
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'py-4 glass shadow-lg' : 'py-8 bg-transparent'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center">
+        <div className="flex items-center">
+          {/* Logo - izquierda */}
           <motion.div
+            className="flex-none"
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
@@ -86,25 +107,27 @@ export default function Navigation() {
             </Link>
           </motion.div>
 
-          <div className="hidden md:flex items-center gap-6 lg:gap-8">
-            <div className="flex items-center gap-6 lg:gap-8 mr-4">
-              {navLinks.map((link) => (
-                <a
-                  key={link.name}
-                  href={link.href}
-                  onClick={(e) => handleLinkClick(e, link.href)}
-                  className={`text-sm font-medium tracking-wide transition-all duration-300 hover:text-[#E31E24] relative group px-2 py-1 whitespace-nowrap ${location.pathname === link.href || (location.pathname === '/' && location.hash === link.href)
-                    ? 'text-[#E31E24]'
-                    : 'text-[var(--text-primary)]'
-                    }`}
-                >
-                  {link.name}
-                  <span className={`absolute bottom-0 left-0 w-0 h-0.5 bg-[#E31E24] transition-all duration-300 group-hover:w-full ${location.pathname === link.href || (location.pathname === '/' && location.hash === link.href) ? 'w-full' : ''
-                    }`}></span>
-                </a>
-              ))}
-            </div>
+          {/* Nav links - centro */}
+          <div className="hidden md:flex flex-1 justify-center items-center gap-5 lg:gap-7">
+            {navLinks.map((link) => (
+              <a
+                key={link.name}
+                href={link.href}
+                onClick={(e) => handleLinkClick(e, link.href)}
+                className={`text-sm font-medium tracking-wide transition-all duration-300 hover:text-[#E31E24] relative group px-2 py-1 whitespace-nowrap ${location.pathname === link.href || (location.pathname === '/' && location.hash === link.href)
+                  ? 'text-[#E31E24]'
+                  : 'text-[var(--text-primary)]'
+                  }`}
+              >
+                {link.name}
+                <span className={`absolute bottom-0 left-0 w-0 h-0.5 bg-[#E31E24] transition-all duration-300 group-hover:w-full ${location.pathname === link.href || (location.pathname === '/' && location.hash === link.href) ? 'w-full' : ''
+                  }`}></span>
+              </a>
+            ))}
+          </div>
 
+          {/* Botones de acción - derecha */}
+          <div className="hidden md:flex flex-none items-center gap-2 lg:gap-3">
             <div className="h-6 w-px bg-[var(--border-color-light)] opacity-20"></div>
 
             <motion.div
@@ -114,7 +137,7 @@ export default function Navigation() {
             >
               <Link
                 to="/calculator"
-                className="text-[var(--text-primary)] px-5 lg:px-6 py-2.5 rounded-full transition-all duration-500 font-medium text-[10px] lg:text-xs border border-[var(--border-color-light)] hover:border-[#E31E24] hover:bg-[#E31E24] hover:text-white tracking-widest uppercase inline-block whitespace-nowrap"
+                className="text-[var(--text-primary)] px-4 lg:px-5 py-2.5 rounded-full transition-all duration-500 font-medium text-[10px] lg:text-xs border border-[var(--border-color-light)] hover:border-[#E31E24] hover:bg-[#E31E24] hover:text-white tracking-widest uppercase inline-block whitespace-nowrap"
               >
                 Calcula tu servicio
               </Link>
@@ -129,7 +152,7 @@ export default function Navigation() {
                 href="https://srv.seishin.com.mx/web/login"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 px-5 lg:px-6 py-2.5 rounded-full bg-[var(--bg-tertiary)] border border-[var(--border-color-light)] text-[var(--text-primary)] font-medium text-[10px] lg:text-xs hover:bg-[var(--bg-secondary)] transition-all duration-300 tracking-widest uppercase"
+                className="flex items-center gap-2 px-4 lg:px-5 py-2.5 rounded-full bg-[var(--bg-tertiary)] border border-[var(--border-color-light)] text-[var(--text-primary)] font-medium text-[10px] lg:text-xs hover:bg-[var(--bg-secondary)] transition-all duration-300 tracking-widest uppercase"
               >
                 ERP
                 <span className="w-1 h-1 rounded-full bg-[#E31E24]"></span>
@@ -143,14 +166,52 @@ export default function Navigation() {
             >
               <Link
                 to="/jetson/landing"
-                className="flex items-center gap-2 px-5 lg:px-6 py-2.5 rounded-full bg-[#E31E24]/10 border border-[#E31E24]/30 text-[#E31E24] font-medium text-[10px] lg:text-xs hover:bg-[#E31E24] hover:text-white transition-all duration-300 tracking-widest uppercase"
+                className="flex items-center gap-2 px-4 lg:px-5 py-2.5 rounded-full bg-[#E31E24]/10 border border-[#E31E24]/30 text-[#E31E24] font-medium text-[10px] lg:text-xs hover:bg-[#E31E24] hover:text-white transition-all duration-300 tracking-widest uppercase"
               >
                 Portal IA
                 <span className="w-1 h-1 rounded-full bg-[#E31E24]"></span>
               </Link>
             </motion.div>
 
-            <div className="h-6 w-px bg-[var(--border-color-light)] opacity-20 mx-2"></div>
+            <div className="h-6 w-px bg-[var(--border-color-light)] opacity-20"></div>
+
+            {/* ── Language selector ── */}
+            <div ref={langRef} className="relative">
+              <button
+                onClick={() => setLangOpen(o => !o)}
+                className="p-3 rounded-full glass border border-[var(--border-color-light)] text-[var(--text-primary)] hover:border-[#E31E24] hover:text-[#E31E24] transition-all duration-300 flex items-center justify-center min-w-[44px] min-h-[44px]"
+                aria-label="Seleccionar idioma"
+              >
+                <Languages className="w-5 h-5" />
+              </button>
+
+              <AnimatePresence>
+                {langOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 6, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 6, scale: 0.95 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute right-0 mt-2 w-36 glass rounded-xl border border-[var(--border-color-light)] shadow-xl overflow-hidden z-50"
+                  >
+                    {LANGUAGES.map(({ code, label, flag }) => (
+                      <button
+                        key={code}
+                        onClick={() => { setLang(code); setLangOpen(false); }}
+                        className={`w-full flex items-center gap-2.5 px-4 py-2.5 text-sm transition-all duration-200
+                          ${lang === code
+                            ? 'bg-[#E31E24]/10 text-[#E31E24] font-semibold'
+                            : 'text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)]'
+                          }`}
+                      >
+                        <span className="text-base">{flag}</span>
+                        <span>{label}</span>
+                      </button>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
 
             <button
               onClick={toggleTheme}
@@ -167,7 +228,7 @@ export default function Navigation() {
               <a
                 href="/#contact"
                 onClick={goToContact}
-                className="btn-primary px-6 py-3 text-xs font-semibold tracking-widest uppercase whitespace-nowrap"
+                className="btn-primary px-5 py-3 text-xs font-semibold tracking-widest uppercase whitespace-nowrap"
               >
                 Contacto
               </a>

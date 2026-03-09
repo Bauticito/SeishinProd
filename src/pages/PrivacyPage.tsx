@@ -15,8 +15,8 @@ export default function PrivacyPage() {
               <strong className="text-[var(--text-primary)]">Seishin</strong> (en adelante "la empresa") es responsable del
               tratamiento de sus datos personales. Para cualquier consulta relacionada con este aviso puede
               contactarnos en{' '}
-              <a href="mailto:fabian.noel@seishin.com.mx" className="text-[#E31E24] hover:underline">
-                fabian.noel@seishin.com.mx
+              <a href="mailto:info@seishin.com.mx" className="text-[#E31E24] hover:underline">
+                info@seishin.com.mx
               </a>.
             </p>
           </section>
@@ -58,8 +58,8 @@ export default function PrivacyPage() {
             <p>
               Usted tiene derecho a <strong className="text-[var(--text-primary)]">Acceder, Rectificar, Cancelar u Oponerse</strong> al
               tratamiento de sus datos personales (derechos ARCO). Para ejercerlos, envíe un correo a{' '}
-              <a href="mailto:fabian.noel@seishin.com.mx" className="text-[#E31E24] hover:underline">
-                fabian.noel@seishin.com.mx
+              <a href="mailto:info@seishin.com.mx" className="text-[#E31E24] hover:underline">
+                info@seishin.com.mx
               </a>{' '}
               indicando su nombre completo y la solicitud específica.
             </p>

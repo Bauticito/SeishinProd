@@ -6,6 +6,7 @@ const SERVICES = [
   { value: 'consultoria',     label: 'Consultoría LFT/SAT/REPSE',     branch: 'C' },
   { value: 'reclutamiento',   label: 'Reclutamiento y Selección',     branch: 'D' },
   { value: 'transporte',      label: 'Transporte de Personal',        branch: 'E' },
+  { value: 'servicios_de_IA', label: 'Servicios de IA',              branch: 'F' },
   { value: 'otros',           label: 'Otros (especificar)',           branch: null },
 ]
 
@@ -38,6 +39,22 @@ export default function Step0({ formData, onChange }) {
           </label>
         ))}
       </div>
+
+      {formData.services.includes('otros') && (
+        <div className="field-group" style={{ marginTop: '1.25rem' }}>
+          <label htmlFor="otros_descripcion">Especifica el servicio que necesitas *</label>
+          <input
+            type="text"
+            id="otros_descripcion"
+            name="otros_descripcion"
+            value={formData.otros_descripcion || ''}
+            onChange={onChange}
+            placeholder="Describe brevemente el servicio..."
+            maxLength={120}
+            required
+          />
+        </div>
+      )}
 
       <div className="form-grid" style={{ marginTop: '2rem' }}>
         <div className="field-group">

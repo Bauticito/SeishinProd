@@ -69,7 +69,7 @@ export default function About() {
               <p className="text-lg sm:text-xl text-[var(--accent-primary)] font-semibold mb-6">
                 CEO & Fundador
               </p>
-              <p className="text-base sm:text-lg text-[var(--text-secondary)] leading-relaxed">
+              <p className="text-base sm:text-lg text-[var(--text-secondary)] leading-relaxed text-justify">
                 Líder comprometido con el desarrollo industrial en México. Fundó Seishin con la misión de conectar talento, liderando procesos exitosos de vinculación laboral con empresas de capital extranjero que buscan eficiencia y compromiso.
               </p>
             </div>

@@ -1,6 +1,8 @@
 import { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Send } from 'lucide-react';
+import { SwalWarning } from '../../lib/swal';
+import { validateRazonSocial, validateRFC } from '../../lib/formValidation';
 import Step0 from './Step0';
 import Step1 from './Step1';
 import Step2 from './Step2';
@@ -18,16 +20,18 @@ const BRANCH_MAP: Record<string, string> = {
   consultoria:     'C',
   reclutamiento:   'D',
   transporte:      'E',
+  servicios_de_IA: 'F'
 };
 
 const STEP_LABELS = ['Servicio', 'Empresa', 'Contacto', 'Detalle', 'Facturación', 'Documentos', 'Resumen'];
 
 const initialForm = {
   // Step 0
-  services:          [] as string[],
-  start_date:        '',
-  urgency:           'low',
-  branches:          [] as string[],
+  services:           [] as string[],
+  otros_descripcion:  '',
+  start_date:         '',
+  urgency:            'low',
+  branches:           [] as string[],
   // Step 1
   company_name:      '',
   rfc:               '',
@@ -77,13 +81,17 @@ const isValidEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.
 const getStepError = (step: number, form: FormData): string => {
   if (step === 0) {
     if (form.services.length === 0) return 'Selecciona al menos un servicio para continuar.';
+    if (form.services.includes('otros') && !form.otros_descripcion.trim())
+      return 'Especifica el servicio en el campo "Otros".';
     if (!form.start_date) return 'Selecciona una fecha estimada de inicio.';
     if (form.start_date < getTodayIsoLocal()) return 'La fecha de inicio no puede ser anterior a hoy.';
   }
 
   if (step === 1) {
-    if (!form.company_name.trim()) return 'Completa la razón social.';
-    if (!form.rfc.trim()) return 'Completa el RFC.';
+    const rsErr = validateRazonSocial(form.company_name);
+    if (rsErr) return rsErr;
+    const rfcErr = validateRFC(form.rfc);
+    if (rfcErr) return rfcErr;
     if (!/^\d{5}$/.test(form.cp.trim())) return 'El código postal debe tener 5 dígitos.';
     if (!form.address.trim()) return 'Completa la dirección de planta o servicio.';
   }
@@ -102,13 +110,10 @@ export default function CotizadorWizard() {
   const [step, setStep]           = useState(0);
   const [form, setForm]           = useState<FormData>(initialForm);
   const [modalOpen, setModalOpen] = useState(false);
-  const [stepError, setStepError] = useState('');
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
       const { name, type } = e.target;
-      setStepError('');
-
       if (type === 'checkbox') {
         const el = e.target as HTMLInputElement;
         if (name === 'services') {
@@ -144,10 +149,9 @@ export default function CotizadorWizard() {
   const handleNext = () => {
     const error = getStepError(step, form);
     if (error) {
-      setStepError(error);
+      SwalWarning('Completa el paso', error);
       return;
     }
-    setStepError('');
     setStep(s => Math.min(STEP_LABELS.length - 1, s + 1));
   };
 
@@ -234,9 +238,6 @@ export default function CotizadorWizard() {
             </button>
           )}
         </div>
-        {stepError && (
-          <p className="mt-3 text-sm text-red-400 text-right">{stepError}</p>
-        )}
       </div>
 
       {/* ── Proposal Modal ── */}
