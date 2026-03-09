@@ -78,7 +78,7 @@ export default function Step1({ formData, onChange }) {
         </div>
 
         <div className="field-group">
-          <label>¿Empresa Japonesa / HQ?</label>
+          <label>¿EMPRESA QUE REPORTA A UN HEAD QUARTER?</label>
           <div className="radio-group">
             <label className="radio-label">
               <input

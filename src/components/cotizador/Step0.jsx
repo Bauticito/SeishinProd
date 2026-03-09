@@ -10,6 +10,10 @@ const SERVICES = [
 ]
 
 export default function Step0({ formData, onChange }) {
+  const today = new Date()
+  today.setMinutes(today.getMinutes() - today.getTimezoneOffset())
+  const minDate = today.toISOString().split('T')[0]
+
   return (
     <div className="step-content">
       <h2 className="section-title"><span>0.</span> ¿Qué necesitas?</h2>
@@ -44,6 +48,7 @@ export default function Step0({ formData, onChange }) {
             name="start_date"
             value={formData.start_date}
             onChange={onChange}
+            min={minDate}
             required
           />
         </div>

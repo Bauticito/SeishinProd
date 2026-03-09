@@ -66,14 +66,48 @@ const initialForm = {
 
 type FormData = typeof initialForm;
 
+const getTodayIsoLocal = () => {
+  const today = new Date();
+  today.setMinutes(today.getMinutes() - today.getTimezoneOffset());
+  return today.toISOString().split('T')[0];
+};
+
+const isValidEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
+
+const getStepError = (step: number, form: FormData): string => {
+  if (step === 0) {
+    if (form.services.length === 0) return 'Selecciona al menos un servicio para continuar.';
+    if (!form.start_date) return 'Selecciona una fecha estimada de inicio.';
+    if (form.start_date < getTodayIsoLocal()) return 'La fecha de inicio no puede ser anterior a hoy.';
+  }
+
+  if (step === 1) {
+    if (!form.company_name.trim()) return 'Completa la razón social.';
+    if (!form.rfc.trim()) return 'Completa el RFC.';
+    if (!/^\d{5}$/.test(form.cp.trim())) return 'El código postal debe tener 5 dígitos.';
+    if (!form.address.trim()) return 'Completa la dirección de planta o servicio.';
+  }
+
+  if (step === 2) {
+    if (!form.contact_name.trim()) return 'Completa el nombre de contacto.';
+    if (!isValidEmail(form.email)) return 'Ingresa un correo válido.';
+    const phoneDigits = form.phone.replace(/\D/g, '');
+    if (phoneDigits.length < 10) return 'Ingresa un teléfono válido de al menos 10 dígitos.';
+  }
+
+  return '';
+};
+
 export default function CotizadorWizard() {
   const [step, setStep]           = useState(0);
   const [form, setForm]           = useState<FormData>(initialForm);
   const [modalOpen, setModalOpen] = useState(false);
+  const [stepError, setStepError] = useState('');
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
       const { name, type } = e.target;
+      setStepError('');
 
       if (type === 'checkbox') {
         const el = e.target as HTMLInputElement;
@@ -106,6 +140,16 @@ export default function CotizadorWizard() {
     <Step5 key={5} formData={form} onChange={handleChange} />,
     <Step6 key={6} formData={form} onChange={handleChange} />,
   ];
+
+  const handleNext = () => {
+    const error = getStepError(step, form);
+    if (error) {
+      setStepError(error);
+      return;
+    }
+    setStepError('');
+    setStep(s => Math.min(STEP_LABELS.length - 1, s + 1));
+  };
 
   return (
     <>
@@ -173,7 +217,7 @@ export default function CotizadorWizard() {
 
           {step < STEP_LABELS.length - 1 ? (
             <button
-              onClick={() => setStep(s => Math.min(STEP_LABELS.length - 1, s + 1))}
+              onClick={handleNext}
               className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--bg-tertiary)] border border-[var(--border-color-light)] text-[var(--text-primary)] hover:border-[#E31E24]/40 transition-all"
             >
               Siguiente
@@ -190,6 +234,9 @@ export default function CotizadorWizard() {
             </button>
           )}
         </div>
+        {stepError && (
+          <p className="mt-3 text-sm text-red-400 text-right">{stepError}</p>
+        )}
       </div>
 
       {/* ── Proposal Modal ── */}
