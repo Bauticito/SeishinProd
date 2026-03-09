@@ -19,23 +19,26 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-[var(--bg-secondary)] py-8 sm:py-12 lg:py-16 px-4 sm:px-6 border-t border-[var(--border-color-light)] shadow-inner">
-      <div className="max-w-7xl mx-auto">
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10 lg:gap-12 mb-8 sm:mb-10 lg:mb-12">
-          <div className="text-center sm:text-left">
+    <footer className="bg-[var(--bg-secondary)] py-14 sm:py-18 lg:py-24 px-4 sm:px-8 border-t border-[var(--border-color-light)] shadow-inner">
+      <div className="w-full">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-10 sm:gap-14 lg:gap-20 mb-12 sm:mb-14 lg:mb-16 items-start">
+          <div className="text-center sm:text-left lg:col-span-1">
             <motion.div
               whileHover={{ scale: 1.05, filter: "brightness(1.1)" }}
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
-              className="flex items-center gap-3 mb-4 justify-center sm:justify-start"
+              className="flex items-center gap-3 mb-5 justify-center sm:justify-start"
             >
               <img
                 src="/seishin-logo-SinFondo-removebg-preview.png"
                 alt="Seishin Logo"
-                className="h-10 sm:h-12 w-auto"
+                className="h-12 sm:h-14 w-auto"
               />
             </motion.div>
-            <p className="text-[var(--text-secondary)] leading-relaxed text-sm sm:text-base">
+            <p className="text-[var(--text-secondary)] leading-relaxed text-sm sm:text-base mb-4">
               Somos un socio de outsourcing habilitado por tecnología enfocado en operaciones escalables e inteligentes.
+            </p>
+            <p className="text-[var(--text-secondary)] leading-relaxed text-sm sm:text-base">
+              Combinamos talento humano con automatización para que tu empresa opere más rápido, con mayor precisión y a menor costo.
             </p>
           </div>
 
@@ -119,14 +122,9 @@ export default function Footer() {
               </div>
             </div>
           </div>
-        </div>
-
-        <div className="border-t border-[var(--border-color)] pt-6 sm:pt-8">
-          <div className="flex flex-col items-center gap-4">
-            <p className="text-center text-[var(--text-secondary)] text-xs sm:text-sm">
-              © 2025 Seishin. Todos los derechos reservados.
-            </p>
-            <div className="flex gap-4 sm:gap-6">
+          <div className="text-center sm:text-left">
+            <h4 className="text-base sm:text-lg font-bold text-[var(--text-primary)] mb-3 sm:mb-4">Legales</h4>
+            <div className="flex flex-col gap-2 sm:gap-3 items-center sm:items-start">
               <a
                 href="/privacidad"
                 className="text-[var(--text-secondary)] hover:text-[var(--accent-primary)] text-xs sm:text-sm transition-colors duration-300 underline-offset-4 hover:underline"
@@ -140,6 +138,14 @@ export default function Footer() {
                 Términos de Uso
               </a>
             </div>
+          </div>
+        </div>
+
+        <div className="border-t border-[var(--border-color)] pt-8 sm:pt-10">
+          <div className="flex flex-col items-center gap-3">
+            <p className="text-[var(--text-secondary)] text-xs sm:text-sm text-center">
+              © 2025 Seishin. Todos los derechos reservados.
+            </p>
           </div>
         </div>
       </div>

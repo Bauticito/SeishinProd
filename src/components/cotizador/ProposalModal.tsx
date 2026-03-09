@@ -3,6 +3,14 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Send, CheckCircle, FileDown, AlertCircle } from 'lucide-react';
 import { createOdooQuotation } from '../../services/odooService';
 import { generateQuotePDF } from '../../lib/generateQuotePDF';
+import {
+  validateNombre,
+  validateCorreo,
+  validateTelefono,
+  validateEmpresa,
+  validateMensaje,
+  filterTelefono,
+} from '../../lib/formValidation';
 
 const SERVICES_MAP: Record<string, string> = {
   outsourcing_op:  'Outsourcing Operativo',
@@ -57,13 +65,15 @@ const URGENCY: Record<string, string> = {
   high:   'Alta (Inmediato)',
 };
 
+const emptyErrors = { name: '', email: '', phone: '', company: '', notes: '' };
+
 export default function ProposalModal({ open, onClose, wizardData }: Props) {
-  // pre-fill from wizard
   const [name,    setName]    = useState('');
   const [email,   setEmail]   = useState('');
   const [phone,   setPhone]   = useState('');
   const [company, setCompany] = useState('');
   const [notes,   setNotes]   = useState('');
+  const [errors,  setErrors]  = useState(emptyErrors);
   const [status,  setStatus]  = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errorMsg, setErrorMsg] = useState('');
 
@@ -76,6 +86,7 @@ export default function ProposalModal({ open, onClose, wizardData }: Props) {
       setNotes('');
       setStatus('idle');
       setErrorMsg('');
+      setErrors(emptyErrors);
     }
   }, [open, wizardData]);
 
@@ -83,8 +94,21 @@ export default function ProposalModal({ open, onClose, wizardData }: Props) {
     ? wizardData.services.map(s => SERVICES_MAP[s] || s).join(' · ')
     : 'Solicitud de cotización';
 
+  const validateAll = () => {
+    const newErrors = {
+      name:    validateNombre(name),
+      email:   validateCorreo(email),
+      phone:   validateTelefono(phone),
+      company: validateEmpresa(company),
+      notes:   validateMensaje(notes, false),
+    };
+    setErrors(newErrors);
+    return Object.values(newErrors).every(e => e === '');
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!validateAll()) return;
     setStatus('loading');
     setErrorMsg('');
 
@@ -157,6 +181,13 @@ export default function ProposalModal({ open, onClose, wizardData }: Props) {
       notes:         notes || wizardData.notes || undefined,
     });
   };
+
+  const fieldClass = (hasError: boolean) =>
+    `w-full bg-[var(--bg-tertiary)] border ${
+      hasError
+        ? 'border-red-500 focus:ring-red-500/10'
+        : 'border-[var(--border-color-light)] focus:border-[#E31E24] focus:ring-[#E31E24]/10'
+    } rounded-xl px-4 py-2.5 text-sm text-[var(--text-primary)] placeholder:text-[var(--text-tertiary)] focus:outline-none focus:ring-2 transition`;
 
   return (
     <AnimatePresence>
@@ -246,7 +277,7 @@ export default function ProposalModal({ open, onClose, wizardData }: Props) {
                   </motion.div>
                 ) : (
                   /* ── Form ── */
-                  <form onSubmit={handleSubmit} className="space-y-4">
+                  <form onSubmit={handleSubmit} className="space-y-4" noValidate>
                     {/* Name */}
                     <div>
                       <label className="block text-[10px] font-bold tracking-widest uppercase text-[var(--text-secondary)] mb-1.5">
@@ -254,12 +285,16 @@ export default function ProposalModal({ open, onClose, wizardData }: Props) {
                       </label>
                       <input
                         type="text"
-                        required
                         value={name}
-                        onChange={e => setName(e.target.value)}
-                        className="w-full bg-[var(--bg-tertiary)] border border-[var(--border-color-light)] rounded-xl px-4 py-2.5 text-sm text-[var(--text-primary)] placeholder:text-[var(--text-tertiary)] focus:outline-none focus:border-[#E31E24] focus:ring-2 focus:ring-[#E31E24]/10 transition"
+                        onChange={e => {
+                          setName(e.target.value);
+                          setErrors(prev => ({ ...prev, name: validateNombre(e.target.value) }));
+                        }}
+                        maxLength={50}
+                        className={fieldClass(!!errors.name)}
                         placeholder="Tu nombre completo"
                       />
+                      {errors.name && <p className="mt-1 text-xs text-red-400">{errors.name}</p>}
                     </div>
 
                     {/* Email + Phone */}
@@ -270,12 +305,15 @@ export default function ProposalModal({ open, onClose, wizardData }: Props) {
                         </label>
                         <input
                           type="email"
-                          required
                           value={email}
-                          onChange={e => setEmail(e.target.value)}
-                          className="w-full bg-[var(--bg-tertiary)] border border-[var(--border-color-light)] rounded-xl px-4 py-2.5 text-sm text-[var(--text-primary)] placeholder:text-[var(--text-tertiary)] focus:outline-none focus:border-[#E31E24] focus:ring-2 focus:ring-[#E31E24]/10 transition"
+                          onChange={e => {
+                            setEmail(e.target.value);
+                            setErrors(prev => ({ ...prev, email: validateCorreo(e.target.value) }));
+                          }}
+                          className={fieldClass(!!errors.email)}
                           placeholder="correo@empresa.com"
                         />
+                        {errors.email && <p className="mt-1 text-xs text-red-400">{errors.email}</p>}
                       </div>
                       <div>
                         <label className="block text-[10px] font-bold tracking-widest uppercase text-[var(--text-secondary)] mb-1.5">
@@ -284,10 +322,16 @@ export default function ProposalModal({ open, onClose, wizardData }: Props) {
                         <input
                           type="tel"
                           value={phone}
-                          onChange={e => setPhone(e.target.value)}
-                          className="w-full bg-[var(--bg-tertiary)] border border-[var(--border-color-light)] rounded-xl px-4 py-2.5 text-sm text-[var(--text-primary)] placeholder:text-[var(--text-tertiary)] focus:outline-none focus:border-[#E31E24] focus:ring-2 focus:ring-[#E31E24]/10 transition"
+                          onChange={e => {
+                            const filtered = filterTelefono(e.target.value);
+                            setPhone(filtered);
+                            setErrors(prev => ({ ...prev, phone: validateTelefono(filtered) }));
+                          }}
+                          maxLength={15}
+                          className={fieldClass(!!errors.phone)}
                           placeholder="10 dígitos"
                         />
+                        {errors.phone && <p className="mt-1 text-xs text-red-400">{errors.phone}</p>}
                       </div>
                     </div>
 
@@ -299,10 +343,14 @@ export default function ProposalModal({ open, onClose, wizardData }: Props) {
                       <input
                         type="text"
                         value={company}
-                        onChange={e => setCompany(e.target.value)}
-                        className="w-full bg-[var(--bg-tertiary)] border border-[var(--border-color-light)] rounded-xl px-4 py-2.5 text-sm text-[var(--text-primary)] placeholder:text-[var(--text-tertiary)] focus:outline-none focus:border-[#E31E24] focus:ring-2 focus:ring-[#E31E24]/10 transition"
+                        onChange={e => {
+                          setCompany(e.target.value);
+                          setErrors(prev => ({ ...prev, company: validateEmpresa(e.target.value) }));
+                        }}
+                        className={fieldClass(!!errors.company)}
                         placeholder="Nombre de tu empresa"
                       />
+                      {errors.company && <p className="mt-1 text-xs text-red-400">{errors.company}</p>}
                     </div>
 
                     {/* Notes */}
@@ -313,10 +361,21 @@ export default function ProposalModal({ open, onClose, wizardData }: Props) {
                       <textarea
                         rows={3}
                         value={notes}
-                        onChange={e => setNotes(e.target.value)}
-                        className="w-full bg-[var(--bg-tertiary)] border border-[var(--border-color-light)] rounded-xl px-4 py-2.5 text-sm text-[var(--text-primary)] placeholder:text-[var(--text-tertiary)] focus:outline-none focus:border-[#E31E24] focus:ring-2 focus:ring-[#E31E24]/10 transition resize-none"
+                        onChange={e => {
+                          setNotes(e.target.value);
+                          setErrors(prev => ({ ...prev, notes: validateMensaje(e.target.value, false) }));
+                        }}
+                        maxLength={500}
+                        className={`${fieldClass(!!errors.notes)} resize-none`}
                         placeholder="¿Algo más que debamos saber?"
                       />
+                      <div className="flex justify-between mt-1">
+                        {errors.notes
+                          ? <p className="text-xs text-red-400">{errors.notes}</p>
+                          : <span />
+                        }
+                        <span className="text-xs text-[var(--text-tertiary)] ml-auto">{notes.length}/500</span>
+                      </div>
                     </div>
 
                     {/* Error */}

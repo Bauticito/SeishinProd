@@ -2,17 +2,26 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Briefcase, ArrowRight, Loader2, CheckCircle2, ChevronLeft, Sparkles, Zap, Users } from 'lucide-react';
 import { createJobApplicant, getJobPositions, JobPosition } from '../services/odooService';
+import {
+  validateNombre,
+  validateCorreo,
+  validateTelefono,
+  validateMensaje,
+  filterTelefono,
+} from '../lib/formValidation';
 
 type View = 'card' | 'form' | 'success';
 
 const emptyForm = { nombre: '', correo: '', telefono: '', mensaje: '', jobId: '' };
+const emptyErrors = { nombre: '', correo: '', telefono: '', mensaje: '' };
 
 export default function RecruiterNotification() {
-  const [visible, setVisible]         = useState(false);
-  const [view, setView]               = useState<View>('card');
-  const [loading, setLoading]         = useState(false);
-  const [error, setError]             = useState('');
-  const [form, setForm]               = useState(emptyForm);
+  const [visible, setVisible]           = useState(false);
+  const [view, setView]                 = useState<View>('card');
+  const [loading, setLoading]           = useState(false);
+  const [error, setError]               = useState('');
+  const [form, setForm]                 = useState(emptyForm);
+  const [errors, setErrors]             = useState(emptyErrors);
   const [jobPositions, setJobPositions] = useState<JobPosition[]>([]);
 
   useEffect(() => {
@@ -26,6 +35,7 @@ export default function RecruiterNotification() {
       setVisible(false);
       setView('card');
       setForm(emptyForm);
+      setErrors(emptyErrors);
       setError('');
       const timer = setTimeout(() => setVisible(true), 800);
       return timer;
@@ -49,8 +59,20 @@ export default function RecruiterNotification() {
     };
   }, []);
 
+  const validateAll = () => {
+    const newErrors = {
+      nombre:   validateNombre(form.nombre),
+      correo:   validateCorreo(form.correo),
+      telefono: validateTelefono(form.telefono),
+      mensaje:  validateMensaje(form.mensaje, false),
+    };
+    setErrors(newErrors);
+    return Object.values(newErrors).every(e => e === '');
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!validateAll()) return;
     setError('');
     setLoading(true);
     try {
@@ -70,6 +92,22 @@ export default function RecruiterNotification() {
       setLoading(false);
     }
   };
+
+  const handleField = (field: keyof typeof emptyErrors, value: string) => {
+    setForm(f => ({ ...f, [field]: value }));
+    const validators: Record<keyof typeof emptyErrors, (v: string) => string> = {
+      nombre:   (v) => validateNombre(v),
+      correo:   (v) => validateCorreo(v),
+      telefono: (v) => validateTelefono(v),
+      mensaje:  (v) => validateMensaje(v, false),
+    };
+    setErrors(prev => ({ ...prev, [field]: validators[field](value) }));
+  };
+
+  const inputClass = (hasError: boolean) =>
+    `w-full px-3.5 py-2.5 rounded-xl bg-white/5 border ${
+      hasError ? 'border-red-500' : 'border-white/10 focus:border-[#E31E24]'
+    } text-sm text-white placeholder-gray-600 focus:outline-none transition-colors`;
 
   return (
     <AnimatePresence>
@@ -149,25 +187,42 @@ export default function RecruiterNotification() {
                 </button>
               </div>
 
-              <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-                <input
-                  required type="text" placeholder="Nombre completo *"
-                  value={form.nombre}
-                  onChange={e => setForm(f => ({ ...f, nombre: e.target.value }))}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#E31E24] transition-colors"
-                />
-                <input
-                  required type="email" placeholder="Correo electronico *"
-                  value={form.correo}
-                  onChange={e => setForm(f => ({ ...f, correo: e.target.value }))}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#E31E24] transition-colors"
-                />
-                <input
-                  type="tel" placeholder="Telefono"
-                  value={form.telefono}
-                  onChange={e => setForm(f => ({ ...f, telefono: e.target.value }))}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#E31E24] transition-colors"
-                />
+              <form onSubmit={handleSubmit} className="flex flex-col gap-3" noValidate>
+                <div>
+                  <input
+                    type="text"
+                    placeholder="Nombre completo *"
+                    value={form.nombre}
+                    onChange={e => handleField('nombre', e.target.value)}
+                    maxLength={50}
+                    className={inputClass(!!errors.nombre)}
+                  />
+                  {errors.nombre && <p className="mt-1 text-[11px] text-red-400">{errors.nombre}</p>}
+                </div>
+
+                <div>
+                  <input
+                    type="email"
+                    placeholder="Correo electronico *"
+                    value={form.correo}
+                    onChange={e => handleField('correo', e.target.value)}
+                    className={inputClass(!!errors.correo)}
+                  />
+                  {errors.correo && <p className="mt-1 text-[11px] text-red-400">{errors.correo}</p>}
+                </div>
+
+                <div>
+                  <input
+                    type="tel"
+                    placeholder="Telefono (10-15 dígitos)"
+                    value={form.telefono}
+                    onChange={e => handleField('telefono', filterTelefono(e.target.value))}
+                    maxLength={15}
+                    className={inputClass(!!errors.telefono)}
+                  />
+                  {errors.telefono && <p className="mt-1 text-[11px] text-red-400">{errors.telefono}</p>}
+                </div>
+
                 <select
                   required
                   value={form.jobId}
@@ -180,17 +235,30 @@ export default function RecruiterNotification() {
                     <option key={job.id} value={job.id} className="bg-[#1a1a1a]">{job.name}</option>
                   ))}
                 </select>
-                <textarea
-                  rows={3} placeholder="Por que quieres unirte a Seishin International?"
-                  value={form.mensaje}
-                  onChange={e => setForm(f => ({ ...f, mensaje: e.target.value }))}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#E31E24] transition-colors resize-none"
-                />
+
+                <div>
+                  <textarea
+                    rows={3}
+                    placeholder="Por que quieres unirte a Seishin International?"
+                    value={form.mensaje}
+                    onChange={e => handleField('mensaje', e.target.value)}
+                    maxLength={500}
+                    className={`${inputClass(!!errors.mensaje)} resize-none`}
+                  />
+                  <div className="flex justify-between mt-1">
+                    {errors.mensaje
+                      ? <p className="text-[11px] text-red-400">{errors.mensaje}</p>
+                      : <span />
+                    }
+                    <span className="text-[11px] text-gray-600 ml-auto">{form.mensaje.length}/500</span>
+                  </div>
+                </div>
 
                 {error && <p className="text-xs text-red-400">{error}</p>}
 
                 <button
-                  type="submit" disabled={loading}
+                  type="submit"
+                  disabled={loading}
                   className="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-[#E31E24] hover:bg-[#c01a20] disabled:opacity-60 transition-colors text-white text-sm font-bold shadow-lg shadow-[#E31E24]/20"
                 >
                   {loading

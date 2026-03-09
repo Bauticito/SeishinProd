@@ -1,8 +1,16 @@
 import { useState } from 'react';
 import { Send, CheckCircle, Phone, Mail, Clock, MapPin, Loader2, AlertCircle } from 'lucide-react';
 import { createContactMessage } from '@/services/odooService';
+import {
+  validateNombre,
+  validateCorreo,
+  validateEmpresa,
+  validateMensaje,
+} from '@/lib/formValidation';
 
 type Status = 'idle' | 'loading' | 'success' | 'error';
+
+const emptyErrors = { nombre: '', correo: '', empresa: '', mensaje: '' };
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -11,17 +19,31 @@ export default function Contact() {
     empresa: '',
     mensaje: '',
   });
+  const [errors, setErrors] = useState(emptyErrors);
   const [status, setStatus] = useState<Status>('idle');
   const [errorMsg, setErrorMsg] = useState('');
 
+  const validateAll = () => {
+    const newErrors = {
+      nombre:  validateNombre(formData.nombre),
+      correo:  validateCorreo(formData.correo),
+      empresa: validateEmpresa(formData.empresa),
+      mensaje: validateMensaje(formData.mensaje),
+    };
+    setErrors(newErrors);
+    return Object.values(newErrors).every(e => e === '');
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!validateAll()) return;
     setStatus('loading');
     setErrorMsg('');
     try {
       await createContactMessage(formData);
       setStatus('success');
       setFormData({ nombre: '', correo: '', empresa: '', mensaje: '' });
+      setErrors(emptyErrors);
     } catch (err) {
       setStatus('error');
       setErrorMsg(err instanceof Error ? err.message : 'No se pudo enviar el mensaje. Intenta de nuevo.');
@@ -29,11 +51,24 @@ export default function Contact() {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+
+    const validators: Record<string, (v: string) => string> = {
+      nombre:  validateNombre,
+      correo:  validateCorreo,
+      empresa: validateEmpresa,
+      mensaje: validateMensaje,
+    };
+    if (validators[name]) {
+      setErrors(prev => ({ ...prev, [name]: validators[name](value) }));
+    }
   };
+
+  const inputClass = (error: string) =>
+    `w-full px-4 py-3 rounded-lg border ${
+      error ? 'border-red-500 focus:ring-red-500/20' : 'border-[var(--border-color)] focus:border-[var(--accent-primary)] focus:ring-[var(--accent-primary)]/20'
+    } bg-[var(--bg-primary)] text-[var(--text-primary)] focus:ring-2 outline-none transition-colors duration-200`;
 
   return (
     <section id="contact" className="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 bg-[var(--bg-primary)]">
@@ -117,11 +152,11 @@ export default function Contact() {
                 </button>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6" noValidate>
                 <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
                   <div>
                     <label htmlFor="nombre" className="block text-sm font-semibold text-[var(--text-primary)] mb-2">
-                      Nombre Completo
+                      Nombre Completo *
                     </label>
                     <input
                       type="text"
@@ -129,15 +164,16 @@ export default function Contact() {
                       name="nombre"
                       value={formData.nombre}
                       onChange={handleChange}
-                      required
-                      className="w-full px-4 py-3 rounded-lg border border-[var(--border-color)] bg-[var(--bg-primary)] text-[var(--text-primary)] focus:border-[var(--accent-primary)] focus:ring-2 focus:ring-[var(--accent-primary)]/20 outline-none transition-colors duration-200"
+                      maxLength={50}
+                      className={inputClass(errors.nombre)}
                       placeholder="Tu nombre"
                     />
+                    {errors.nombre && <p className="mt-1 text-xs text-red-400">{errors.nombre}</p>}
                   </div>
 
                   <div>
                     <label htmlFor="correo" className="block text-sm font-semibold text-[var(--text-primary)] mb-2">
-                      Correo Electrónico
+                      Correo Electrónico *
                     </label>
                     <input
                       type="email"
@@ -145,10 +181,10 @@ export default function Contact() {
                       name="correo"
                       value={formData.correo}
                       onChange={handleChange}
-                      required
-                      className="w-full px-4 py-3 rounded-lg border border-[var(--border-color)] bg-[var(--bg-primary)] text-[var(--text-primary)] focus:border-[var(--accent-primary)] focus:ring-2 focus:ring-[var(--accent-primary)]/20 outline-none transition-colors duration-200"
+                      className={inputClass(errors.correo)}
                       placeholder="tu@empresa.com"
                     />
+                    {errors.correo && <p className="mt-1 text-xs text-red-400">{errors.correo}</p>}
                   </div>
                 </div>
 
@@ -162,25 +198,35 @@ export default function Contact() {
                     name="empresa"
                     value={formData.empresa}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-lg border border-[var(--border-color)] bg-[var(--bg-primary)] text-[var(--text-primary)] focus:border-[var(--accent-primary)] focus:ring-2 focus:ring-[var(--accent-primary)]/20 outline-none transition-colors duration-200"
+                    className={inputClass(errors.empresa)}
                     placeholder="Nombre de tu empresa"
                   />
+                  {errors.empresa && <p className="mt-1 text-xs text-red-400">{errors.empresa}</p>}
                 </div>
 
                 <div>
                   <label htmlFor="mensaje" className="block text-sm font-semibold text-[var(--text-primary)] mb-2">
-                    Mensaje
+                    Mensaje *
                   </label>
                   <textarea
                     id="mensaje"
                     name="mensaje"
                     value={formData.mensaje}
                     onChange={handleChange}
-                    required
                     rows={5}
-                    className="w-full px-4 py-3 rounded-lg border border-[var(--border-color)] bg-[var(--bg-primary)] text-[var(--text-primary)] focus:border-[var(--accent-primary)] focus:ring-2 focus:ring-[var(--accent-primary)]/20 outline-none transition-colors duration-200 resize-none"
+                    maxLength={500}
+                    className={`${inputClass(errors.mensaje)} resize-none`}
                     placeholder="Cuéntanos sobre tu proyecto..."
                   />
+                  <div className="flex justify-between items-start mt-1">
+                    {errors.mensaje
+                      ? <p className="text-xs text-red-400">{errors.mensaje}</p>
+                      : <span />
+                    }
+                    <span className="text-xs text-[var(--text-secondary)] ml-auto">
+                      {formData.mensaje.length}/500
+                    </span>
+                  </div>
                 </div>
 
                 {status === 'error' && (
