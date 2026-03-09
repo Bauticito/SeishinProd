@@ -53,6 +53,20 @@ type ContactPayload = {
 };
 
 const LEAD_TYPE_QUOTE = "cotización";
+const LEAD_TYPE_RECRUITMENT = "recruitment";
+
+type JobPosition = {
+  id: number;
+  name: string;
+};
+
+type RecruitmentPayload = {
+  nombre: string;
+  correo: string;
+  telefono?: string;
+  mensaje?: string;
+  jobId?: number;
+};
 
 const json = (data: unknown, status = 200, origin = "*") =>
   new Response(JSON.stringify(data), {
@@ -143,6 +157,71 @@ const parseJsonBody = async (request: Request): Promise<Record<string, unknown>>
     return body;
   } catch {
     throw new Error("Invalid JSON body");
+  }
+};
+
+const RATE_LIMIT_MAX_REQUESTS = 3;
+const RATE_LIMIT_WINDOW_SECONDS = 10 * 60;
+
+const resolveClientIp = (request: Request): string => {
+  const cfIp = request.headers.get("cf-connecting-ip")?.trim();
+  if (cfIp) return cfIp;
+
+  const forwarded = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
+  if (forwarded) return forwarded;
+
+  return "unknown";
+};
+
+const enforceRateLimit = async (
+  request: Request,
+  env: Env,
+  origin: string,
+  routeKey: string
+): Promise<Response | null> => {
+  const ipAddress = resolveClientIp(request);
+  const cutoffIso = new Date(Date.now() - RATE_LIMIT_WINDOW_SECONDS * 1000).toISOString();
+
+  try {
+    const countRow = await env.DB.prepare(
+      `SELECT COUNT(*) AS count
+       FROM rate_limit_events
+       WHERE ip_address = ? AND route_key = ? AND created_at >= ?`
+    )
+      .bind(ipAddress, routeKey, cutoffIso)
+      .first<{ count?: number | string | null }>();
+
+    const currentCount = Number(countRow?.count ?? 0);
+    if (currentCount >= RATE_LIMIT_MAX_REQUESTS) {
+      return new Response(
+        JSON.stringify({
+          error: "Too many requests from this IP. Try again later.",
+          retryAfterSeconds: RATE_LIMIT_WINDOW_SECONDS,
+        }),
+        {
+          status: 429,
+          headers: {
+            "content-type": "application/json; charset=utf-8",
+            "access-control-allow-origin": origin,
+            "access-control-allow-methods": "GET,POST,PUT,DELETE,OPTIONS",
+            "access-control-allow-headers": "content-type,x-admin-token",
+            "retry-after": String(RATE_LIMIT_WINDOW_SECONDS),
+          },
+        }
+      );
+    }
+
+    await env.DB.prepare(
+      `INSERT INTO rate_limit_events (ip_address, route_key, created_at)
+       VALUES (?, ?, ?)`
+    )
+      .bind(ipAddress, routeKey, new Date().toISOString())
+      .run();
+
+    return null;
+  } catch {
+    // Fail-open to avoid blocking real leads if rate-limit storage fails.
+    return null;
   }
 };
 
@@ -373,6 +452,80 @@ const syncQuoteToOdoo = async (env: Env, payload: QuotePayload) => {
   return { partnerId, saleOrderId };
 };
 
+const getRecruitmentStageId = async (baseUrl: string, cookie: string): Promise<number | null> => {
+  try {
+    const stages = await odooCallKw<{ id: number; name: string }[]>(
+      baseUrl,
+      cookie,
+      "hr.recruitment.stage",
+      "search_read",
+      [[["fold", "=", false]]],
+      { fields: ["id", "name"], limit: 1, order: "sequence asc" }
+    );
+    return stages.length > 0 ? stages[0].id : null;
+  } catch {
+    return null;
+  }
+};
+
+const getJobPositionsFromOdoo = async (env: Env): Promise<JobPosition[]> => {
+  const { baseUrl, cookie } = await odooAuthenticate(env);
+  return odooCallKw<JobPosition[]>(
+    baseUrl,
+    cookie,
+    "hr.job",
+    "search_read",
+    [[]],
+    { fields: ["id", "name"], order: "name asc" }
+  );
+};
+
+const syncRecruitmentToOdoo = async (env: Env, payload: RecruitmentPayload) => {
+  const nombre = toOptionalString(payload.nombre, 150);
+  const correo = toOptionalString(payload.correo, 150)?.toLowerCase() ?? null;
+  const telefono = toOptionalString(payload.telefono, 60);
+  const mensaje = toOptionalString(payload.mensaje, 3000);
+  const jobId =
+    typeof payload.jobId === "number" && Number.isInteger(payload.jobId) && payload.jobId > 0
+      ? payload.jobId
+      : null;
+
+  if (!nombre || !correo || !isValidEmail(correo)) {
+    throw new Error("Recruitment payload missing valid nombre/correo");
+  }
+
+  const { baseUrl, cookie } = await odooAuthenticate(env);
+  const stageId = await getRecruitmentStageId(baseUrl, cookie);
+
+  const candidateVals: Record<string, unknown> = {
+    partner_name: nombre,
+    email_from: correo,
+  };
+  if (telefono) candidateVals.partner_phone = telefono;
+
+  const candidateId = await odooCallKw<number>(baseUrl, cookie, "hr.candidate", "create", [candidateVals]);
+  if (!candidateId || typeof candidateId !== "number") {
+    throw new Error(`Could not create candidate in Odoo (ID: ${candidateId})`);
+  }
+
+  const appVals: Record<string, unknown> = {
+    candidate_id: candidateId,
+    partner_name: nombre,
+    email_from: correo,
+    partner_phone: telefono || false,
+  };
+  if (jobId) appVals.job_id = jobId;
+  if (stageId) appVals.stage_id = stageId;
+  if (mensaje) appVals.applicant_notes = `<p>${escapeHtml(mensaje)}</p>`;
+
+  const applicantId = await odooCallKw<number>(baseUrl, cookie, "hr.applicant", "create", [appVals]);
+  if (!applicantId || typeof applicantId !== "number") {
+    throw new Error(`Could not create applicant in Odoo (ID: ${applicantId})`);
+  }
+
+  return { candidateId, applicantId };
+};
+
 const nowIso = () => new Date().toISOString();
 
 export default {
@@ -395,6 +548,9 @@ export default {
     }
 
     if (request.method === "POST" && url.pathname === "/api/leads/contact") {
+      const rateLimitResponse = await enforceRateLimit(request, env, origin, "contact");
+      if (rateLimitResponse) return rateLimitResponse;
+
       let body: Record<string, unknown>;
       try {
         body = await parseJsonBody(request);
@@ -476,6 +632,9 @@ export default {
     }
 
     if (request.method === "POST" && url.pathname === "/api/leads/quote") {
+      const rateLimitResponse = await enforceRateLimit(request, env, origin, "quote");
+      if (rateLimitResponse) return rateLimitResponse;
+
       let body: Record<string, unknown>;
       try {
         body = await parseJsonBody(request);
@@ -586,6 +745,110 @@ export default {
       );
     }
 
+    if (request.method === "GET" && url.pathname === "/api/leads/recruitment/jobs") {
+      try {
+        const jobs = await getJobPositionsFromOdoo(env);
+        return json({ items: jobs }, 200, origin);
+      } catch (error) {
+        return json(
+          { error: error instanceof Error ? error.message : "Could not fetch Odoo jobs" },
+          500,
+          origin
+        );
+      }
+    }
+
+    if (request.method === "POST" && url.pathname === "/api/leads/recruitment") {
+      const rateLimitResponse = await enforceRateLimit(request, env, origin, "recruitment");
+      if (rateLimitResponse) return rateLimitResponse;
+
+      let body: Record<string, unknown>;
+      try {
+        body = await parseJsonBody(request);
+      } catch {
+        return json({ error: "Invalid JSON body" }, 400, origin);
+      }
+
+      const nombre = toOptionalString(body.nombre, 150);
+      const correo = toOptionalString(body.correo, 150)?.toLowerCase() ?? null;
+      const telefono = toOptionalString(body.telefono, 60);
+      const mensaje = toOptionalString(body.mensaje, 3000);
+      const jobId =
+        typeof body.jobId === "number" && Number.isInteger(body.jobId) && body.jobId > 0
+          ? body.jobId
+          : null;
+
+      if (!nombre || !correo || !isValidEmail(correo)) {
+        return json({ error: "nombre y correo (email válido) son obligatorios" }, 400, origin);
+      }
+
+      const insert = await env.DB.prepare(
+        `INSERT INTO leads (
+          lead_type, name, email, phone, company, message, service, sync_status, ip_address, user_agent, created_at, updated_at
+         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+      )
+        .bind(
+          LEAD_TYPE_RECRUITMENT,
+          nombre,
+          correo,
+          telefono,
+          null,
+          mensaje,
+          jobId ? String(jobId) : null,
+          "pending",
+          request.headers.get("cf-connecting-ip"),
+          request.headers.get("user-agent"),
+          nowIso(),
+          nowIso()
+        )
+        .run();
+
+      const leadId = Number(insert.meta.last_row_id);
+      let syncStatus: SyncStatus = "pending";
+      let syncError: string | null = null;
+      let odooPartnerId: number | null = null;
+      let odooSaleOrderId: number | null = null;
+
+      try {
+        const sync = await syncRecruitmentToOdoo(env, {
+          nombre,
+          correo,
+          telefono: telefono ?? undefined,
+          mensaje: mensaje ?? undefined,
+          jobId: jobId ?? undefined,
+        });
+        syncStatus = "synced";
+        odooPartnerId = sync.candidateId;
+        odooSaleOrderId = sync.applicantId;
+      } catch (error) {
+        syncStatus = "error";
+        syncError = error instanceof Error ? error.message.slice(0, 1000) : "Unknown sync error";
+      }
+
+      await env.DB.prepare(
+        `UPDATE leads
+         SET sync_status = ?, sync_error = ?, odoo_partner_id = ?, odoo_sale_order_id = ?, updated_at = ?
+         WHERE id = ?`
+      )
+        .bind(syncStatus, syncError, odooPartnerId, odooSaleOrderId, nowIso(), leadId)
+        .run();
+
+      return json(
+        {
+          ok: true,
+          leadId,
+          syncStatus,
+          odooApplicantId: odooSaleOrderId,
+          message:
+            syncStatus === "synced"
+              ? "Postulación recibida y sincronizada con Odoo"
+              : "Postulación recibida. Pendiente de sincronización con Odoo",
+        },
+        syncStatus === "synced" ? 201 : 202,
+        origin
+      );
+    }
+
     if (request.method === "GET" && url.pathname === "/api/leads") {
       if (!isAdmin(request, env)) {
         return json({ error: "Unauthorized" }, 401, origin);
@@ -650,6 +913,17 @@ export default {
             mensaje: String(lead.message ?? ""),
           });
           odooPartnerId = sync.partnerId;
+        } else if (lead.lead_type === LEAD_TYPE_RECRUITMENT) {
+          const jobId = lead.service ? Number(lead.service) : null;
+          const sync = await syncRecruitmentToOdoo(env, {
+            nombre: String(lead.name ?? ""),
+            correo: String(lead.email ?? ""),
+            telefono: lead.phone ? String(lead.phone) : undefined,
+            mensaje: lead.message ? String(lead.message) : undefined,
+            jobId: jobId && Number.isInteger(jobId) && jobId > 0 ? jobId : undefined,
+          });
+          odooPartnerId = sync.candidateId;
+          odooSaleOrderId = sync.applicantId;
         } else {
           const parsedOrderLines = (() => {
             try {

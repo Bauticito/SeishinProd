@@ -4,7 +4,6 @@ const API_BASE = (
   import.meta.env.VITE_LEADS_API_URL as string | undefined
 )?.trim() || DEFAULT_LEADS_API_URL;
 
-// ── API helpers ───────────────────────────────────────────────────────────────
 type ContactPayload = {
   nombre: string;
   correo: string;
@@ -79,117 +78,33 @@ export async function createOdooQuotation(data: QuotePayload) {
   });
 }
 
-// ── Reclutamiento (Odoo directo) ──────────────────────────────────────────────
-const ODOO_BASE = import.meta.env.VITE_ODOO_BASE_URL?.trim() || '/odoo-api';
-const DB        = import.meta.env.VITE_ODOO_DB       || 'testcont1';
-const ODOO_USER = import.meta.env.VITE_ODOO_USER     || 'admin';
-const PASSWORD  = import.meta.env.VITE_ODOO_PASSWORD || '1234';
-
-async function authenticate(): Promise<void> {
-  const res = await fetch(`${ODOO_BASE}/web/session/authenticate`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    credentials: 'include',
-    body: JSON.stringify({
-      jsonrpc: '2.0', method: 'call', id: 1,
-      params: { db: DB, login: ODOO_USER, password: PASSWORD },
-    }),
-  });
-  const data = await res.json();
-  if (!data.result?.uid) throw new Error('No se pudo autenticar con Odoo.');
-}
-
-async function callKw<T>(
-  model: string,
-  method: string,
-  args: unknown[],
-  kwargs: Record<string, unknown> = {},
-): Promise<T> {
-  const res = await fetch(`${ODOO_BASE}/web/dataset/call_kw`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    credentials: 'include',
-    body: JSON.stringify({
-      jsonrpc: '2.0', method: 'call', id: 2,
-      params: { model, method, args, kwargs },
-    }),
-  });
-  const data = await res.json();
-  if (data.error) throw new Error(data.error.data?.message || data.error.message || 'Error en Odoo');
-  return data.result as T;
-}
-
 export interface JobPosition {
-  id:   number;
+  id: number;
   name: string;
 }
 
 export interface JobApplicantData {
-  nombre:   string;
-  correo:   string;
+  nombre: string;
+  correo: string;
   telefono: string;
   mensaje?: string;
-  jobId?:   number;
-  jobName?: string;
+  jobId?: number;
 }
 
 export async function getJobPositions(): Promise<JobPosition[]> {
-  await authenticate();
-  return callKw<JobPosition[]>(
-    'hr.job', 'search_read',
-    [[]],
-    { fields: ['id', 'name'], order: 'name asc' },
-  );
+  const response = await fetch(`${API_BASE}/api/leads/recruitment/jobs`);
+  const data = await parseResponse(response);
+  return Array.isArray(data?.items) ? (data.items as JobPosition[]) : [];
 }
 
 export async function createJobApplicant(data: JobApplicantData): Promise<number> {
-  await authenticate();
+  const result = await postLead('/api/leads/recruitment', {
+    nombre: data.nombre,
+    correo: data.correo,
+    telefono: data.telefono || '',
+    mensaje: data.mensaje || '',
+    jobId: data.jobId,
+  });
 
-  let resolvedJobId = data.jobId;
-  if (!resolvedJobId && data.jobName) {
-    const existing = await callKw<JobPosition[]>(
-      'hr.job', 'search_read',
-      [[['name', '=ilike', data.jobName]]],
-      { fields: ['id', 'name'], limit: 1 },
-    );
-    if (existing.length > 0) resolvedJobId = existing[0].id;
-  }
-
-  let newStageId: number | undefined;
-  try {
-    const stages = await callKw<{ id: number; name: string }[]>(
-      'hr.recruitment.stage', 'search_read',
-      [[['fold', '=', false]]],
-      { fields: ['id', 'name'], limit: 1, order: 'sequence asc' },
-    );
-    if (stages.length > 0) newStageId = stages[0].id;
-  } catch { /* best-effort */ }
-
-  const candidateVals: Record<string, unknown> = {
-    partner_name: data.nombre,
-    email_from:   data.correo,
-  };
-  if (data.telefono) candidateVals.partner_phone = data.telefono;
-
-  const candidateId = await callKw<number>('hr.candidate', 'create', [candidateVals]);
-  if (!candidateId || typeof candidateId !== 'number') {
-    throw new Error(`No se pudo crear el candidato (ID: ${candidateId})`);
-  }
-
-  const appVals: Record<string, unknown> = {
-    candidate_id:  candidateId,
-    partner_name:  data.nombre,
-    email_from:    data.correo,
-    partner_phone: data.telefono || false,
-  };
-  if (resolvedJobId) appVals.job_id         = resolvedJobId;
-  if (newStageId)    appVals.stage_id        = newStageId;
-  if (data.mensaje)  appVals.applicant_notes = `<p>${data.mensaje}</p>`;
-
-  const applicantId = await callKw<number>('hr.applicant', 'create', [appVals]);
-  if (!applicantId || typeof applicantId !== 'number') {
-    throw new Error(`No se pudo crear la postulación (ID: ${applicantId})`);
-  }
-
-  return candidateId;
+  return Number(result?.leadId || 0);
 }
