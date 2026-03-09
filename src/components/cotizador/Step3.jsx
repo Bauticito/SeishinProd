@@ -10,7 +10,7 @@ export default function Step3({ formData, onChange }) {
 
       {showA && (
         <div className="branch-section">
-          <h3>Outsourcing</h3>
+          <h3>Servicio especializado</h3>
           <div className="form-grid">
             <div className="field-group">
               <label>Tipo de Operación</label>

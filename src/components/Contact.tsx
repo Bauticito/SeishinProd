@@ -91,8 +91,8 @@ export default function Contact() {
                   <Phone className="w-5 h-5 text-[var(--accent-primary)] mt-1 flex-shrink-0" />
                   <div>
                     <p className="text-[var(--text-secondary)] text-sm">Teléfono</p>
-                    <a href="tel:4491155269" className="text-[var(--text-primary)] font-semibold hover:text-[var(--accent-primary)] transition-colors">
-                      449 115 5269
+                    <a href="tel:4492917919" className="text-[var(--text-primary)] font-semibold hover:text-[var(--accent-primary)] transition-colors">
+                      449-291-7919
                     </a>
                   </div>
                 </div>
@@ -100,8 +100,8 @@ export default function Contact() {
                   <Mail className="w-5 h-5 text-[var(--accent-primary)] mt-1 flex-shrink-0" />
                   <div>
                     <p className="text-[var(--text-secondary)] text-sm">Correo</p>
-                    <a href="mailto:fabian.noel@seishin.com.mx" className="text-[var(--text-primary)] font-semibold hover:text-[var(--accent-primary)] transition-colors break-all">
-                      fabian.noel@seishin.com.mx
+                    <a href="mailto:info@seishin.com.mx" className="text-[var(--text-primary)] font-semibold hover:text-[var(--accent-primary)] transition-colors break-all">
+                      info@seishin.com.mx
                     </a>
                   </div>
                 </div>

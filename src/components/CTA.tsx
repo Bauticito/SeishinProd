@@ -10,7 +10,7 @@ export default function CTA() {
           ¿Listo para Transformar tus Operaciones?
         </h2>
         <p className="text-xl sm:text-2xl text-white/95 mb-12 max-w-3xl mx-auto leading-relaxed">
-          Asóciate con nosotros para outsourcing de IA centrado en personas. Avancemos rápido, juntos.
+          Asóciate con nosotros para servicio especializado de IA centrado en personas. Avancemos rápido, juntos.
         </p>
 
         <a

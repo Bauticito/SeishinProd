@@ -35,7 +35,7 @@ export default function Footer() {
               />
             </motion.div>
             <p className="text-[var(--text-secondary)] leading-relaxed text-sm sm:text-base mb-4">
-              Somos un socio de outsourcing habilitado por tecnología enfocado en operaciones escalables e inteligentes.
+              Somos un socio de servicio especializado habilitado por tecnología enfocado en operaciones escalables e inteligentes.
             </p>
             <p className="text-[var(--text-secondary)] leading-relaxed text-sm sm:text-base">
               Combinamos talento humano con automatización para que tu empresa opere más rápido, con mayor precisión y a menor costo.

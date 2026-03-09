@@ -13,8 +13,8 @@ import {
 } from '../../lib/formValidation';
 
 const SERVICES_MAP: Record<string, string> = {
-  outsourcing_op:  'Outsourcing Operativo',
-  outsourcing_adm: 'Outsourcing Administrativo',
+  outsourcing_op:  'Servicio especializado Operativo',
+  outsourcing_adm: 'Servicio especializado Administrativo',
   inspeccion:      'Inspección de Calidad',
   traduccion:      'Traducción (Evento/Planta)',
   consultoria:     'Consultoría LFT/SAT/REPSE',

@@ -28,7 +28,7 @@ export default function BrandingHighlight() {
                         </h2>
 
                         <p className="text-2xl md:text-3xl text-[var(--text-secondary)] font-medium max-w-4xl mx-auto mb-16 leading-relaxed">
-                            Donde la <span className="text-[#E31E24]">Inteligencia Artificial</span> se encuentra con la excelencia operativa industrial para redefinir el futuro del outsourcing.
+                            Donde la <span className="text-[#E31E24]">Inteligencia Artificial</span> se encuentra con la excelencia operativa industrial para redefinir el futuro del servicio especializado.
                         </p>
 
                         <div className="grid md:grid-cols-3 gap-8">

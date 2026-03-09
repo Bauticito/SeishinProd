@@ -1,6 +1,6 @@
 const SERVICES = [
-  { value: 'outsourcing_op',  label: 'Outsourcing Operativo',         branch: 'A' },
-  { value: 'outsourcing_adm', label: 'Outsourcing Administrativo',    branch: 'A' },
+  { value: 'outsourcing_op',  label: 'Servicio especializado Operativo',         branch: 'A' },
+  { value: 'outsourcing_adm', label: 'Servicio especializado Administrativo',    branch: 'A' },
   { value: 'inspeccion',      label: 'Inspección de Calidad',         branch: 'B' },
   { value: 'traduccion',      label: 'Traducción (Evento/Planta)',     branch: 'C' },
   { value: 'consultoria',     label: 'Consultoría LFT/SAT/REPSE',     branch: 'C' },
