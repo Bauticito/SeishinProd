@@ -145,7 +145,7 @@ export default function Footer() {
         <div className="border-t border-[var(--border-color)] pt-8 sm:pt-10">
           <div className="flex flex-col items-center gap-3">
             <p className="text-[var(--text-secondary)] text-xs sm:text-sm text-center">
-              © 2025 Seishin. Todos los derechos reservados.
+              © 2026 Seishin. Todos los derechos reservados.
             </p>
           </div>
         </div>
