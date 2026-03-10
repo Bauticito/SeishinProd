@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Send } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Send, StretchVerticalIcon } from 'lucide-react';
 import { SwalWarning } from '../../lib/swal';
 import { validateRazonSocial, validateRFC } from '../../lib/formValidation';
 import Step0 from './Step0';
@@ -13,8 +13,8 @@ import Step6 from './Step6';
 import ProposalModal from './ProposalModal';
 
 const BRANCH_MAP: Record<string, string> = {
-  outsourcing_op:  'A',
-  outsourcing_adm: 'A',
+  servicio_especializado:  'A',
+  servicio_especializado_adm: 'A',
   inspeccion:      'B',
   traduccion:      'C',
   consultoria:     'C',

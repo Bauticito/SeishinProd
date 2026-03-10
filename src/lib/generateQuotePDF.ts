@@ -284,7 +284,7 @@ export function generateQuotePDF(data: PDFQuoteData): void {
   doc.setFontSize(6.5);
   doc.setTextColor(...C.lgray);
   doc.text('Soluciones Globales de Servicios', ML + 6, 22.5);
-  doc.text('Outsourcing  ·  Inspección  ·  Reclutamiento  ·  IA', ML + 6, 28);
+  doc.text('Servicio Especializado  ·  Inspección  ·  Reclutamiento  ·  IA', ML + 6, 28);
 
   doc.setTextColor(...C.white);
   doc.setFont('helvetica', 'bold');

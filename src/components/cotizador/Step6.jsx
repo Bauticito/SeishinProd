@@ -1,5 +1,14 @@
+const SERVICE_LABELS = {
+  outsourcing_op:  'Servicio especializado Operativo',
+  outsourcing_adm: 'Servicio especializado Administrativo',
+  reclutamiento:   'Reclutamiento y Selección',
+  payroll:         'Nómina',
+  otros:           'Otros',
+}
+
 export default function Step6({ formData, onChange }) {
   const { company_name, contact_name, services, rfc, email } = formData
+  const serviceLabels = services.map(s => SERVICE_LABELS[s] || s)
 
   return (
     <div className="step-content">
@@ -17,7 +26,7 @@ export default function Step6({ formData, onChange }) {
           <div><strong>Empresa:</strong> {company_name || 'N/A'}</div>
           <div><strong>Contacto:</strong> {contact_name || 'N/A'}</div>
           <div className="full-width">
-            <strong>Servicios:</strong> {services.length > 0 ? services.join(', ') : 'Ninguno'}
+            <strong>Servicios:</strong> {serviceLabels.length > 0 ? serviceLabels.join(', ') : 'Ninguno'}
           </div>
           <div><strong>RFC:</strong> {rfc || 'N/A'}</div>
           <div><strong>Email:</strong> {email || 'N/A'}</div>

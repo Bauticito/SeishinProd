@@ -108,13 +108,13 @@ export default function Navigation() {
           </motion.div>
 
           {/* Nav links - centro */}
-          <div className="hidden md:flex flex-1 justify-center items-center gap-5 lg:gap-7">
+          <div className="hidden md:flex flex-1 justify-center items-center gap-3 lg:gap-6">
             {navLinks.map((link) => (
               <a
                 key={link.name}
                 href={link.href}
                 onClick={(e) => handleLinkClick(e, link.href)}
-                className={`text-sm font-medium tracking-wide transition-all duration-300 hover:text-[#E31E24] relative group px-2 py-1 whitespace-nowrap ${location.pathname === link.href || (location.pathname === '/' && location.hash === link.href)
+                className={`text-xs lg:text-sm font-medium tracking-wide transition-all duration-300 hover:text-[#E31E24] relative group px-1 py-1 whitespace-nowrap ${location.pathname === link.href || (location.pathname === '/' && location.hash === link.href)
                   ? 'text-[#E31E24]'
                   : 'text-[var(--text-primary)]'
                   }`}
@@ -127,62 +127,50 @@ export default function Navigation() {
           </div>
 
           {/* Botones de acción - derecha */}
-          <div className="hidden md:flex flex-none items-center gap-2 lg:gap-3">
-            <div className="h-6 w-px bg-[var(--border-color-light)] opacity-20"></div>
+          <div className="hidden md:flex flex-none items-center gap-1.5 lg:gap-2">
+            <div className="h-5 w-px bg-[var(--border-color-light)] opacity-20 mx-1"></div>
 
-            <motion.div
-              whileHover={{ y: -2 }}
-              whileTap={{ scale: 0.98 }}
-              className="whitespace-nowrap"
-            >
+            <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }} className="whitespace-nowrap">
               <Link
                 to="/calculator"
-                className="text-[var(--text-primary)] px-4 lg:px-5 py-2.5 rounded-full transition-all duration-500 font-medium text-[10px] lg:text-xs border border-[var(--border-color-light)] hover:border-[#E31E24] hover:bg-[#E31E24] hover:text-white tracking-widest uppercase inline-block whitespace-nowrap"
+                className="text-[var(--text-primary)] px-3 lg:px-4 py-2 rounded-full transition-all duration-500 font-medium text-[9px] lg:text-[10px] border border-[var(--border-color-light)] hover:border-[#E31E24] hover:bg-[#E31E24] hover:text-white tracking-wider uppercase inline-block whitespace-nowrap"
               >
                 Calcula tu servicio
               </Link>
             </motion.div>
 
-            <motion.div
-              whileHover={{ y: -2 }}
-              whileTap={{ scale: 0.98 }}
-              className="whitespace-nowrap"
-            >
+            <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }} className="whitespace-nowrap">
               <a
                 href="https://srv.seishin.com.mx/web/login"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 px-4 lg:px-5 py-2.5 rounded-full bg-[var(--bg-tertiary)] border border-[var(--border-color-light)] text-[var(--text-primary)] font-medium text-[10px] lg:text-xs hover:bg-[var(--bg-secondary)] transition-all duration-300 tracking-widest uppercase"
+                className="flex items-center gap-1.5 px-3 lg:px-4 py-2 rounded-full bg-[var(--bg-tertiary)] border border-[var(--border-color-light)] text-[var(--text-primary)] font-medium text-[9px] lg:text-[10px] hover:bg-[var(--bg-secondary)] transition-all duration-300 tracking-wider uppercase"
               >
                 ERP
                 <span className="w-1 h-1 rounded-full bg-[#E31E24]"></span>
               </a>
             </motion.div>
 
-            <motion.div
-              whileHover={{ y: -2 }}
-              whileTap={{ scale: 0.98 }}
-              className="whitespace-nowrap"
-            >
+            <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }} className="whitespace-nowrap">
               <Link
                 to="/jetson/landing"
-                className="flex items-center gap-2 px-4 lg:px-5 py-2.5 rounded-full bg-[#E31E24]/10 border border-[#E31E24]/30 text-[#E31E24] font-medium text-[10px] lg:text-xs hover:bg-[#E31E24] hover:text-white transition-all duration-300 tracking-widest uppercase"
+                className="flex items-center gap-1.5 px-3 lg:px-4 py-2 rounded-full bg-[#E31E24]/10 border border-[#E31E24]/30 text-[#E31E24] font-medium text-[9px] lg:text-[10px] hover:bg-[#E31E24] hover:text-white transition-all duration-300 tracking-wider uppercase"
               >
                 Portal IA
                 <span className="w-1 h-1 rounded-full bg-[#E31E24]"></span>
               </Link>
             </motion.div>
 
-            <div className="h-6 w-px bg-[var(--border-color-light)] opacity-20"></div>
+            <div className="h-5 w-px bg-[var(--border-color-light)] opacity-20 mx-1"></div>
 
             {/* ── Language selector ── */}
             <div ref={langRef} className="relative">
               <button
                 onClick={() => setLangOpen(o => !o)}
-                className="p-3 rounded-full glass border border-[var(--border-color-light)] text-[var(--text-primary)] hover:border-[#E31E24] hover:text-[#E31E24] transition-all duration-300 flex items-center justify-center min-w-[44px] min-h-[44px]"
+                className="p-2 rounded-full glass border border-[var(--border-color-light)] text-[var(--text-primary)] hover:border-[#E31E24] hover:text-[#E31E24] transition-all duration-300 flex items-center justify-center"
                 aria-label="Seleccionar idioma"
               >
-                <Languages className="w-5 h-5" />
+                <Languages className="w-4 h-4" />
               </button>
 
               <AnimatePresence>
@@ -215,20 +203,17 @@ export default function Navigation() {
 
             <button
               onClick={toggleTheme}
-              className="p-3 rounded-full glass border border-[var(--border-color-light)] text-[var(--text-primary)] hover:border-[#E31E24] hover:text-[#E31E24] transition-all duration-300 flex items-center justify-center min-w-[44px] min-h-[44px]"
+              className="p-2 rounded-full glass border border-[var(--border-color-light)] text-[var(--text-primary)] hover:border-[#E31E24] hover:text-[#E31E24] transition-all duration-300 flex items-center justify-center"
               aria-label="Toggle theme"
             >
-              {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+              {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
             </button>
 
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <a
                 href="/#contact"
                 onClick={goToContact}
-                className="btn-primary px-5 py-3 text-xs font-semibold tracking-widest uppercase whitespace-nowrap"
+                className="btn-primary px-4 py-2.5 text-[9px] lg:text-xs font-semibold tracking-wider uppercase whitespace-nowrap"
               >
                 Contacto
               </a>
