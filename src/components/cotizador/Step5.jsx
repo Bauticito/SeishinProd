@@ -1,6 +1,6 @@
 import { SwalWarning } from '../../lib/swal'
 
-const MAX_BYTES = 50 * 1024 * 1024 // 50 MB
+const MAX_BYTES = 2 * 1024 * 1024 // 2 MB
 
 function formatSize(bytes) {
   if (bytes < 1024) return `${bytes} B`
@@ -16,7 +16,7 @@ export default function Step5({ formData, onChange }) {
     if (totalSize > MAX_BYTES) {
       SwalWarning(
         'Archivos demasiado grandes',
-        `El tamaño total es ${formatSize(totalSize)}. El límite es 50 MB. Reduce los archivos seleccionados.`
+        `El tamaño total es ${formatSize(totalSize)}. El límite es 2 MB. Reduce los archivos seleccionados.`
       )
       e.target.value = ''
       return
@@ -31,7 +31,7 @@ export default function Step5({ formData, onChange }) {
     <div className="step-content">
       <h2 className="section-title"><span>5.</span> Documentos y Evidencia</h2>
       <p style={{ marginBottom: '2rem', color: 'var(--text-dim)' }}>
-        Sube archivos relevantes (Layouts, EHS, Requisitos alta proveedor). Máximo <strong>50 MB</strong> en total.
+        Sube archivos relevantes (Layouts, EHS, Requisitos alta proveedor). Máximo <strong>2 MB</strong> en total.
       </p>
 
       <div className="upload-area">
@@ -48,7 +48,7 @@ export default function Step5({ formData, onChange }) {
               ))}
             </ul>
             <p style={{ marginTop: '0.5rem', fontSize: '0.8rem', color: 'var(--text-dim)', textAlign: 'right' }}>
-              Total: <strong>{formatSize(totalSize)}</strong> / 50 MB
+              Total: <strong>{formatSize(totalSize)}</strong> / 2 MB
             </p>
           </>
         )}

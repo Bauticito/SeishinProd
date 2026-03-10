@@ -97,6 +97,24 @@ export async function getJobPositions(): Promise<JobPosition[]> {
   return Array.isArray(data?.items) ? (data.items as JobPosition[]) : [];
 }
 
+export type OdooDocumentFile = {
+  name: string;
+  datas: string; // base64
+  mimetype: string;
+};
+
+export async function uploadDocumentsToOdoo(
+  files: OdooDocumentFile[],
+  customerName?: string,
+  folderName = 'Pagina Cotizaciones',
+): Promise<void> {
+  await postLead('/api/leads/documents', {
+    files,
+    folderName,
+    customerName: customerName || '',
+  });
+}
+
 export async function createJobApplicant(data: JobApplicantData): Promise<number> {
   const result = await postLead('/api/leads/recruitment', {
     nombre: data.nombre,

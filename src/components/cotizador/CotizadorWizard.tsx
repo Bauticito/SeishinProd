@@ -248,6 +248,7 @@ export default function CotizadorWizard() {
           // reset wizard after closing if desired
         }}
         wizardData={form}
+        files={form.files}
       />
     </>
   );

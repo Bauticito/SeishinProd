@@ -258,7 +258,7 @@ function drawFooter(doc: jsPDF): void {
 }
 
 // ─── generador principal ─────────────────────────────────────────────────────
-export function generateQuotePDF(data: PDFQuoteData): void {
+function buildQuotePDF(data: PDFQuoteData): { doc: jsPDF; slug: string } {
   const doc = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
   const ref = mkFolio();
   const wiz = data.wizardSnapshot;
@@ -613,5 +613,17 @@ export function generateQuotePDF(data: PDFQuoteData): void {
   drawFooter(doc);
 
   const slug = servicesLabel.replace(/[\s/–—·]+/g, '-').toLowerCase().slice(0, 40);
+  return { doc, slug };
+}
+
+export function generateQuotePDF(data: PDFQuoteData): void {
+  const { doc, slug } = buildQuotePDF(data);
   doc.save(`cotizacion-seishin-${slug}.pdf`);
+}
+
+export function generateQuotePDFBase64(data: PDFQuoteData): { base64: string; filename: string } {
+  const { doc, slug } = buildQuotePDF(data);
+  const dataUri = doc.output('datauristring');
+  const base64 = dataUri.split(',')[1] ?? '';
+  return { base64, filename: `cotizacion-seishin-${slug}.pdf` };
 }

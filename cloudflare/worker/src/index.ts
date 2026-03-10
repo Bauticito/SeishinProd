@@ -60,6 +60,18 @@ type JobPosition = {
   name: string;
 };
 
+type DocumentFile = {
+  name: string;
+  datas: string; // base64
+  mimetype: string;
+};
+
+type DocumentsPayload = {
+  files: DocumentFile[];
+  folderName: string;
+  customerName?: string;
+};
+
 type RecruitmentPayload = {
   nombre: string;
   correo: string;
@@ -526,6 +538,74 @@ const syncRecruitmentToOdoo = async (env: Env, payload: RecruitmentPayload) => {
   return { candidateId, applicantId };
 };
 
+const findDocumentFolder = async (
+  baseUrl: string,
+  cookie: string,
+  nameOrToken: string
+): Promise<number | null> => {
+  try {
+    // 1. Por access_token (token visible en la URL de Odoo Documents)
+    const byAccessToken = await odooCallKw<{ id: number }[]>(
+      baseUrl, cookie, "documents.document", "search_read",
+      [[["access_token", "=", nameOrToken]]],
+      { fields: ["id"], limit: 1 }
+    );
+    if (byAccessToken.length > 0) return byAccessToken[0].id;
+
+    // 2. Por document_token
+    const byDocToken = await odooCallKw<{ id: number }[]>(
+      baseUrl, cookie, "documents.document", "search_read",
+      [[["document_token", "=", nameOrToken]]],
+      { fields: ["id"], limit: 1 }
+    );
+    if (byDocToken.length > 0) return byDocToken[0].id;
+
+    // 3. Por nombre exacto
+    const byName = await odooCallKw<{ id: number }[]>(
+      baseUrl, cookie, "documents.document", "search_read",
+      [[["name", "=", nameOrToken]]],
+      { fields: ["id"], limit: 1 }
+    );
+    if (byName.length > 0) return byName[0].id;
+
+    // 4. Nombre parcial como último recurso
+    const byPartial = await odooCallKw<{ id: number }[]>(
+      baseUrl, cookie, "documents.document", "search_read",
+      [[["name", "ilike", nameOrToken]]],
+      { fields: ["id"], limit: 1 }
+    );
+    return byPartial.length > 0 ? byPartial[0].id : null;
+  } catch {
+    return null;
+  }
+};
+
+const uploadDocumentsToOdoo = async (
+  env: Env,
+  payload: DocumentsPayload
+): Promise<number[]> => {
+  const { baseUrl, cookie } = await odooAuthenticate(env);
+  const folderId = await findDocumentFolder(baseUrl, cookie, payload.folderName);
+
+  const ids: number[] = [];
+  for (const file of payload.files) {
+    const vals: Record<string, unknown> = {
+      name: file.name,
+      datas: file.datas,
+      mimetype: file.mimetype || "application/octet-stream",
+      type: "binary",
+    };
+    if (folderId) vals.folder_id = folderId;
+    if (payload.customerName) vals.description = `Cotización de: ${payload.customerName}`;
+
+    const docId = await odooCallKw<number>(
+      baseUrl, cookie, "documents.document", "create", [vals]
+    );
+    ids.push(docId);
+  }
+  return ids;
+};
+
 const nowIso = () => new Date().toISOString();
 
 export default {
@@ -969,6 +1049,60 @@ export default {
         syncStatus === "synced" ? 200 : 500,
         origin
       );
+    }
+
+    if (request.method === "POST" && url.pathname === "/api/leads/documents") {
+      const rateLimitResponse = await enforceRateLimit(request, env, origin, "documents");
+      if (rateLimitResponse) return rateLimitResponse;
+
+      let body: Record<string, unknown>;
+      try {
+        body = await parseJsonBody(request);
+      } catch {
+        return json({ error: "Invalid JSON body" }, 400, origin);
+      }
+
+      const folderName = toOptionalString(body.folderName, 200) ?? "pagina cotizaciones";
+      const customerName = toOptionalString(body.customerName, 150);
+      const rawFiles = Array.isArray(body.files) ? body.files : [];
+
+      // base64 de 2 MB = ~2.73 MB de texto (~2,864,000 chars)
+      const MAX_BASE64_LEN = Math.ceil((2 * 1024 * 1024 * 4) / 3) + 100;
+      const MAX_FILES = 10;
+
+      const files: DocumentFile[] = [];
+      for (const f of rawFiles.slice(0, MAX_FILES)) {
+        if (!f || typeof f !== "object") continue;
+        const r = f as Record<string, unknown>;
+        const name = toOptionalString(r.name, 200);
+        const datas =
+          typeof r.datas === "string" && r.datas.length <= MAX_BASE64_LEN
+            ? r.datas
+            : null;
+        const mimetype =
+          toOptionalString(r.mimetype, 100) || "application/octet-stream";
+        if (!name || !datas) continue;
+        files.push({ name, datas, mimetype });
+      }
+
+      if (files.length === 0) {
+        return json({ error: "No valid files provided" }, 400, origin);
+      }
+
+      try {
+        const documentIds = await uploadDocumentsToOdoo(env, {
+          files,
+          folderName,
+          customerName: customerName || undefined,
+        });
+        return json({ ok: true, documentIds }, 201, origin);
+      } catch (error) {
+        return json(
+          { error: error instanceof Error ? error.message : "Failed to upload documents" },
+          500,
+          origin
+        );
+      }
     }
 
     if (!url.pathname.startsWith("/api/media")) {

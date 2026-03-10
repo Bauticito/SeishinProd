@@ -3,7 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Send, CheckCircle, FileDown } from 'lucide-react';
 import { SwalSuccess, SwalError } from '../../lib/swal';
 import { createOdooQuotation } from '../../services/odooService';
-import { generateQuotePDF, type WizardSnapshot } from '../../lib/generateQuotePDF';
+import { generateQuotePDF, generateQuotePDFBase64, type WizardSnapshot } from '../../lib/generateQuotePDF';
+import { uploadDocumentsToOdoo, type OdooDocumentFile } from '../../services/odooService';
 import {
   validateNombre,
   validateCorreo,
@@ -31,6 +32,7 @@ interface Props {
   open:         boolean;
   onClose:      () => void;
   wizardData:   WizardSnapshot;
+  files?:       File[];
 }
 
 const URGENCY: Record<string, string> = {
@@ -41,7 +43,18 @@ const URGENCY: Record<string, string> = {
 
 const emptyErrors = { name: '', email: '', phone: '', company: '', notes: '' };
 
-export default function ProposalModal({ open, onClose, wizardData }: Props) {
+const fileToBase64 = (file: File): Promise<string> =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = reader.result as string;
+      resolve(result.split(',')[1] ?? '');
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+
+export default function ProposalModal({ open, onClose, wizardData, files }: Props) {
   const [name,    setName]    = useState('');
   const [email,   setEmail]   = useState('');
   const [phone,   setPhone]   = useState('');
@@ -134,6 +147,41 @@ export default function ProposalModal({ open, onClose, wizardData }: Props) {
 
       setStatus('success');
       SwalSuccess('¡Cotización enviada!', 'Un asesor te contactará pronto.');
+
+      // Subir documentos a Odoo Documents en segundo plano
+      (async () => {
+        try {
+          const docs: OdooDocumentFile[] = [];
+
+          // Archivos del usuario
+          if (files && files.length > 0) {
+            for (const f of files) {
+              const datas = await fileToBase64(f);
+              docs.push({ name: f.name, datas, mimetype: f.type || 'application/octet-stream' });
+            }
+          }
+
+          // PDF de la cotización
+          const pdfData = generateQuotePDFBase64({
+            service:        servicesLabel,
+            subService:     servicesLabel,
+            quantity:       wizardData.size || 'N/A',
+            estimate:       'Cotización en proceso — nuestro equipo te contactará pronto',
+            customerName:   name,
+            customerEmail:  email,
+            customerPhone:  phone,
+            company,
+            notes:          notes || undefined,
+            wizardSnapshot: { ...wizardData, contact_name: name, email, phone, company_name: company || wizardData.company_name },
+          });
+          docs.push({ name: pdfData.filename, datas: pdfData.base64, mimetype: 'application/pdf' });
+
+          await uploadDocumentsToOdoo(docs, name);
+        } catch (uploadErr) {
+          // No bloquear la UX, pero registrar el error para depuración
+          console.error('[Odoo Docs] Error al subir documentos:', uploadErr);
+        }
+      })();
     } catch (err) {
       SwalError('No se pudo enviar', err instanceof Error ? err.message : 'Error al enviar la solicitud');
     }
