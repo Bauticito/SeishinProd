@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Users, Forklift, ClipboardCheck, Package, Bot, FileCheck, Languages, Wrench } from 'lucide-react';
 import { motion } from 'framer-motion';
 import type { LucideIcon } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 type Service = {
   title: string;
@@ -9,57 +10,16 @@ type Service = {
   icon: LucideIcon;
 };
 
-const services: Service[] = [
-  {
-    title: 'Planificación estratégica de personal',
-    text: 'Gestión estratégica de recursos humanos con análisis predictivo.',
-    icon: Users,
-  },
-  {
-    title: 'Logística interna con montacargas',
-    text: 'Operaciones eficientes de manejo de materiales y optimización de flujos.',
-    icon: Forklift,
-  },
-  {
-    title: 'Servicio de inspección de calidad',
-    text: 'Control riguroso y aseguramiento de calidad bajo estándares internacionales.',
-    icon: ClipboardCheck,
-  },
-  {
-    title: 'Retrabajo de partes y almacenaje',
-    text: 'Gestión integral de productos manufacturados con trazabilidad total.',
-    icon: Package,
-  },
-  {
-    title: 'Automatización con IA',
-    text: 'Análisis de datos y automatización de procesos administrativos inteligentes.',
-    icon: Bot,
-  },
-  {
-    title: 'Aseguramiento de Calidad',
-    text: 'Estandarización y mejora continua de procesos industriales.',
-    icon: FileCheck,
-  },
-  {
-    title: 'Servicio de traducción técnica',
-    text: 'Traducciones legales y técnicas especializadas para la industria.',
-    icon: Languages,
-  },
-  {
-    title: 'Fabricación de JIGS',
-    text: 'Diseño y fabricación de herramientas de precisión para manufactura.',
-    icon: Wrench,
-  },
-];
+const serviceIcons: LucideIcon[] = [Users, Forklift, ClipboardCheck, Package, Bot, FileCheck, Languages, Wrench];
 
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.1
-    }
-  }
+      staggerChildren: 0.1,
+    },
+  },
 };
 
 const itemVariants = {
@@ -67,14 +27,21 @@ const itemVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.5 }
-  }
+    transition: { duration: 0.5 },
+  },
 };
 
 export default function Services() {
+  const { t } = useTranslation();
+  const services: Service[] = serviceIcons.map((icon, index) => ({
+    icon,
+    title: t(`services.s${index + 1}_title`),
+    text: t(`services.s${index + 1}_desc`),
+  }));
+
   return (
     <section id="services" className="py-24 px-4 sm:px-6 bg-[var(--bg-secondary)] relative overflow-hidden">
-      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-[var(--border-color-light)] to-transparent"></div>
+      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-[var(--border-color-light)] to-transparent" />
 
       <div className="max-w-7xl mx-auto">
         <motion.div
@@ -84,11 +51,9 @@ export default function Services() {
           className="text-center mb-20"
         >
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-[var(--text-primary)] mb-6 tracking-tight">
-            Nuestros <span className="gradient-text">Servicios</span>
+            {t('services.heading')} <span className="gradient-text">{t('services.heading_accent')}</span>
           </h2>
-          <p className="text-xl text-[var(--text-secondary)] max-w-3xl mx-auto leading-relaxed">
-            Soluciones integrales diseñadas para la excelencia operativa en la industria automotriz y manufacturera.
-          </p>
+          <p className="text-xl text-[var(--text-secondary)] max-w-3xl mx-auto leading-relaxed">{t('services.intro')}</p>
         </motion.div>
 
         <motion.div
@@ -100,9 +65,7 @@ export default function Services() {
         >
           {services.map((service, index) => {
             const Icon = service.icon;
-            return (
-              <ServiceCard key={index} service={service} Icon={Icon} />
-            );
+            return <ServiceCard key={index} service={service} Icon={Icon} moreLabel={t('services.more')} />;
           })}
         </motion.div>
       </div>
@@ -110,7 +73,7 @@ export default function Services() {
   );
 }
 
-function ServiceCard({ service, Icon }: { service: Service; Icon: LucideIcon }) {
+function ServiceCard({ service, Icon, moreLabel }: { service: Service; Icon: LucideIcon; moreLabel: string }) {
   const [rotateX, setRotateX] = useState(0);
   const [rotateY, setRotateY] = useState(0);
 
@@ -121,10 +84,8 @@ function ServiceCard({ service, Icon }: { service: Service; Icon: LucideIcon }) 
     const y = e.clientY - rect.top;
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
-    const rotateXValue = (y - centerY) / 10;
-    const rotateYValue = (centerX - x) / 10;
-    setRotateX(rotateXValue);
-    setRotateY(rotateYValue);
+    setRotateX((y - centerY) / 10);
+    setRotateY((centerX - x) / 10);
   };
 
   const handleMouseLeave = () => {
@@ -139,7 +100,7 @@ function ServiceCard({ service, Icon }: { service: Service; Icon: LucideIcon }) 
       onMouseLeave={handleMouseLeave}
       animate={{ rotateX, rotateY }}
       whileHover={{ y: -5, scale: 1.02 }}
-      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+      transition={{ type: 'spring', stiffness: 300, damping: 20 }}
       className="card p-8 group relative bg-[var(--card-bg)] backdrop-blur-xl border border-[var(--border-color-light)] overflow-hidden transform-gpu"
       style={{ transformStyle: 'preserve-3d' }}
     >
@@ -159,12 +120,12 @@ function ServiceCard({ service, Icon }: { service: Service; Icon: LucideIcon }) 
         {service.title}
       </h3>
 
-      <p className="text-[var(--text-secondary)] leading-relaxed text-sm relative z-10">
-        {service.text}
-      </p>
+      <p className="text-[var(--text-secondary)] leading-relaxed text-sm relative z-10">{service.text}</p>
 
       <div className="mt-6 pt-6 border-t border-[var(--border-color-light)] opacity-40 group-hover:opacity-100 transition-all duration-300">
-        <span className="text-xs font-bold text-[#E31E24] uppercase tracking-wider cursor-pointer hover:translate-x-1 transition-transform inline-block">Saber más →</span>
+        <span className="text-xs font-bold text-[#E31E24] uppercase tracking-wider cursor-pointer hover:translate-x-1 transition-transform inline-block">
+          {moreLabel}
+        </span>
       </div>
     </motion.div>
   );

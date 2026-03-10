@@ -8,17 +8,15 @@
     "galeria": "Gallery",
     "calcular": "Calculate your service",
     "contacto": "Contact",
-    "contáctanos": "Contact us",
+    "contactanos": "Contact us",
     "erp": "ERP Access"
   },
   "lang": {
-    "es": "Español",
-    "en": "English",
-    "ja": "日本語"
+    "es": "Spanish",
+    "en": "English"
   },
   "hero": {
     "badge": "Leading Industry 4.0 in Mexico",
-    "heading": "Business solutions, eliminating human resource barriers",
     "heading_1": "Business",
     "heading_2": "solutions",
     "heading_3": "eliminating human resource barriers",
@@ -30,25 +28,19 @@
     "trust_2": "Guaranteed Quality",
     "trust_3": "24/7 Support"
   },
-  "about": {
-    "heading": "About",
-    "heading_accent": "Us",
-    "p1": "Seishin is a company created to solve difficulties and facilitate administration and human resources tasks in foreign-capital companies.",
-    "p2": "We provide outsourcing, recruitment, consulting, legal procedures, legal translations and emerging technology solutions.",
-    "stat_1_value": "200+",
-    "stat_1_label": "Specialized collaborators",
-    "stat_2_value": "+50",
-    "stat_2_label": "Companies already working with us",
-    "stat_3_value": "24/7",
-    "stat_3_label": "Operational response",
-    "founder_title": "CEO & Founder",
-    "founder_bio": "A leader committed to industrial development in Mexico. He founded Seishin with the mission of connecting talent, leading successful labor placement processes with foreign-capital companies seeking efficiency and commitment."
+  "mission": {
+    "title": "Mission",
+    "description": "Ensure the human factor is not a barrier in day-to-day operations, reducing and improving production times. Make our clients' human resources activities easier, collaborating fully to achieve their business and social goals. Integrate artificial intelligence tools as allies of human talent to optimize management and operational productivity."
+  },
+  "vision": {
+    "title": "Vision",
+    "description": "Build a network of specialized personnel across the country in the sectors our clients require. Consolidate ourselves as a leading company through honest and committed work with our clients. Incorporate emerging technologies as solutions that drive innovation and continuous improvement in our services."
   },
   "services": {
     "heading": "Our",
     "heading_accent": "Services",
     "intro": "Comprehensive solutions designed for operational excellence in the automotive and manufacturing industry.",
-    "more": "Learn more →",
+    "more": "Learn more ->",
     "s1_title": "Strategic workforce planning",
     "s1_desc": "Strategic human resources management with predictive analysis.",
     "s2_title": "Internal forklift logistics",
@@ -64,18 +56,129 @@
     "s7_title": "Technical translation service",
     "s7_desc": "Specialized legal and technical translations for the industry.",
     "s8_title": "JIGS manufacturing",
-    "s8_desc": "Design and manufacturing of precision tools for manufacturing."
+    "s8_desc": "Design and manufacturing of precision tools for production."
+  },
+  "value": {
+    "heading": "Added",
+    "heading_accent": "Value",
+    "intro": "Solutions that overcome human talent barriers",
+    "proposition_title": "Our Value Proposition",
+    "items": [
+      {
+        "title": "200% inspection containment",
+        "description": "Reliability in specialized processes"
+      },
+      {
+        "title": "Personnel training plan",
+        "description": "Training based on critical points with ILU tests"
+      },
+      {
+        "title": "Operational quality services",
+        "description": "Qualified engineers to standardize processes and improvements"
+      },
+      {
+        "title": "Periodic reports",
+        "description": "Reports with trends and efficiency recommendations"
+      },
+      {
+        "title": "Support for new launches",
+        "description": "Early-stage project support that guarantees quality"
+      },
+      {
+        "title": "Process efficiency improvement through AI tools",
+        "description": "Automated optimization powered by artificial intelligence"
+      }
+    ],
+    "propositions": [
+      "We prioritize our clients' needs",
+      "We take their standards and specifications into account",
+      "We provide innovative, high-quality solutions to address human talent shortages",
+      "Expert and experienced team with specialized knowledge",
+      "Industry leadership through exceptional service"
+    ]
+  },
+  "branding": {
+    "badge": "Next Generation",
+    "line_1": "Where",
+    "line_2": "Artificial Intelligence",
+    "line_3": "meets industrial operational excellence to redefine the future of specialized services.",
+    "items": [
+      {
+        "title": "AI Core",
+        "desc": "Proprietary algorithms for process optimization."
+      },
+      {
+        "title": "Global Standard",
+        "desc": "Compliance with international Industry 4.0 standards."
+      },
+      {
+        "title": "Ultra-Efficiency",
+        "desc": "Reduced operating times through intelligent automation."
+      }
+    ]
+  },
+  "industry": {
+    "badge": "Next Level",
+    "heading": "Industry",
+    "heading_accent": "4.0",
+    "intro": "Digital transformation is not optional; it is the engine of modern competitiveness. We are ready to lead your evolution.",
+    "timeline_title": "Industrial Evolution",
+    "elements_title": "Key Elements",
+    "solutions_title": "Our Solutions",
+    "cta": "Become Industry 4.0",
+    "elements": [
+      "Digital information",
+      "Intelligent employees",
+      "Smart cameras",
+      "24/7 connected client",
+      "Strategic alignment",
+      "Efficient operations"
+    ],
+    "solutions": [
+      {
+        "title": "Intelligent call center",
+        "desc": "Omnichannel management with AI"
+      },
+      {
+        "title": "ERP + AI ecosystem",
+        "desc": "Administrative automation"
+      },
+      {
+        "title": "Autonomous workflows",
+        "desc": "Value flow optimization"
+      }
+    ],
+    "timeline": [
+      {
+        "year": "1760",
+        "label": "Mechanical"
+      },
+      {
+        "year": "1870",
+        "label": "Electrical"
+      },
+      {
+        "year": "1969",
+        "label": "Digital"
+      },
+      {
+        "year": "Today",
+        "label": "AI and Data"
+      }
+    ]
   },
   "contact": {
     "heading": "Contact",
-    "intro": "Request your quote and discover how we can help you",
+    "intro": "Request your quote and discover how we can help",
     "info_title": "Contact Information",
     "phone_label": "Phone",
     "email_label": "Email",
-    "hours_label": "Hours",
-    "hours_value": "Monday to Friday, 9:00 - 17:00",
+    "hours_label": "Business Hours",
+    "hours_value_line_1": "Monday to Friday",
+    "hours_value_line_2": "9:00 - 17:00",
     "location_label": "Locations",
-    "location_value": "Guanajuato, Aguascalientes",
+    "location_value_line_1": "Guanajuato",
+    "location_value_line_2": "Aguascalientes",
     "callout_title": "24/7 Operational Response",
     "callout_desc": "Availability to start operations at any time. Rapid deployment of up to 100 operators in 10 days.",
     "name_label": "Full Name *",
@@ -88,9 +191,10 @@
     "message_placeholder": "Tell us about your project...",
     "submit": "Send Message",
     "submitting": "Sending...",
-    "success_title": "Message sent!",
+    "success_title": "Message sent",
     "success_desc": "Your message was registered. We will respond soon.",
-    "error_title": "Could not send"
+    "error_title": "Could not send",
+    "error_fallback": "An error occurred. Please try again."
   },
   "footer": {
     "desc1": "We are a technology-enabled specialized service partner focused on scalable and intelligent operations.",
@@ -105,7 +209,12 @@
     "legal_title": "Legal",
     "privacy": "Privacy Policy",
     "terms": "Terms of Use",
-    "copyright": "© 2025 Seishin. All rights reserved."
+    "copyright": "© 2026 Seishin. All rights reserved."
+  },
+  "cta": {
+    "heading": "Ready to transform your operations?",
+    "description": "Partner with us for people-centered specialized AI services. Let's move fast, together.",
+    "button": "Start a conversation"
   },
   "calculator": {
     "tag": "Quote calculator",
@@ -113,6 +222,8 @@
     "subheading": "Complete the steps to receive a personalized quote based on your needs."
   },
   "gallery": {
+    "heading_prefix": "Our",
+    "heading_suffix": "Gallery",
     "heading": "Our Gallery",
     "desc": "Explore images and videos of real Seishin material.",
     "filter_all": "All",
@@ -126,7 +237,116 @@
     "cta_desc": "Contact our team to request additional resources and success cases.",
     "cta_btn": "Contact now",
     "close": "Close",
+    "of": "of",
     "prev": "Previous",
-    "next": "Next"
+    "next": "Next",
+    "error_prefix": "Cloudflare API error:",
+    "error_suffix": "Showing local files.",
+    "error_fallback": "Could not load the gallery from Cloudflare."
+  },
+  "seishinia": {
+    "badge": "SeishinIA",
+    "hero_title": "AI applied to real operations",
+    "hero_desc": "We design and implement artificial intelligence solutions to reduce time, raise quality, and increase operational capacity without friction with your team.",
+    "cta_quote": "Quote service",
+    "cta_specialist": "Talk to an AI specialist",
+    "solutions_title": "Core solutions",
+    "solutions": [
+      {
+        "title": "Operational AI agents",
+        "description": "We automate repetitive tasks in recruiting, candidate follow-up, reporting, and internal support."
+      },
+      {
+        "title": "Computer vision",
+        "description": "AI-assisted visual inspection for quality control, defect detection, and traceability."
+      },
+      {
+        "title": "Predictive analytics",
+        "description": "Operational demand forecasting, workforce coverage, and early bottleneck detection."
+      }
+    ],
+    "sectors_title": "Industries we serve",
+    "sectors": [
+      "Automotive",
+      "Advanced manufacturing",
+      "Logistics and warehousing",
+      "HR operations",
+      "Administrative services",
+      "Digital transformation projects"
+    ],
+    "process_title": "Implementation approach",
+    "process": [
+      {
+        "title": "1. Diagnosis",
+        "text": "Current process mapping, baseline metrics, and business objectives."
+      },
+      {
+        "title": "2. Solution design",
+        "text": "Functional architecture, technical scope, and success criteria."
+      },
+      {
+        "title": "3. Pilot implementation",
+        "text": "Controlled test with validation of results in real operations."
+      },
+      {
+        "title": "4. Scaling",
+        "text": "Gradual rollout, training, and continuous improvement based on data."
+      }
+    ],
+    "results_title": "Expected results",
+    "results_desc": "Less rework, faster response times, and a more predictable data-driven operation. Each project is measured with impact indicators agreed from the start.",
+    "results_call": "Schedule a call",
+    "results_gallery": "View operations gallery",
+    "brief": {
+      "title": "AI Brief",
+      "description": "Share your operational context and we will return an initial implementation proposal with scope and execution plan.",
+      "submit": "Send AI Brief",
+      "success_title": "Brief sent",
+      "success_desc": "We already opened your email client with the information. If you want, you can also write to fabian.noel@seishin.com.mx.",
+      "mail_subject": "AI Brief",
+      "mail_intro": "New AI Brief received:",
+      "new_lead": "New lead",
+      "labels": {
+        "name": "Name",
+        "company": "Company",
+        "email": "Email",
+        "phone": "Phone",
+        "service": "Service of interest",
+        "process": "Process to optimize",
+        "volume": "Current volume",
+        "objective": "Main objective",
+        "timeline": "Expected timeline",
+        "budget": "Budget range"
+      },
+      "placeholders": {
+        "service": "Service of interest",
+        "name": "Full name",
+        "company": "Company",
+        "email": "Business email",
+        "phone": "Phone",
+        "process": "Which process do you want to optimize?",
+        "volume": "Current volume (e.g. 300 inspections per day)",
+        "objective": "Main objective",
+        "timeline": "Expected timeline",
+        "budget": "Budget range"
+      },
+      "options": {
+        "service_1": "AI Agents",
+        "service_2": "Computer Vision",
+        "service_3": "Predictive Analytics",
+        "objective_1": "Reduce costs",
+        "objective_2": "Reduce time",
+        "objective_3": "Improve quality",
+        "objective_4": "Scale operations",
+        "timeline_1": "0-30 days",
+        "timeline_2": "1-3 months",
+        "timeline_3": "3-6 months",
+        "timeline_4": "6+ months",
+        "budget_1": "Less than 100k MXN",
+        "budget_2": "100k - 300k MXN",
+        "budget_3": "300k - 1M MXN",
+        "budget_4": "More than 1M MXN"
+      }
+    }
   }
 }

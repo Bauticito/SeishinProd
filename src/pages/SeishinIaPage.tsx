@@ -1,55 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { ArrowRight, Bot, Brain, Factory, LineChart, ScanSearch, ShieldCheck } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
-
-const solutions = [
-  {
-    title: 'Agentes IA operativos',
-    description:
-      'Automatizamos tareas repetitivas en reclutamiento, seguimiento de candidatos, reportes y atencion interna.',
-    icon: Bot,
-  },
-  {
-    title: 'Vision computarizada',
-    description:
-      'Inspeccion visual asistida por IA para control de calidad, deteccion de defectos y trazabilidad.',
-    icon: ScanSearch,
-  },
-  {
-    title: 'Analitica predictiva',
-    description:
-      'Pronostico de demanda operativa, cobertura de personal y deteccion temprana de cuellos de botella.',
-    icon: LineChart,
-  },
-];
-
-const sectors = [
-  'Automotriz',
-  'Manufactura avanzada',
-  'Logistica y almacenes',
-  'Operaciones de RH',
-  'Servicios administrativos',
-  'Proyectos de transformacion digital',
-];
-
-const process = [
-  {
-    title: '1. Diagnostico',
-    text: 'Mapeo de proceso actual, metricas base y objetivos de negocio.',
-  },
-  {
-    title: '2. Diseno de solucion',
-    text: 'Arquitectura funcional, alcance tecnico y criterios de exito.',
-  },
-  {
-    title: '3. Implementacion piloto',
-    text: 'Prueba controlada con validacion de resultados en operacion real.',
-  },
-  {
-    title: '4. Escalamiento',
-    text: 'Despliegue gradual, capacitacion y mejora continua basada en datos.',
-  },
-];
+import { useTranslation } from 'react-i18next';
 
 type BriefIaForm = {
   servicio: string;
@@ -78,20 +30,56 @@ const initialBrief: BriefIaForm = {
 };
 
 export default function SeishinIaPage() {
+  const { t } = useTranslation();
   const location = useLocation();
   const [brief, setBrief] = useState<BriefIaForm>(initialBrief);
   const [submitted, setSubmitted] = useState(false);
+
+  const solutions = useMemo(
+    () => [
+      {
+        title: t('seishinia.solutions.0.title'),
+        description: t('seishinia.solutions.0.description'),
+        icon: Bot,
+      },
+      {
+        title: t('seishinia.solutions.1.title'),
+        description: t('seishinia.solutions.1.description'),
+        icon: ScanSearch,
+      },
+      {
+        title: t('seishinia.solutions.2.title'),
+        description: t('seishinia.solutions.2.description'),
+        icon: LineChart,
+      },
+    ],
+    [t]
+  );
+
+  const sectors = useMemo(
+    () => [0, 1, 2, 3, 4, 5].map((index) => t(`seishinia.sectors.${index}`)),
+    [t]
+  );
+
+  const process = useMemo(
+    () =>
+      [0, 1, 2, 3].map((index) => ({
+        title: t(`seishinia.process.${index}.title`),
+        text: t(`seishinia.process.${index}.text`),
+      })),
+    [t]
+  );
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const serviceParam = params.get('servicio');
 
     if (serviceParam === 'agentes') {
-      setBrief((prev) => ({ ...prev, servicio: 'Agentes IA' }));
+      setBrief((prev) => ({ ...prev, servicio: t('seishinia.brief.options.service_1') }));
     } else if (serviceParam === 'vision') {
-      setBrief((prev) => ({ ...prev, servicio: 'Vision Computarizada' }));
+      setBrief((prev) => ({ ...prev, servicio: t('seishinia.brief.options.service_2') }));
     }
-  }, [location.search]);
+  }, [location.search, t]);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -116,21 +104,21 @@ export default function SeishinIaPage() {
   const handleBriefSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const subject = `Brief IA - ${brief.empresa || 'Nuevo lead'}`;
+    const subject = `${t('seishinia.brief.mail_subject')} - ${brief.empresa || t('seishinia.brief.new_lead')}`;
     const body = [
-      'Nuevo Brief IA recibido:',
+      t('seishinia.brief.mail_intro'),
       '',
-      `Nombre: ${brief.nombre}`,
-      `Empresa: ${brief.empresa}`,
-      `Correo: ${brief.correo}`,
-      `Telefono: ${brief.telefono}`,
+      `${t('seishinia.brief.labels.name')}: ${brief.nombre}`,
+      `${t('seishinia.brief.labels.company')}: ${brief.empresa}`,
+      `${t('seishinia.brief.labels.email')}: ${brief.correo}`,
+      `${t('seishinia.brief.labels.phone')}: ${brief.telefono}`,
       '',
-      `Servicio de interes: ${brief.servicio}`,
-      `Proceso a optimizar: ${brief.proceso}`,
-      `Volumen actual: ${brief.volumen}`,
-      `Objetivo principal: ${brief.objetivo}`,
-      `Timeline esperado: ${brief.timeline}`,
-      `Rango de presupuesto: ${brief.presupuesto}`,
+      `${t('seishinia.brief.labels.service')}: ${brief.servicio}`,
+      `${t('seishinia.brief.labels.process')}: ${brief.proceso}`,
+      `${t('seishinia.brief.labels.volume')}: ${brief.volumen}`,
+      `${t('seishinia.brief.labels.objective')}: ${brief.objetivo}`,
+      `${t('seishinia.brief.labels.timeline')}: ${brief.timeline}`,
+      `${t('seishinia.brief.labels.budget')}: ${brief.presupuesto}`,
     ].join('\n');
 
     window.location.href = `mailto:fabian.noel@seishin.com.mx?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
@@ -146,25 +134,24 @@ export default function SeishinIaPage() {
           <div className="relative z-10">
             <span className="inline-flex items-center gap-2 text-xs font-bold tracking-[0.2em] uppercase text-[#E31E24] mb-5">
               <Brain className="w-4 h-4" />
-              SeishinIA
+              {t('seishinia.badge')}
             </span>
             <h1 className="text-4xl md:text-6xl font-black text-[var(--text-primary)] tracking-tight leading-tight mb-6">
-              IA aplicada a operaciones reales
+              {t('seishinia.hero_title')}
             </h1>
             <p className="text-lg md:text-xl text-[var(--text-secondary)] max-w-3xl leading-relaxed mb-8">
-              Disenamos e implementamos soluciones de inteligencia artificial para reducir tiempos, elevar calidad y
-              aumentar capacidad operativa sin friccion con tu equipo.
+              {t('seishinia.hero_desc')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link to="/calculator" className="btn-primary inline-flex items-center justify-center gap-2 px-8 py-4">
-                Cotizar servicio
+                {t('seishinia.cta_quote')}
                 <ArrowRight className="w-5 h-5" />
               </Link>
               <a
                 href="mailto:fabian.noel@seishin.com.mx"
                 className="btn-secondary inline-flex items-center justify-center gap-2 px-8 py-4"
               >
-                Hablar con especialista IA
+                {t('seishinia.cta_specialist')}
               </a>
             </div>
           </div>
@@ -172,7 +159,7 @@ export default function SeishinIaPage() {
 
         <section>
           <h2 className="text-3xl md:text-4xl font-extrabold text-[var(--text-primary)] mb-8 tracking-tight">
-            Soluciones clave
+            {t('seishinia.solutions_title')}
           </h2>
           <div className="grid md:grid-cols-3 gap-6">
             {solutions.map((item) => {
@@ -197,7 +184,7 @@ export default function SeishinIaPage() {
           <div className="rounded-2xl p-8 border border-[var(--border-color-light)] bg-[var(--bg-secondary)]">
             <h3 className="text-2xl font-bold text-[var(--text-primary)] mb-5 flex items-center gap-2">
               <Factory className="w-6 h-6 text-[#E31E24]" />
-              Industrias donde operamos
+              {t('seishinia.sectors_title')}
             </h3>
             <div className="grid sm:grid-cols-2 gap-3">
               {sectors.map((sector) => (
@@ -214,7 +201,7 @@ export default function SeishinIaPage() {
           <div className="rounded-2xl p-8 border border-[var(--border-color-light)] bg-[var(--bg-secondary)]">
             <h3 className="text-2xl font-bold text-[var(--text-primary)] mb-5 flex items-center gap-2">
               <ShieldCheck className="w-6 h-6 text-[#E31E24]" />
-              Enfoque de implementacion
+              {t('seishinia.process_title')}
             </h3>
             <div className="space-y-4">
               {process.map((step) => (
@@ -230,11 +217,10 @@ export default function SeishinIaPage() {
         <section id="brief-ia" className="rounded-3xl p-8 md:p-10 border border-[var(--border-color-light)] bg-[var(--bg-secondary)]">
           <div className="mb-8">
             <h2 className="text-3xl md:text-4xl font-extrabold text-[var(--text-primary)] mb-3 tracking-tight">
-              Brief IA
+              {t('seishinia.brief.title')}
             </h2>
             <p className="text-[var(--text-secondary)] text-lg leading-relaxed max-w-3xl">
-              Comparte tu contexto operativo y te devolvemos una propuesta inicial de implementacion con alcance y plan
-              de ejecucion.
+              {t('seishinia.brief.description')}
             </p>
           </div>
 
@@ -247,10 +233,10 @@ export default function SeishinIaPage() {
                 required
                 className="md:col-span-2 w-full px-4 py-3 rounded-xl border border-[var(--border-color)] bg-[var(--bg-primary)] text-[var(--text-primary)]"
               >
-                <option value="">Servicio de interes</option>
-                <option value="Agentes IA">Agentes IA</option>
-                <option value="Vision Computarizada">Vision Computarizada</option>
-                <option value="Analitica Predictiva">Analitica Predictiva</option>
+                <option value="">{t('seishinia.brief.placeholders.service')}</option>
+                <option value={t('seishinia.brief.options.service_1')}>{t('seishinia.brief.options.service_1')}</option>
+                <option value={t('seishinia.brief.options.service_2')}>{t('seishinia.brief.options.service_2')}</option>
+                <option value={t('seishinia.brief.options.service_3')}>{t('seishinia.brief.options.service_3')}</option>
               </select>
 
               <input
@@ -258,7 +244,7 @@ export default function SeishinIaPage() {
                 value={brief.nombre}
                 onChange={handleChange}
                 required
-                placeholder="Nombre completo"
+                placeholder={t('seishinia.brief.placeholders.name')}
                 className="w-full px-4 py-3 rounded-xl border border-[var(--border-color)] bg-[var(--bg-primary)] text-[var(--text-primary)]"
               />
               <input
@@ -266,7 +252,7 @@ export default function SeishinIaPage() {
                 value={brief.empresa}
                 onChange={handleChange}
                 required
-                placeholder="Empresa"
+                placeholder={t('seishinia.brief.placeholders.company')}
                 className="w-full px-4 py-3 rounded-xl border border-[var(--border-color)] bg-[var(--bg-primary)] text-[var(--text-primary)]"
               />
               <input
@@ -275,7 +261,7 @@ export default function SeishinIaPage() {
                 value={brief.correo}
                 onChange={handleChange}
                 required
-                placeholder="Correo empresarial"
+                placeholder={t('seishinia.brief.placeholders.email')}
                 className="w-full px-4 py-3 rounded-xl border border-[var(--border-color)] bg-[var(--bg-primary)] text-[var(--text-primary)]"
               />
               <input
@@ -283,7 +269,7 @@ export default function SeishinIaPage() {
                 value={brief.telefono}
                 onChange={handleChange}
                 required
-                placeholder="Telefono"
+                placeholder={t('seishinia.brief.placeholders.phone')}
                 className="w-full px-4 py-3 rounded-xl border border-[var(--border-color)] bg-[var(--bg-primary)] text-[var(--text-primary)]"
               />
 
@@ -293,7 +279,7 @@ export default function SeishinIaPage() {
                 onChange={handleChange}
                 required
                 rows={4}
-                placeholder="Que proceso quieres optimizar?"
+                placeholder={t('seishinia.brief.placeholders.process')}
                 className="md:col-span-2 w-full px-4 py-3 rounded-xl border border-[var(--border-color)] bg-[var(--bg-primary)] text-[var(--text-primary)]"
               />
 
@@ -302,7 +288,7 @@ export default function SeishinIaPage() {
                 value={brief.volumen}
                 onChange={handleChange}
                 required
-                placeholder="Volumen actual (ej. 300 inspecciones por dia)"
+                placeholder={t('seishinia.brief.placeholders.volume')}
                 className="w-full px-4 py-3 rounded-xl border border-[var(--border-color)] bg-[var(--bg-primary)] text-[var(--text-primary)]"
               />
 
@@ -313,11 +299,11 @@ export default function SeishinIaPage() {
                 required
                 className="w-full px-4 py-3 rounded-xl border border-[var(--border-color)] bg-[var(--bg-primary)] text-[var(--text-primary)]"
               >
-                <option value="">Objetivo principal</option>
-                <option value="Reducir costos">Reducir costos</option>
-                <option value="Reducir tiempos">Reducir tiempos</option>
-                <option value="Mejorar calidad">Mejorar calidad</option>
-                <option value="Escalar operacion">Escalar operacion</option>
+                <option value="">{t('seishinia.brief.placeholders.objective')}</option>
+                <option value={t('seishinia.brief.options.objective_1')}>{t('seishinia.brief.options.objective_1')}</option>
+                <option value={t('seishinia.brief.options.objective_2')}>{t('seishinia.brief.options.objective_2')}</option>
+                <option value={t('seishinia.brief.options.objective_3')}>{t('seishinia.brief.options.objective_3')}</option>
+                <option value={t('seishinia.brief.options.objective_4')}>{t('seishinia.brief.options.objective_4')}</option>
               </select>
 
               <select
@@ -327,11 +313,11 @@ export default function SeishinIaPage() {
                 required
                 className="w-full px-4 py-3 rounded-xl border border-[var(--border-color)] bg-[var(--bg-primary)] text-[var(--text-primary)]"
               >
-                <option value="">Timeline esperado</option>
-                <option value="0-30 dias">0-30 dias</option>
-                <option value="1-3 meses">1-3 meses</option>
-                <option value="3-6 meses">3-6 meses</option>
-                <option value="6+ meses">6+ meses</option>
+                <option value="">{t('seishinia.brief.placeholders.timeline')}</option>
+                <option value={t('seishinia.brief.options.timeline_1')}>{t('seishinia.brief.options.timeline_1')}</option>
+                <option value={t('seishinia.brief.options.timeline_2')}>{t('seishinia.brief.options.timeline_2')}</option>
+                <option value={t('seishinia.brief.options.timeline_3')}>{t('seishinia.brief.options.timeline_3')}</option>
+                <option value={t('seishinia.brief.options.timeline_4')}>{t('seishinia.brief.options.timeline_4')}</option>
               </select>
 
               <select
@@ -341,48 +327,42 @@ export default function SeishinIaPage() {
                 required
                 className="w-full px-4 py-3 rounded-xl border border-[var(--border-color)] bg-[var(--bg-primary)] text-[var(--text-primary)]"
               >
-                <option value="">Rango de presupuesto</option>
-                <option value="Menos de 100 mil MXN">Menos de 100 mil MXN</option>
-                <option value="100 mil - 300 mil MXN">100 mil - 300 mil MXN</option>
-                <option value="300 mil - 1 M MXN">300 mil - 1 M MXN</option>
-                <option value="Mas de 1 M MXN">Mas de 1 M MXN</option>
+                <option value="">{t('seishinia.brief.placeholders.budget')}</option>
+                <option value={t('seishinia.brief.options.budget_1')}>{t('seishinia.brief.options.budget_1')}</option>
+                <option value={t('seishinia.brief.options.budget_2')}>{t('seishinia.brief.options.budget_2')}</option>
+                <option value={t('seishinia.brief.options.budget_3')}>{t('seishinia.brief.options.budget_3')}</option>
+                <option value={t('seishinia.brief.options.budget_4')}>{t('seishinia.brief.options.budget_4')}</option>
               </select>
 
               <button
                 type="submit"
                 className="md:col-span-2 btn-primary px-8 py-4 inline-flex items-center justify-center gap-2"
               >
-                Enviar Brief IA
+                {t('seishinia.brief.submit')}
                 <ArrowRight className="w-5 h-5" />
               </button>
             </form>
           ) : (
             <div className="rounded-2xl border border-[var(--border-color-light)] bg-[var(--bg-primary)] p-8 text-center">
-              <h3 className="text-2xl font-bold text-[var(--text-primary)] mb-2">Brief enviado</h3>
-              <p className="text-[var(--text-secondary)]">
-                Ya abrimos tu cliente de correo con la informacion. Si quieres, tambien puedes escribir a
-                fabian.noel@seishin.com.mx.
-              </p>
+              <h3 className="text-2xl font-bold text-[var(--text-primary)] mb-2">{t('seishinia.brief.success_title')}</h3>
+              <p className="text-[var(--text-secondary)]">{t('seishinia.brief.success_desc')}</p>
             </div>
           )}
         </section>
 
         <section className="rounded-3xl p-8 md:p-12 bg-gradient-to-br from-[#3A3A3A] to-[#1c1c1c] text-white">
-          <h2 className="text-3xl md:text-4xl font-extrabold mb-4">Resultados esperados</h2>
-          <p className="text-white/80 text-lg leading-relaxed max-w-3xl mb-8">
-            Menos retrabajos, mayor velocidad de respuesta y una operacion mas predecible basada en datos. Cada
-            proyecto se mide con indicadores de impacto acordados desde el inicio.
-          </p>
+          <h2 className="text-3xl md:text-4xl font-extrabold mb-4">{t('seishinia.results_title')}</h2>
+          <p className="text-white/80 text-lg leading-relaxed max-w-3xl mb-8">{t('seishinia.results_desc')}</p>
           <div className="flex flex-col sm:flex-row gap-4">
             <a href="tel:4491155269" className="btn-primary px-8 py-4 inline-flex items-center justify-center gap-2">
-              Agenda una llamada
+              {t('seishinia.results_call')}
               <ArrowRight className="w-5 h-5" />
             </a>
             <Link
               to="/gallery"
               className="px-8 py-4 rounded-xl border border-white/20 hover:border-white/40 transition-colors inline-flex items-center justify-center gap-2"
             >
-              Ver galeria de operaciones
+              {t('seishinia.results_gallery')}
             </Link>
           </div>
         </section>

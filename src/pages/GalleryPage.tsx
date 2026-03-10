@@ -9,6 +9,7 @@ import {
   PlayCircle,
   X,
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { localGalleryItems, type MediaItem } from '../lib/localGalleryItems';
 import { fetchMediaItems, hasMediaApiConfigured } from '../lib/mediaApi';
 
@@ -16,6 +17,7 @@ type MediaType = 'image' | 'video';
 type FilterType = 'all' | MediaType;
 
 export default function GalleryPage() {
+  const { t } = useTranslation();
   const [galleryItems, setGalleryItems] = useState<MediaItem[]>(localGalleryItems);
   const [isLoadingFromApi, setIsLoadingFromApi] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
@@ -38,7 +40,7 @@ export default function GalleryPage() {
       } catch (error) {
         if (isMounted) {
           const message =
-            error instanceof Error ? error.message : 'No se pudo cargar la galeria desde Cloudflare.';
+            error instanceof Error ? error.message : t('gallery.error_fallback');
           setApiError(message);
         }
       } finally {
@@ -53,7 +55,7 @@ export default function GalleryPage() {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [t]);
 
   const filteredItems = useMemo(() => {
     if (activeFilter === 'all') return galleryItems;
@@ -116,10 +118,10 @@ export default function GalleryPage() {
             <ImageIcon className="w-8 h-8" />
           </div>
           <h1 className="text-4xl md:text-6xl font-black text-[var(--text-primary)] mb-6 tracking-tight">
-            Nuestra <span className="gradient-text">Galeria</span>
+            {t('gallery.heading_prefix')} <span className="gradient-text">{t('gallery.heading_suffix')}</span>
           </h1>
           <p className="text-xl text-[var(--text-secondary)] max-w-2xl mx-auto leading-relaxed">
-            Explora imagenes y video del material real de Seishin.
+            {t('gallery.desc')}
           </p>
         </motion.div>
 
@@ -132,7 +134,7 @@ export default function GalleryPage() {
                 : 'border-[var(--border-color-light)] text-[var(--text-primary)] hover:border-[#E31E24]'
             }`}
           >
-            Todo ({galleryItems.length})
+            {t('gallery.filter_all')} ({galleryItems.length})
           </button>
           <button
             onClick={() => setActiveFilter('image')}
@@ -142,7 +144,7 @@ export default function GalleryPage() {
                 : 'border-[var(--border-color-light)] text-[var(--text-primary)] hover:border-[#E31E24]'
             }`}
           >
-            <ImageIcon className="w-4 h-4" /> Imagenes ({imageCount})
+            <ImageIcon className="w-4 h-4" /> {t('gallery.filter_images')} ({imageCount})
           </button>
           <button
             onClick={() => setActiveFilter('video')}
@@ -152,19 +154,17 @@ export default function GalleryPage() {
                 : 'border-[var(--border-color-light)] text-[var(--text-primary)] hover:border-[#E31E24]'
             }`}
           >
-            <Film className="w-4 h-4" /> Videos ({videoCount})
+            <Film className="w-4 h-4" /> {t('gallery.filter_videos')} ({videoCount})
           </button>
         </div>
 
         {isLoadingFromApi && (
-          <div className="text-center text-[var(--text-secondary)] mb-8">
-            Cargando galeria desde Cloudflare...
-          </div>
+          <div className="text-center text-[var(--text-secondary)] mb-8">{t('gallery.loading')}</div>
         )}
 
         {apiError && (
           <div className="text-center text-amber-400 mb-8">
-            Error en API Cloudflare: {apiError}. Mostrando archivos locales.
+            {t('gallery.error_prefix')} {apiError}. {t('gallery.error_suffix')}
           </div>
         )}
 
@@ -206,7 +206,7 @@ export default function GalleryPage() {
               )}
 
               <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-black/55 text-white text-xs font-semibold backdrop-blur-sm">
-                {item.mediaType === 'image' ? 'Imagen' : 'Video'}
+                {item.mediaType === 'image' ? t('gallery.image') : t('gallery.video')}
               </div>
 
               {item.mediaType === 'video' && (
@@ -228,9 +228,7 @@ export default function GalleryPage() {
         </div>
 
         {filteredItems.length === 0 && (
-          <div className="mt-10 text-center text-[var(--text-secondary)]">
-            No se encontraron elementos para este filtro.
-          </div>
+          <div className="mt-10 text-center text-[var(--text-secondary)]">{t('gallery.empty')}</div>
         )}
 
         <motion.div
@@ -238,13 +236,11 @@ export default function GalleryPage() {
           whileInView={{ opacity: 1 }}
           className="mt-24 p-12 rounded-3xl glass border border-[var(--border-color-light)] text-center relative overflow-hidden"
         >
-          <div className="absolute -top-24 -right-24 w-64 h-64 bg-[#E31E24] rounded-full blur-[120px] opacity-10"></div>
-          <h2 className="text-3xl font-bold text-[var(--text-primary)] mb-6">Necesitas material especifico?</h2>
-          <p className="text-[var(--text-secondary)] mb-8 max-w-xl mx-auto">
-            Contacta a nuestro equipo para solicitar recursos adicionales y casos de exito.
-          </p>
+          <div className="absolute -top-24 -right-24 w-64 h-64 bg-[#E31E24] rounded-full blur-[120px] opacity-10" />
+          <h2 className="text-3xl font-bold text-[var(--text-primary)] mb-6">{t('gallery.cta_title')}</h2>
+          <p className="text-[var(--text-secondary)] mb-8 max-w-xl mx-auto">{t('gallery.cta_desc')}</p>
           <a href="/#contact" className="btn-primary inline-flex px-8 py-4">
-            Contactar ahora
+            {t('gallery.cta_btn')}
           </a>
         </motion.div>
       </div>
@@ -268,13 +264,13 @@ export default function GalleryPage() {
             >
               <div className="flex items-center justify-between px-5 py-3 border-b border-white/10">
                 <div className="text-sm text-white/75">
-                  {activeIndex + 1} de {filteredItems.length}
+                  {activeIndex + 1} {t('gallery.of')} {filteredItems.length}
                 </div>
                 <h3 className="text-white font-semibold text-sm md:text-base line-clamp-1 px-4">{activeItem.title}</h3>
                 <button
                   onClick={closeItem}
                   className="p-2 rounded-full hover:bg-white/10 text-white transition-colors"
-                  aria-label="Cerrar"
+                  aria-label={t('gallery.close')}
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -298,14 +294,14 @@ export default function GalleryPage() {
                     <button
                       onClick={showPrev}
                       className="absolute left-3 top-1/2 -translate-y-1/2 p-2.5 rounded-full bg-black/50 hover:bg-black/70 text-white"
-                      aria-label="Anterior"
+                      aria-label={t('gallery.prev')}
                     >
                       <ChevronLeft className="w-6 h-6" />
                     </button>
                     <button
                       onClick={showNext}
                       className="absolute right-3 top-1/2 -translate-y-1/2 p-2.5 rounded-full bg-black/50 hover:bg-black/70 text-white"
-                      aria-label="Siguiente"
+                      aria-label={t('gallery.next')}
                     >
                       <ChevronRight className="w-6 h-6" />
                     </button>

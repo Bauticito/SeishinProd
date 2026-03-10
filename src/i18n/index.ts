@@ -13,7 +13,9 @@ i18n
       en: { translation: en },
       ja: { translation: ja },
     },
-    lng: 'es',
+    lng:
+      (typeof window !== 'undefined' && localStorage.getItem('seishin_lang')) ||
+      'es',
     fallbackLng: 'es',
     interpolation: { escapeValue: false },
   });

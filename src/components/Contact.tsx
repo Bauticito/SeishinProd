@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Send, Phone, Mail, Clock, MapPin, Loader2 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { createContactMessage } from '@/services/odooService';
 import {
   validateNombre,
@@ -14,6 +15,7 @@ type Status = 'idle' | 'loading';
 const emptyErrors = { nombre: '', correo: '', empresa: '', mensaje: '' };
 
 export default function Contact() {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     nombre: '',
     correo: '',
@@ -25,13 +27,13 @@ export default function Contact() {
 
   const validateAll = () => {
     const newErrors = {
-      nombre:  validateNombre(formData.nombre),
-      correo:  validateCorreo(formData.correo),
+      nombre: validateNombre(formData.nombre),
+      correo: validateCorreo(formData.correo),
       empresa: validateEmpresa(formData.empresa),
       mensaje: validateMensaje(formData.mensaje),
     };
     setErrors(newErrors);
-    return Object.values(newErrors).every(e => e === '');
+    return Object.values(newErrors).every((e) => e === '');
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -42,11 +44,11 @@ export default function Contact() {
       await createContactMessage(formData);
       setFormData({ nombre: '', correo: '', empresa: '', mensaje: '' });
       setErrors(emptyErrors);
-      SwalSuccess('¡Mensaje enviado!', 'Tu mensaje fue registrado. Te responderemos pronto.');
+      SwalSuccess(t('contact.success_title'), t('contact.success_desc'));
     } catch (err) {
       SwalError(
-        'No se pudo enviar',
-        err instanceof Error ? err.message : 'Ocurrió un error. Intenta de nuevo.',
+        t('contact.error_title'),
+        err instanceof Error ? err.message : t('contact.error_fallback'),
       );
     } finally {
       setStatus('idle');
@@ -55,22 +57,24 @@ export default function Contact() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
 
     const validators: Record<string, (v: string) => string> = {
-      nombre:  validateNombre,
-      correo:  validateCorreo,
+      nombre: validateNombre,
+      correo: validateCorreo,
       empresa: validateEmpresa,
       mensaje: validateMensaje,
     };
     if (validators[name]) {
-      setErrors(prev => ({ ...prev, [name]: validators[name](value) }));
+      setErrors((prev) => ({ ...prev, [name]: validators[name](value) }));
     }
   };
 
   const inputClass = (error: string) =>
     `w-full px-4 py-3 rounded-lg border ${
-      error ? 'border-red-500 focus:ring-red-500/20' : 'border-[var(--border-color)] focus:border-[var(--accent-primary)] focus:ring-[var(--accent-primary)]/20'
+      error
+        ? 'border-red-500 focus:ring-red-500/20'
+        : 'border-[var(--border-color)] focus:border-[var(--accent-primary)] focus:ring-[var(--accent-primary)]/20'
     } bg-[var(--bg-primary)] text-[var(--text-primary)] focus:ring-2 outline-none transition-colors duration-200`;
 
   return (
@@ -78,22 +82,24 @@ export default function Contact() {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-8 sm:mb-12">
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-[var(--text-primary)] mb-4 tracking-tight">
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--blue-corporate)] to-[var(--accent-primary)]">Contacto</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--blue-corporate)] to-[var(--accent-primary)]">
+              {t('contact.heading')}
+            </span>
           </h2>
           <p className="text-[var(--text-secondary)] text-base sm:text-lg lg:text-xl max-w-2xl mx-auto px-4">
-            Solicita tu cotización y descubre cómo podemos ayudarte
+            {t('contact.intro')}
           </p>
         </div>
 
         <div className="grid lg:grid-cols-5 gap-8 lg:gap-12">
           <div className="lg:col-span-2 space-y-6">
             <div className="bg-[var(--bg-secondary)] p-6 rounded-2xl border border-[var(--border-color)]">
-              <h3 className="text-xl font-bold text-[var(--text-primary)] mb-4">Información de Contacto</h3>
+              <h3 className="text-xl font-bold text-[var(--text-primary)] mb-4">{t('contact.info_title')}</h3>
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
                   <Phone className="w-5 h-5 text-[var(--accent-primary)] mt-1 flex-shrink-0" />
                   <div>
-                    <p className="text-[var(--text-secondary)] text-sm">Teléfono</p>
+                    <p className="text-[var(--text-secondary)] text-sm">{t('contact.phone_label')}</p>
                     <a href="tel:4492917919" className="text-[var(--text-primary)] font-semibold hover:text-[var(--accent-primary)] transition-colors">
                       449-291-7919
                     </a>
@@ -102,7 +108,7 @@ export default function Contact() {
                 <div className="flex items-start gap-3">
                   <Mail className="w-5 h-5 text-[var(--accent-primary)] mt-1 flex-shrink-0" />
                   <div>
-                    <p className="text-[var(--text-secondary)] text-sm">Correo</p>
+                    <p className="text-[var(--text-secondary)] text-sm">{t('contact.email_label')}</p>
                     <a href="mailto:info@seishin.com.mx" className="text-[var(--text-primary)] font-semibold hover:text-[var(--accent-primary)] transition-colors break-all">
                       info@seishin.com.mx
                     </a>
@@ -111,18 +117,22 @@ export default function Contact() {
                 <div className="flex items-start gap-3">
                   <Clock className="w-5 h-5 text-[var(--accent-primary)] mt-1 flex-shrink-0" />
                   <div>
-                    <p className="text-[var(--text-secondary)] text-sm">Horario</p>
+                    <p className="text-[var(--text-secondary)] text-sm">{t('contact.hours_label')}</p>
                     <p className="text-[var(--text-primary)] font-semibold">
-                      Lunes a viernes<br />9:00 - 17:00
+                      {t('contact.hours_value_line_1')}
+                      <br />
+                      {t('contact.hours_value_line_2')}
                     </p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <MapPin className="w-5 h-5 text-[var(--accent-primary)] mt-1 flex-shrink-0" />
                   <div>
-                    <p className="text-[var(--text-secondary)] text-sm">Ubicaciones</p>
+                    <p className="text-[var(--text-secondary)] text-sm">{t('contact.location_label')}</p>
                     <p className="text-[var(--text-primary)] font-semibold">
-                      Guanajuato<br />Aguascalientes
+                      {t('contact.location_value_line_1')}
+                      <br />
+                      {t('contact.location_value_line_2')}
                     </p>
                   </div>
                 </div>
@@ -130,10 +140,8 @@ export default function Contact() {
             </div>
 
             <div className="bg-gradient-to-br from-[var(--blue-corporate)] to-[var(--accent-primary)] p-6 rounded-2xl text-white">
-              <h3 className="text-xl font-bold mb-3">Respuesta Operativa 24/7</h3>
-              <p className="text-white/90 text-sm">
-                Disponibilidad para iniciar operaciones en cualquier momento. Despliegue rápido de hasta 100 operadores en 10 días.
-              </p>
+              <h3 className="text-xl font-bold mb-3">{t('contact.callout_title')}</h3>
+              <p className="text-white/90 text-sm">{t('contact.callout_desc')}</p>
             </div>
           </div>
 
@@ -142,7 +150,7 @@ export default function Contact() {
               <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
                 <div>
                   <label htmlFor="nombre" className="block text-sm font-semibold text-[var(--text-primary)] mb-2">
-                    Nombre Completo *
+                    {t('contact.name_label')}
                   </label>
                   <input
                     type="text"
@@ -152,14 +160,14 @@ export default function Contact() {
                     onChange={handleChange}
                     maxLength={50}
                     className={inputClass(errors.nombre)}
-                    placeholder="Tu nombre"
+                    placeholder={t('contact.name_placeholder')}
                   />
                   {errors.nombre && <p className="mt-1 text-xs text-red-400">{errors.nombre}</p>}
                 </div>
 
                 <div>
                   <label htmlFor="correo" className="block text-sm font-semibold text-[var(--text-primary)] mb-2">
-                    Correo Electrónico *
+                    {t('contact.email_field_label')}
                   </label>
                   <input
                     type="email"
@@ -168,7 +176,7 @@ export default function Contact() {
                     value={formData.correo}
                     onChange={handleChange}
                     className={inputClass(errors.correo)}
-                    placeholder="tu@empresa.com"
+                    placeholder={t('contact.email_placeholder')}
                   />
                   {errors.correo && <p className="mt-1 text-xs text-red-400">{errors.correo}</p>}
                 </div>
@@ -176,7 +184,7 @@ export default function Contact() {
 
               <div>
                 <label htmlFor="empresa" className="block text-sm font-semibold text-[var(--text-primary)] mb-2">
-                  Empresa
+                  {t('contact.company_label')}
                 </label>
                 <input
                   type="text"
@@ -185,14 +193,14 @@ export default function Contact() {
                   value={formData.empresa}
                   onChange={handleChange}
                   className={inputClass(errors.empresa)}
-                  placeholder="Nombre de tu empresa"
+                  placeholder={t('contact.company_placeholder')}
                 />
                 {errors.empresa && <p className="mt-1 text-xs text-red-400">{errors.empresa}</p>}
               </div>
 
               <div>
                 <label htmlFor="mensaje" className="block text-sm font-semibold text-[var(--text-primary)] mb-2">
-                  Mensaje *
+                  {t('contact.message_label')}
                 </label>
                 <textarea
                   id="mensaje"
@@ -202,16 +210,11 @@ export default function Contact() {
                   rows={5}
                   maxLength={500}
                   className={`${inputClass(errors.mensaje)} resize-none`}
-                  placeholder="Cuéntanos sobre tu proyecto..."
+                  placeholder={t('contact.message_placeholder')}
                 />
                 <div className="flex justify-between items-start mt-1">
-                  {errors.mensaje
-                    ? <p className="text-xs text-red-400">{errors.mensaje}</p>
-                    : <span />
-                  }
-                  <span className="text-xs text-[var(--text-secondary)] ml-auto">
-                    {formData.mensaje.length}/500
-                  </span>
+                  {errors.mensaje ? <p className="text-xs text-red-400">{errors.mensaje}</p> : <span />}
+                  <span className="text-xs text-[var(--text-secondary)] ml-auto">{formData.mensaje.length}/500</span>
                 </div>
               </div>
 
@@ -223,12 +226,12 @@ export default function Contact() {
                 {status === 'loading' ? (
                   <>
                     <Loader2 className="w-5 h-5 animate-spin" />
-                    Enviando...
+                    {t('contact.submitting')}
                   </>
                 ) : (
                   <>
                     <Send className="w-5 h-5" />
-                    Enviar Mensaje
+                    {t('contact.submit')}
                   </>
                 )}
               </button>

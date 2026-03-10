@@ -5,128 +5,348 @@
     "servicios": "Servicios",
     "industria": "Industria 4.0",
     "seishinia": "SeishinIA",
-    "galeria": "Galería",
+    "galeria": "Galeria",
     "calcular": "Calcula tu servicio",
     "contacto": "Contacto",
-    "contáctanos": "Contáctanos",
+    "contactanos": "Contactanos",
     "erp": "Acceso ERP"
   },
   "lang": {
-    "es": "Español",
-    "en": "English",
-    "ja": "日本語"
+    "es": "Espanol",
+    "en": "English"
   },
   "hero": {
-    "badge": "Liderando la industria 4.0 en México",
-    "heading": "Soluciones empresariales, eliminando las barreras del recurso humano",
+    "badge": "Liderando la industria 4.0 en Mexico",
     "heading_1": "Soluciones",
     "heading_2": "empresariales",
     "heading_3": "eliminando las barreras del recurso humano",
-    "description": "Transformamos la gestión de talento y operaciones industriales. Conectamos experiencia especializada con empresas que buscan excelencia en México y América Latina.",
-    "cta_primary": "Solicitar cotización",
+    "description": "Transformamos la gestion de talento y operaciones industriales. Conectamos experiencia especializada con empresas que buscan excelencia en Mexico y America Latina.",
+    "cta_primary": "Solicitar cotizacion",
     "cta_secondary": "Calcula tu servicio",
     "cta_vigilancia": "Vigilancia SeishinIA",
     "trust_1": "Talento Especializado",
     "trust_2": "Calidad Garantizada",
     "trust_3": "Soporte 24/7"
   },
-  "about": {
-    "heading": "Sobre",
-    "heading_accent": "Nosotros",
-    "p1": "Seishin es una empresa creada para solucionar las dificultades y facilitar labores de administración y recursos humanos en empresas de capital extranjera.",
-    "p2": "Brindamos servicios de tercerización, reclutamiento, consultoría, trámites, traducciones legales y soluciones con tecnologías emergentes.",
-    "stat_1_value": "200+",
-    "stat_1_label": "Colaboradores especializados",
-    "stat_2_value": "+50",
-    "stat_2_label": "Empresas ya trabajan con nosotros",
-    "stat_3_value": "24/7",
-    "stat_3_label": "Respuesta operativa",
-    "founder_title": "CEO & Fundador",
-    "founder_bio": "Líder comprometido con el desarrollo industrial en México. Fundó Seishin con la misión de conectar talento, liderando procesos exitosos de vinculación laboral con empresas de capital extranjero que buscan eficiencia y compromiso."
+  "mission": {
+    "title": "Mision",
+    "description": "Hacer que el factor humano no sea una barrera en las actividades del dia a dia, disminuyendo y mejorando los tiempos de produccion. Facilitar las labores de nuestros clientes en las actividades de recurso humano, colaborando al maximo para alcanzar sus objetivos de negocio y sociales. Integrar herramientas de inteligencia artificial como aliadas del talento humano que optimicen la gestion y la productividad operativa."
+  },
+  "vision": {
+    "title": "Vision",
+    "description": "Tener una red de personal especializado en la operacion del sector que nuestros clientes soliciten a lo largo del pais. Consolidarnos como una empresa lider en la rama a traves de un trabajo honesto y comprometido con nuestros clientes. Incorporar tecnologias emergentes como soluciones que impulsen la innovacion y la mejora continua en nuestros servicios."
   },
   "services": {
     "heading": "Nuestros",
     "heading_accent": "Servicios",
-    "intro": "Soluciones integrales diseñadas para la excelencia operativa en la industria automotriz y manufacturera.",
-    "more": "Saber más →",
-    "s1_title": "Planificación estratégica de personal",
-    "s1_desc": "Gestión estratégica de recursos humanos con análisis predictivo.",
-    "s2_title": "Logística interna con montacargas",
-    "s2_desc": "Operaciones eficientes de manejo de materiales y optimización de flujos.",
-    "s3_title": "Servicio de inspección de calidad",
-    "s3_desc": "Control riguroso y aseguramiento de calidad bajo estándares internacionales.",
+    "intro": "Soluciones integrales disenadas para la excelencia operativa en la industria automotriz y manufacturera.",
+    "more": "Saber mas ->",
+    "s1_title": "Planificacion estrategica de personal",
+    "s1_desc": "Gestion estrategica de recursos humanos con analisis predictivo.",
+    "s2_title": "Logistica interna con montacargas",
+    "s2_desc": "Operaciones eficientes de manejo de materiales y optimizacion de flujos.",
+    "s3_title": "Servicio de inspeccion de calidad",
+    "s3_desc": "Control riguroso y aseguramiento de calidad bajo estandares internacionales.",
     "s4_title": "Retrabajo de partes y almacenaje",
-    "s4_desc": "Gestión integral de productos manufacturados con trazabilidad total.",
-    "s5_title": "Automatización con IA",
-    "s5_desc": "Análisis de datos y automatización de procesos administrativos inteligentes.",
+    "s4_desc": "Gestion integral de productos manufacturados con trazabilidad total.",
+    "s5_title": "Automatizacion con IA",
+    "s5_desc": "Analisis de datos y automatizacion de procesos administrativos inteligentes.",
     "s6_title": "Aseguramiento de Calidad",
-    "s6_desc": "Estandarización y mejora continua de procesos industriales.",
-    "s7_title": "Servicio de traducción técnica",
-    "s7_desc": "Traducciones legales y técnicas especializadas para la industria.",
-    "s8_title": "Fabricación de JIGS",
-    "s8_desc": "Diseño y fabricación de herramientas de precisión para manufactura."
+    "s6_desc": "Estandarizacion y mejora continua de procesos industriales.",
+    "s7_title": "Servicio de traduccion tecnica",
+    "s7_desc": "Traducciones legales y tecnicas especializadas para la industria.",
+    "s8_title": "Fabricacion de JIGS",
+    "s8_desc": "Diseno y fabricacion de herramientas de precision para manufactura."
+  },
+  "value": {
+    "heading": "Valor",
+    "heading_accent": "Agregado",
+    "intro": "Soluciones que superan las barreras del talento humano",
+    "proposition_title": "Nuestra Propuesta de Valor",
+    "items": [
+      {
+        "title": "Contencion de inspeccion 200%",
+        "description": "Confiabilidad en procesos especializados"
+      },
+      {
+        "title": "Plan de adiestramiento de personal",
+        "description": "Capacitacion basada en puntos criticos con pruebas ILU"
+      },
+      {
+        "title": "Servicios operativos de calidad",
+        "description": "Ingenieros calificados para estandarizar procesos y mejoras"
+      },
+      {
+        "title": "Reportes periodicos",
+        "description": "Informes con tendencias y recomendaciones de eficiencia"
+      },
+      {
+        "title": "Acompanamiento en nuevos lanzamientos",
+        "description": "Apoyo en fase inicial de proyectos garantizando calidad"
+      },
+      {
+        "title": "Mejora de eficiencia de procesos mediante herramientas tecnologicas de IA",
+        "description": "Optimizacion automatizada con inteligencia artificial"
+      }
+    ],
+    "propositions": [
+      "Priorizamos las necesidades de nuestros clientes",
+      "Tomamos en cuenta sus normas y especificaciones",
+      "Proporcionamos soluciones innovadoras de alta calidad para abordar la escasez de talento humano",
+      "Equipo experto y experimentado con conocimientos especializados",
+      "Posicion de liderazgo en la industria mediante servicio excepcional"
+    ]
+  },
+  "branding": {
+    "badge": "Proxima Generacion",
+    "line_1": "Donde la",
+    "line_2": "Inteligencia Artificial",
+    "line_3": "se encuentra con la excelencia operativa industrial para redefinir el futuro del servicio especializado.",
+    "items": [
+      {
+        "title": "IA Core",
+        "desc": "Algoritmos propietarios para optimizacion de procesos."
+      },
+      {
+        "title": "Global Standard",
+        "desc": "Cumplimiento con normativas internacionales de la Industria 4.0."
+      },
+      {
+        "title": "Ultra-Eficiencia",
+        "desc": "Reduccion de tiempos operativos mediante automatizacion inteligente."
+      }
+    ]
+  },
+  "industry": {
+    "badge": "Siguiente Nivel",
+    "heading": "Industria",
+    "heading_accent": "4.0",
+    "intro": "La transformacion digital no es una opcion, es el motor de la competitividad moderna. Estamos listos para liderar su evolucion.",
+    "timeline_title": "Evolucion Industrial",
+    "elements_title": "Elementos Clave",
+    "solutions_title": "Nuestras Soluciones",
+    "cta": "Convertirse en Industria 4.0",
+    "elements": [
+      "Informacion digital",
+      "Empleados inteligentes",
+      "Camaras inteligentes",
+      "Cliente conectado 24/7",
+      "Alineacion estrategica",
+      "Operaciones eficientes"
+    ],
+    "solutions": [
+      {
+        "title": "Call center inteligente",
+        "desc": "Gestion omnicanal con IA"
+      },
+      {
+        "title": "Ecosistema ERP + IA",
+        "desc": "Automatizacion administrativa"
+      },
+      {
+        "title": "Workflows autonomos",
+        "desc": "Optimizacion de flujo de valor"
+      }
+    ],
+    "timeline": [
+      {
+        "year": "1760",
+        "label": "Mecanica"
+      },
+      {
+        "year": "1870",
+        "label": "Electrica"
+      },
+      {
+        "year": "1969",
+        "label": "Digital"
+      },
+      {
+        "year": "Hoy",
+        "label": "IA y Datos"
+      }
+    ]
   },
   "contact": {
     "heading": "Contacto",
-    "intro": "Solicita tu cotización y descubre cómo podemos ayudarte",
-    "info_title": "Información de Contacto",
-    "phone_label": "Teléfono",
+    "intro": "Solicita tu cotizacion y descubre como podemos ayudarte",
+    "info_title": "Informacion de Contacto",
+    "phone_label": "Telefono",
     "email_label": "Correo",
     "hours_label": "Horario",
-    "hours_value": "Lunes a viernes, 9:00 - 17:00",
+    "hours_value_line_1": "Lunes a viernes",
+    "hours_value_line_2": "9:00 - 17:00",
     "location_label": "Ubicaciones",
-    "location_value": "Guanajuato, Aguascalientes",
+    "location_value_line_1": "Guanajuato",
+    "location_value_line_2": "Aguascalientes",
     "callout_title": "Respuesta Operativa 24/7",
-    "callout_desc": "Disponibilidad para iniciar operaciones en cualquier momento. Despliegue rápido de hasta 100 operadores en 10 días.",
+    "callout_desc": "Disponibilidad para iniciar operaciones en cualquier momento. Despliegue rapido de hasta 100 operadores en 10 dias.",
     "name_label": "Nombre Completo *",
     "name_placeholder": "Tu nombre",
-    "email_field_label": "Correo Electrónico *",
+    "email_field_label": "Correo Electronico *",
     "email_placeholder": "tu@empresa.com",
     "company_label": "Empresa",
     "company_placeholder": "Nombre de tu empresa",
     "message_label": "Mensaje *",
-    "message_placeholder": "Cuéntanos sobre tu proyecto...",
+    "message_placeholder": "Cuentanos sobre tu proyecto...",
     "submit": "Enviar Mensaje",
     "submitting": "Enviando...",
-    "success_title": "¡Mensaje enviado!",
+    "success_title": "Mensaje enviado",
     "success_desc": "Tu mensaje fue registrado. Te responderemos pronto.",
-    "error_title": "No se pudo enviar"
+    "error_title": "No se pudo enviar",
+    "error_fallback": "Ocurrio un error. Intenta de nuevo."
   },
   "footer": {
-    "desc1": "Somos un socio de servicio especializado habilitado por tecnología enfocado en operaciones escalables e inteligentes.",
-    "desc2": "Combinamos talento humano con automatización para que tu empresa opere más rápido, con mayor precisión y a menor costo.",
+    "desc1": "Somos un socio de servicio especializado habilitado por tecnologia enfocado en operaciones escalables e inteligentes.",
+    "desc2": "Combinamos talento humano con automatizacion para que tu empresa opere mas rapido, con mayor precision y a menor costo.",
     "links_title": "Enlaces",
     "link_servicios": "Servicios",
     "link_nosotros": "Nosotros",
     "link_contacto": "Contacto",
     "link_erp": "Acceso ERP",
     "contact_title": "Contacto",
-    "social_title": "Síguenos",
+    "social_title": "Siguenos",
     "legal_title": "Legales",
     "privacy": "Aviso de Privacidad",
-    "terms": "Términos de Uso",
-    "copyright": "© 2025 Seishin. Todos los derechos reservados."
+    "terms": "Terminos de Uso",
+    "copyright": "© 2026 Seishin. Todos los derechos reservados."
+  },
+  "cta": {
+    "heading": "Listo para transformar tus operaciones?",
+    "description": "Asociate con nosotros para servicio especializado de IA centrado en personas. Avancemos rapido, juntos.",
+    "button": "Inicia una conversacion"
   },
   "calculator": {
     "tag": "Cotizador",
     "heading": "Solicita tu propuesta",
-    "subheading": "Completa los pasos para recibir una cotización personalizada según tus necesidades."
+    "subheading": "Completa los pasos para recibir una cotizacion personalizada segun tus necesidades."
   },
   "gallery": {
-    "heading": "Nuestra Galería",
-    "desc": "Explora imágenes y video del material real de Seishin.",
+    "heading_prefix": "Nuestra",
+    "heading_suffix": "Galeria",
+    "heading": "Nuestra Galeria",
+    "desc": "Explora imagenes y video del material real de Seishin.",
     "filter_all": "Todo",
-    "filter_images": "Imágenes",
+    "filter_images": "Imagenes",
     "filter_videos": "Videos",
-    "loading": "Cargando galería desde Cloudflare...",
+    "loading": "Cargando galeria desde Cloudflare...",
     "empty": "No se encontraron elementos para este filtro.",
     "image": "Imagen",
     "video": "Video",
-    "cta_title": "¿Necesitas material específico?",
-    "cta_desc": "Contacta a nuestro equipo para solicitar recursos adicionales y casos de éxito.",
+    "cta_title": "Necesitas material especifico?",
+    "cta_desc": "Contacta a nuestro equipo para solicitar recursos adicionales y casos de exito.",
     "cta_btn": "Contactar ahora",
     "close": "Cerrar",
+    "of": "de",
     "prev": "Anterior",
-    "next": "Siguiente"
+    "next": "Siguiente",
+    "error_prefix": "Error en API Cloudflare:",
+    "error_suffix": "Mostrando archivos locales.",
+    "error_fallback": "No se pudo cargar la galeria desde Cloudflare."
+  },
+  "seishinia": {
+    "badge": "SeishinIA",
+    "hero_title": "IA aplicada a operaciones reales",
+    "hero_desc": "Disenamos e implementamos soluciones de inteligencia artificial para reducir tiempos, elevar calidad y aumentar capacidad operativa sin friccion con tu equipo.",
+    "cta_quote": "Cotizar servicio",
+    "cta_specialist": "Hablar con especialista IA",
+    "solutions_title": "Soluciones clave",
+    "solutions": [
+      {
+        "title": "Agentes IA operativos",
+        "description": "Automatizamos tareas repetitivas en reclutamiento, seguimiento de candidatos, reportes y atencion interna."
+      },
+      {
+        "title": "Vision computarizada",
+        "description": "Inspeccion visual asistida por IA para control de calidad, deteccion de defectos y trazabilidad."
+      },
+      {
+        "title": "Analitica predictiva",
+        "description": "Pronostico de demanda operativa, cobertura de personal y deteccion temprana de cuellos de botella."
+      }
+    ],
+    "sectors_title": "Industrias donde operamos",
+    "sectors": [
+      "Automotriz",
+      "Manufactura avanzada",
+      "Logistica y almacenes",
+      "Operaciones de RH",
+      "Servicios administrativos",
+      "Proyectos de transformacion digital"
+    ],
+    "process_title": "Enfoque de implementacion",
+    "process": [
+      {
+        "title": "1. Diagnostico",
+        "text": "Mapeo de proceso actual, metricas base y objetivos de negocio."
+      },
+      {
+        "title": "2. Diseno de solucion",
+        "text": "Arquitectura funcional, alcance tecnico y criterios de exito."
+      },
+      {
+        "title": "3. Implementacion piloto",
+        "text": "Prueba controlada con validacion de resultados en operacion real."
+      },
+      {
+        "title": "4. Escalamiento",
+        "text": "Despliegue gradual, capacitacion y mejora continua basada en datos."
+      }
+    ],
+    "results_title": "Resultados esperados",
+    "results_desc": "Menos retrabajos, mayor velocidad de respuesta y una operacion mas predecible basada en datos. Cada proyecto se mide con indicadores de impacto acordados desde el inicio.",
+    "results_call": "Agenda una llamada",
+    "results_gallery": "Ver galeria de operaciones",
+    "brief": {
+      "title": "Brief IA",
+      "description": "Comparte tu contexto operativo y te devolvemos una propuesta inicial de implementacion con alcance y plan de ejecucion.",
+      "submit": "Enviar Brief IA",
+      "success_title": "Brief enviado",
+      "success_desc": "Ya abrimos tu cliente de correo con la informacion. Si quieres, tambien puedes escribir a fabian.noel@seishin.com.mx.",
+      "mail_subject": "Brief IA",
+      "mail_intro": "Nuevo Brief IA recibido:",
+      "new_lead": "Nuevo lead",
+      "labels": {
+        "name": "Nombre",
+        "company": "Empresa",
+        "email": "Correo",
+        "phone": "Telefono",
+        "service": "Servicio de interes",
+        "process": "Proceso a optimizar",
+        "volume": "Volumen actual",
+        "objective": "Objetivo principal",
+        "timeline": "Timeline esperado",
+        "budget": "Rango de presupuesto"
+      },
+      "placeholders": {
+        "service": "Servicio de interes",
+        "name": "Nombre completo",
+        "company": "Empresa",
+        "email": "Correo empresarial",
+        "phone": "Telefono",
+        "process": "Que proceso quieres optimizar?",
+        "volume": "Volumen actual (ej. 300 inspecciones por dia)",
+        "objective": "Objetivo principal",
+        "timeline": "Timeline esperado",
+        "budget": "Rango de presupuesto"
+      },
+      "options": {
+        "service_1": "Agentes IA",
+        "service_2": "Vision Computarizada",
+        "service_3": "Analitica Predictiva",
+        "objective_1": "Reducir costos",
+        "objective_2": "Reducir tiempos",
+        "objective_3": "Mejorar calidad",
+        "objective_4": "Escalar operacion",
+        "timeline_1": "0-30 dias",
+        "timeline_2": "1-3 meses",
+        "timeline_3": "3-6 meses",
+        "timeline_4": "6+ meses",
+        "budget_1": "Menos de 100 mil MXN",
+        "budget_2": "100 mil - 300 mil MXN",
+        "budget_3": "300 mil - 1 M MXN",
+        "budget_4": "Mas de 1 M MXN"
+      }
+    }
   }
 }

@@ -1,7 +1,10 @@
 import { Mail, Linkedin, Facebook, Instagram } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+
 export default function Footer() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -23,8 +26,8 @@ export default function Footer() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-10 sm:gap-14 lg:gap-20 mb-12 sm:mb-14 lg:mb-16 items-start">
           <div className="text-center sm:text-left lg:col-span-1">
             <motion.div
-              whileHover={{ scale: 1.05, filter: "brightness(1.1)" }}
-              transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              whileHover={{ scale: 1.05, filter: 'brightness(1.1)' }}
+              transition={{ type: 'spring', stiffness: 400, damping: 10 }}
               className="flex items-center gap-3 mb-5 justify-center sm:justify-start"
             >
               <img
@@ -34,41 +37,41 @@ export default function Footer() {
               />
             </motion.div>
             <p className="text-[var(--text-secondary)] leading-relaxed text-sm sm:text-base mb-4">
-              Somos un socio de servicio especializado habilitado por tecnología enfocado en operaciones escalables e inteligentes.
+              {t('footer.desc1')}
             </p>
             <p className="text-[var(--text-secondary)] leading-relaxed text-sm sm:text-base">
-              Combinamos talento humano con automatización para que tu empresa opere más rápido, con mayor precisión y a menor costo.
+              {t('footer.desc2')}
             </p>
           </div>
 
           <div className="text-center sm:text-left">
-            <h4 className="text-base sm:text-lg font-bold text-[var(--text-primary)] mb-3 sm:mb-4">Enlaces</h4>
+            <h4 className="text-base sm:text-lg font-bold text-[var(--text-primary)] mb-3 sm:mb-4">{t('footer.links_title')}</h4>
             <ul className="space-y-2 sm:space-y-3">
               <li>
                 <a href="/#services" onClick={goToSection('services')} className="text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors duration-300 hover:translate-x-1 inline-block">
-                  Servicios
+                  {t('footer.link_servicios')}
                 </a>
               </li>
               <li>
                 <a href="/about" className="text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors duration-300 hover:translate-x-1 inline-block">
-                  Nosotros
+                  {t('footer.link_nosotros')}
                 </a>
               </li>
               <li>
                 <a href="/#contact" onClick={goToSection('contact')} className="text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors duration-300 hover:translate-x-1 inline-block">
-                  Contacto
+                  {t('footer.link_contacto')}
                 </a>
               </li>
               <li>
                 <a href="https://srv.seishin.com.mx/web/login" target="_blank" rel="noopener noreferrer" className="text-[#E31E24] font-bold hover:underline transition-all duration-300 hover:translate-x-1 inline-block">
-                  Acceso ERP
+                  {t('footer.link_erp')}
                 </a>
               </li>
             </ul>
           </div>
 
           <div className="text-center sm:text-left">
-            <h4 className="text-base sm:text-lg font-bold text-[var(--text-primary)] mb-3 sm:mb-4">Contacto</h4>
+            <h4 className="text-base sm:text-lg font-bold text-[var(--text-primary)] mb-3 sm:mb-4">{t('footer.contact_title')}</h4>
             <div className="space-y-2 sm:space-y-3">
               <a
                 href="mailto:hello@seishin.ai"
@@ -79,7 +82,7 @@ export default function Footer() {
               </a>
 
               <div className="pt-2">
-                <p className="text-sm font-semibold text-[var(--text-primary)] mb-3">Síguenos</p>
+                <p className="text-sm font-semibold text-[var(--text-primary)] mb-3">{t('footer.social_title')}</p>
                 <div className="flex gap-4 justify-center sm:justify-start">
                   <a
                     href="https://linkedin.com/company/seishin-ia"
@@ -124,19 +127,19 @@ export default function Footer() {
             </div>
           </div>
           <div className="text-center sm:text-left">
-            <h4 className="text-base sm:text-lg font-bold text-[var(--text-primary)] mb-3 sm:mb-4">Legales</h4>
+            <h4 className="text-base sm:text-lg font-bold text-[var(--text-primary)] mb-3 sm:mb-4">{t('footer.legal_title')}</h4>
             <div className="flex flex-col gap-2 sm:gap-3 items-center sm:items-start">
               <a
                 href="/privacidad"
                 className="text-[var(--text-secondary)] hover:text-[var(--accent-primary)] text-xs sm:text-sm transition-colors duration-300 underline-offset-4 hover:underline"
               >
-                Aviso de Privacidad
+                {t('footer.privacy')}
               </a>
               <a
                 href="/terminos"
                 className="text-[var(--text-secondary)] hover:text-[var(--accent-primary)] text-xs sm:text-sm transition-colors duration-300 underline-offset-4 hover:underline"
               >
-                Términos de Uso
+                {t('footer.terms')}
               </a>
             </div>
           </div>
@@ -145,7 +148,7 @@ export default function Footer() {
         <div className="border-t border-[var(--border-color)] pt-8 sm:pt-10">
           <div className="flex flex-col items-center gap-3">
             <p className="text-[var(--text-secondary)] text-xs sm:text-sm text-center">
-              © 2026 Seishin. Todos los derechos reservados.
+              {t('footer.copyright')}
             </p>
           </div>
         </div>
