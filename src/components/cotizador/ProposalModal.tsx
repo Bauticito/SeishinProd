@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Send, CheckCircle, FileDown } from 'lucide-react';
-import { SwalSuccess, SwalError } from '../../lib/swal';
+import { SwalSuccess, SwalError, SwalWarning } from '../../lib/swal';
 import { createOdooQuotation } from '../../services/odooService';
 import { generateQuotePDF, generateQuotePDFBase64, type WizardSnapshot } from '../../lib/generateQuotePDF';
 import { uploadDocumentsToOdoo, type OdooDocumentFile } from '../../services/odooService';
@@ -133,7 +133,7 @@ export default function ProposalModal({ open, onClose, wizardData, files }: Prop
         notes ? `\n── Notas adicionales ──\n${notes}` : null,
       ];
 
-      await createOdooQuotation({
+      const quoteResult = await createOdooQuotation({
         customerName:  name,
         customerEmail: email,
         customerPhone: phone,
@@ -145,43 +145,56 @@ export default function ProposalModal({ open, onClose, wizardData, files }: Prop
         notes:      lines.filter(Boolean).join('\n'),
       });
 
-      setStatus('success');
-      SwalSuccess('¡Cotización enviada!', 'Un asesor te contactará pronto.');
+      let documentsWarning = '';
+      try {
+        const docs: OdooDocumentFile[] = [];
 
-      // Subir documentos a Odoo Documents en segundo plano
-      (async () => {
-        try {
-          const docs: OdooDocumentFile[] = [];
+        if (files && files.length > 0) {
+          for (const f of files) {
+            const datas = await fileToBase64(f);
+            docs.push({ name: f.name, datas, mimetype: f.type || 'application/octet-stream' });
+          }
+        }
 
-          // Archivos del usuario
-          if (files && files.length > 0) {
-            for (const f of files) {
-              const datas = await fileToBase64(f);
-              docs.push({ name: f.name, datas, mimetype: f.type || 'application/octet-stream' });
-            }
+        const pdfData = generateQuotePDFBase64({
+          service:        servicesLabel,
+          subService:     servicesLabel,
+          quantity:       wizardData.size || 'N/A',
+          estimate:       'Cotización en proceso — nuestro equipo te contactará pronto',
+          customerName:   name,
+          customerEmail:  email,
+          customerPhone:  phone,
+          company,
+          notes:          notes || undefined,
+          wizardSnapshot: { ...wizardData, contact_name: name, email, phone, company_name: company || wizardData.company_name },
+        });
+        docs.push({ name: pdfData.filename, datas: pdfData.base64, mimetype: 'application/pdf' });
+
+        if (docs.length > 0) {
+          const leadId = Number(quoteResult?.leadId || 0);
+          if (!leadId) {
+            throw new Error('La cotizacion no devolvio un leadId para vincular documentos.');
           }
 
-          // PDF de la cotización
-          const pdfData = generateQuotePDFBase64({
-            service:        servicesLabel,
-            subService:     servicesLabel,
-            quantity:       wizardData.size || 'N/A',
-            estimate:       'Cotización en proceso — nuestro equipo te contactará pronto',
-            customerName:   name,
-            customerEmail:  email,
-            customerPhone:  phone,
-            company,
-            notes:          notes || undefined,
-            wizardSnapshot: { ...wizardData, contact_name: name, email, phone, company_name: company || wizardData.company_name },
-          });
-          docs.push({ name: pdfData.filename, datas: pdfData.base64, mimetype: 'application/pdf' });
-
-          await uploadDocumentsToOdoo(docs, name);
-        } catch (uploadErr) {
-          // No bloquear la UX, pero registrar el error para depuración
-          console.error('[Odoo Docs] Error al subir documentos:', uploadErr);
+          await uploadDocumentsToOdoo(docs, leadId, name);
         }
-      })();
+      } catch (uploadErr) {
+        documentsWarning =
+          uploadErr instanceof Error
+            ? uploadErr.message
+            : 'No se pudieron guardar los documentos adjuntos.';
+        console.error('[Quote Docs] Error al guardar documentos:', uploadErr);
+      }
+
+      setStatus('success');
+      if (documentsWarning) {
+        SwalWarning(
+          'Cotización enviada con incidencia',
+          `La cotizacion se registro, pero los documentos no se pudieron guardar en Cloudflare/Odoo. ${documentsWarning}`
+        );
+      } else {
+        SwalSuccess('¡Cotización enviada!', 'Un asesor te contactará pronto.');
+      }
     } catch (err) {
       SwalError('No se pudo enviar', err instanceof Error ? err.message : 'Error al enviar la solicitud');
     }

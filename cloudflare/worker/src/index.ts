@@ -70,6 +70,7 @@ type DocumentsPayload = {
   files: DocumentFile[];
   folderName: string;
   customerName?: string;
+  leadId?: number;
 };
 
 type RecruitmentPayload = {
@@ -606,6 +607,53 @@ const uploadDocumentsToOdoo = async (
   return ids;
 };
 
+const getBase64Size = (input: string): number => {
+  const normalized = input.replace(/\s+/g, "");
+  const padding = normalized.endsWith("==") ? 2 : normalized.endsWith("=") ? 1 : 0;
+  return Math.max(0, Math.floor((normalized.length * 3) / 4) - padding);
+};
+
+const storeDocumentsInD1 = async (
+  env: Env,
+  payload: DocumentsPayload,
+  odooDocumentIds: number[],
+  syncStatus: SyncStatus,
+  syncError: string | null
+): Promise<number[]> => {
+  if (!payload.leadId) {
+    throw new Error("leadId is required to persist documents");
+  }
+
+  const storedIds: number[] = [];
+  for (const [index, file] of payload.files.entries()) {
+    const insert = await env.DB.prepare(
+      `INSERT INTO quote_attachments (
+        lead_id, file_name, mime_type, file_size_bytes, file_base64, folder_name,
+        customer_name, odoo_document_id, sync_status, sync_error, created_at, updated_at
+       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+    )
+      .bind(
+        payload.leadId,
+        file.name,
+        file.mimetype || "application/octet-stream",
+        getBase64Size(file.datas),
+        file.datas,
+        payload.folderName,
+        payload.customerName ?? null,
+        odooDocumentIds[index] ?? null,
+        syncStatus,
+        syncError,
+        nowIso(),
+        nowIso()
+      )
+      .run();
+
+    storedIds.push(Number(insert.meta.last_row_id));
+  }
+
+  return storedIds;
+};
+
 const nowIso = () => new Date().toISOString();
 
 export default {
@@ -1064,7 +1112,20 @@ export default {
 
       const folderName = toOptionalString(body.folderName, 200) ?? "pagina cotizaciones";
       const customerName = toOptionalString(body.customerName, 150);
+      const leadId =
+        typeof body.leadId === "number" && Number.isInteger(body.leadId) && body.leadId > 0
+          ? body.leadId
+          : null;
       const rawFiles = Array.isArray(body.files) ? body.files : [];
+
+      if (!leadId) {
+        return json({ error: "leadId is required" }, 400, origin);
+      }
+
+      const lead = await env.DB.prepare(`SELECT id FROM leads WHERE id = ?`).bind(leadId).first<{ id: number }>();
+      if (!lead) {
+        return json({ error: "Lead not found" }, 404, origin);
+      }
 
       // base64 de 2 MB = ~2.73 MB de texto (~2,864,000 chars)
       const MAX_BASE64_LEN = Math.ceil((2 * 1024 * 1024 * 4) / 3) + 100;
@@ -1090,15 +1151,38 @@ export default {
       }
 
       try {
-        const documentIds = await uploadDocumentsToOdoo(env, {
+        let documentIds: number[] = [];
+        let syncStatus: SyncStatus = "synced";
+        let syncError: string | null = null;
+
+        try {
+          documentIds = await uploadDocumentsToOdoo(env, {
+            files,
+            folderName,
+            customerName: customerName || undefined,
+            leadId,
+          });
+        } catch (error) {
+          syncStatus = "error";
+          syncError =
+            error instanceof Error ? error.message.slice(0, 1000) : "Failed to upload documents to Odoo";
+        }
+
+        const storedIds = await storeDocumentsInD1(env, {
           files,
           folderName,
           customerName: customerName || undefined,
-        });
-        return json({ ok: true, documentIds }, 201, origin);
+          leadId,
+        }, documentIds, syncStatus, syncError);
+
+        if (syncStatus === "error") {
+          return json({ ok: false, storedIds, documentIds, error: syncError }, 502, origin);
+        }
+
+        return json({ ok: true, storedIds, documentIds }, 201, origin);
       } catch (error) {
         return json(
-          { error: error instanceof Error ? error.message : "Failed to upload documents" },
+          { error: error instanceof Error ? error.message : "Failed to persist documents" },
           500,
           origin
         );

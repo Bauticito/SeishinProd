@@ -2,8 +2,8 @@
 
 Este Worker expone:
 - API pública de galería: `/api/media`
-- API de leads/cotizaciones: `/api/leads/contact` y `/api/leads/quote`
-- Persistencia en D1 para trazabilidad y recuperación ante fallos de Odoo
+- API de leads/cotizaciones: `/api/leads/contact`, `/api/leads/quote` y `/api/leads/documents`
+- Persistencia en D1 para trazabilidad y recuperación ante fallos de Odoo, incluyendo adjuntos de cotización
 
 ## 1) Crear base D1
 
@@ -84,6 +84,7 @@ Configura en frontend:
 - `GET /api/media`
 - `POST /api/leads/contact`
 - `POST /api/leads/quote`
+- `POST /api/leads/documents`
 
 ### Admin (header `x-admin-token`)
 - `POST /api/media`

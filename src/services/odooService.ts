@@ -23,6 +23,14 @@ type QuotePayload = {
   notes?: string;
 };
 
+type QuoteResponse = {
+  ok: boolean;
+  leadId: number;
+  syncStatus: 'pending' | 'synced' | 'error';
+  odooSaleOrderId?: number | null;
+  message?: string;
+};
+
 async function parseResponse(response: Response): Promise<any> {
   const raw = await response.text();
 
@@ -64,7 +72,7 @@ export async function createContactMessage(data: ContactPayload) {
   });
 }
 
-export async function createOdooQuotation(data: QuotePayload) {
+export async function createOdooQuotation(data: QuotePayload): Promise<QuoteResponse> {
   return postLead('/api/leads/quote', {
     customerName: data.customerName,
     customerEmail: data.customerEmail,
@@ -105,11 +113,13 @@ export type OdooDocumentFile = {
 
 export async function uploadDocumentsToOdoo(
   files: OdooDocumentFile[],
+  leadId?: number,
   customerName?: string,
   folderName = 'Pagina Cotizaciones',
-): Promise<void> {
-  await postLead('/api/leads/documents', {
+): Promise<{ ok: boolean; storedIds: number[]; documentIds: number[] }> {
+  return postLead('/api/leads/documents', {
     files,
+    leadId,
     folderName,
     customerName: customerName || '',
   });
