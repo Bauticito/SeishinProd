@@ -5,23 +5,23 @@
     "servicios": "Servicios",
     "industria": "Industria 4.0",
     "seishinia": "SeishinIA",
-    "galeria": "Galeria",
+    "galeria": "Galer\u00eda",
     "calcular": "Calcula tu servicio",
     "contacto": "Contacto",
-    "contactanos": "Contactanos",
+    "contactanos": "Cont\u00e1ctanos",
     "erp": "Acceso ERP"
   },
   "lang": {
-    "es": "Espanol",
+    "es": "Espa\u00f1ol",
     "en": "English"
   },
   "hero": {
-    "badge": "Liderando la industria 4.0 en Mexico",
+    "badge": "Liderando la industria 4.0 en M\u00e9xico",
     "heading_1": "Soluciones",
     "heading_2": "empresariales",
     "heading_3": "eliminando las barreras del recurso humano",
-    "description": "Transformamos la gestion de talento y operaciones industriales. Conectamos experiencia especializada con empresas que buscan excelencia en Mexico y America Latina.",
-    "cta_primary": "Solicitar cotizacion",
+    "description": "Transformamos la gesti\u00f3n de talento y operaciones industriales. Conectamos experiencia especializada con empresas que buscan excelencia en M\u00e9xico y Am\u00e9rica Latina.",
+    "cta_primary": "Solicitar cotizaci\u00f3n",
     "cta_secondary": "Calcula tu servicio",
     "cta_vigilancia": "Vigilancia SeishinIA",
     "trust_1": "Talento Especializado",
@@ -29,12 +29,12 @@
     "trust_3": "Soporte 24/7"
   },
   "mission": {
-    "title": "Mision",
-    "description": "Hacer que el factor humano no sea una barrera en las actividades del dia a dia, disminuyendo y mejorando los tiempos de produccion. Facilitar las labores de nuestros clientes en las actividades de recurso humano, colaborando al maximo para alcanzar sus objetivos de negocio y sociales. Integrar herramientas de inteligencia artificial como aliadas del talento humano que optimicen la gestion y la productividad operativa."
+    "title": "Misi\u00f3n",
+    "description": "Hacer que el factor humano no sea una barrera en las actividades del d\u00eda a d\u00eda, disminuyendo y mejorando los tiempos de producci\u00f3n. Facilitar las labores de nuestros clientes en las actividades de recurso humano, colaborando al m\u00e1ximo para alcanzar sus objetivos de negocio y sociales. Integrar herramientas de inteligencia artificial como aliadas del talento humano que optimicen la gesti\u00f3n y la productividad operativa."
   },
   "vision": {
-    "title": "Vision",
-    "description": "Tener una red de personal especializado en la operacion del sector que nuestros clientes soliciten a lo largo del pais. Consolidarnos como una empresa lider en la rama a traves de un trabajo honesto y comprometido con nuestros clientes. Incorporar tecnologias emergentes como soluciones que impulsen la innovacion y la mejora continua en nuestros servicios."
+    "title": "Visi\u00f3n",
+    "description": "Tener una red de personal especializado en la operaci\u00f3n del sector que nuestros clientes soliciten a lo largo del pa\u00eds. Consolidarnos como una empresa l\u00edder en la rama a trav\u00e9s de un trabajo honesto y comprometido con nuestros clientes. Incorporar tecnolog\u00edas emergentes como soluciones que impulsen la innovaci\u00f3n y la mejora continua en nuestros servicios."
   },
   "services": {
     "heading": "Nuestros",
@@ -169,9 +169,9 @@
   },
   "contact": {
     "heading": "Contacto",
-    "intro": "Solicita tu cotizacion y descubre como podemos ayudarte",
+    "intro": "Solicita tu cotizaci\u00f3n y descubre c\u00f3mo podemos ayudarte",
     "info_title": "Informacion de Contacto",
-    "phone_label": "Telefono",
+    "phone_label": "Tel\u00e9fono",
     "email_label": "Correo",
     "hours_label": "Horario",
     "hours_value_line_1": "Lunes a viernes",
@@ -209,7 +209,7 @@
     "legal_title": "Legales",
     "privacy": "Aviso de Privacidad",
     "terms": "Terminos de Uso",
-    "copyright": "© 2026 Seishin. Todos los derechos reservados."
+    "copyright": "\u00a9 2026 Seishin. Todos los derechos reservados."
   },
   "cta": {
     "heading": "Listo para transformar tus operaciones?",
@@ -219,12 +219,12 @@
   "calculator": {
     "tag": "Cotizador",
     "heading": "Solicita tu propuesta",
-    "subheading": "Completa los pasos para recibir una cotizacion personalizada segun tus necesidades."
+    "subheading": "Completa los pasos para recibir una cotizaci\u00f3n personalizada seg\u00fan tus necesidades."
   },
   "gallery": {
     "heading_prefix": "Nuestra",
-    "heading_suffix": "Galeria",
-    "heading": "Nuestra Galeria",
+    "heading_suffix": "Galer\u00eda",
+    "heading": "Nuestra Galer\u00eda",
     "desc": "Explora imagenes y video del material real de Seishin.",
     "filter_all": "Todo",
     "filter_images": "Imagenes",
@@ -257,7 +257,7 @@
         "description": "Automatizamos tareas repetitivas en reclutamiento, seguimiento de candidatos, reportes y atencion interna."
       },
       {
-        "title": "Vision computarizada",
+        "title": "Visi\u00f3n computarizada",
         "description": "Inspeccion visual asistida por IA para control de calidad, deteccion de defectos y trazabilidad."
       },
       {
@@ -302,7 +302,7 @@
       "description": "Comparte tu contexto operativo y te devolvemos una propuesta inicial de implementacion con alcance y plan de ejecucion.",
       "submit": "Enviar Brief IA",
       "success_title": "Brief enviado",
-      "success_desc": "Ya abrimos tu cliente de correo con la informacion. Si quieres, tambien puedes escribir a fabian.noel@seishin.com.mx.",
+      "success_desc": "Ya abrimos tu cliente de correo con la informaci\u00f3n. Si quieres, tambi\u00e9n puedes escribir a fabian.noel@seishin.com.mx.",
       "mail_subject": "Brief IA",
       "mail_intro": "Nuevo Brief IA recibido:",
       "new_lead": "Nuevo lead",
@@ -310,7 +310,7 @@
         "name": "Nombre",
         "company": "Empresa",
         "email": "Correo",
-        "phone": "Telefono",
+        "phone": "Tel\u00e9fono",
         "service": "Servicio de interes",
         "process": "Proceso a optimizar",
         "volume": "Volumen actual",
@@ -323,7 +323,7 @@
         "name": "Nombre completo",
         "company": "Empresa",
         "email": "Correo empresarial",
-        "phone": "Telefono",
+        "phone": "Tel\u00e9fono",
         "process": "Que proceso quieres optimizar?",
         "volume": "Volumen actual (ej. 300 inspecciones por dia)",
         "objective": "Objetivo principal",
@@ -332,7 +332,7 @@
       },
       "options": {
         "service_1": "Agentes IA",
-        "service_2": "Vision Computarizada",
+        "service_2": "Visi\u00f3n Computarizada",
         "service_3": "Analitica Predictiva",
         "objective_1": "Reducir costos",
         "objective_2": "Reducir tiempos",
@@ -348,5 +348,19 @@
         "budget_4": "Mas de 1 M MXN"
       }
     }
+  },
+  "about": {
+    "heading": "Sobre",
+    "heading_accent": "Nosotros",
+    "description_1": "Seishin es una empresa creada para solucionar las dificultades y facilitar labores de administraci\u00f3n y recursos humanos en empresas de capital extranjero.",
+    "description_2": "Brindamos servicios de tercerizaci\u00f3n, reclutamiento, consultor\u00eda, tr\u00e1mites, traducciones legales y soluciones con tecnolog\u00edas emergentes.",
+    "stats_1": "Colaboradores especializados",
+    "stats_2": "Empresas ya trabajan con nosotros",
+    "stats_3": "Respuesta operativa",
+    "founder_name": "Fabian Noel",
+    "founder_role": "CEO y Fundador",
+    "founder_bio": "L\u00edder comprometido con el desarrollo industrial en M\u00e9xico. Fund\u00f3 Seishin con la misi\u00f3n de conectar talento, liderando procesos exitosos de vinculaci\u00f3n laboral con empresas de capital extranjero que buscan eficiencia y compromiso.",
+    "founder_alt": "Fabian Noel - CEO y Fundador"
   }
 }
+

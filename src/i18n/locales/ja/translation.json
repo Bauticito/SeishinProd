@@ -31,18 +31,17 @@
     "trust_3": "24/7 サポート"
   },
   "about": {
-    "heading": "会社",
-    "heading_accent": "概要",
-    "p1": "Seishinは、外資系企業における管理・人事業務の困難を解決し、業務を円滑化するために設立された企業です。",
-    "p2": "アウトソーシング、採用、コンサルティング、手続き代行、法的翻訳、新興技術ソリューションを提供しています。",
-    "stat_1_value": "200+",
-    "stat_1_label": "専門スタッフ",
-    "stat_2_value": "+50",
-    "stat_2_label": "取引先企業",
-    "stat_3_value": "24/7",
-    "stat_3_label": "オペレーション対応",
-    "founder_title": "CEO・創業者",
-    "founder_bio": "メキシコの産業発展に取り組むリーダー。効率性とコミットメントを求める外資系企業との人材マッチングを成功させることを使命として、Seishinを設立しました。"
+    "heading": "Company",
+    "heading_accent": "Overview",
+    "description_1": "Seishin was created to solve difficulties and streamline administrative and human resources work for companies with foreign capital.",
+    "description_2": "We provide outsourcing, recruiting, consulting, compliance procedures, legal translation, and emerging technology solutions.",
+    "stats_1": "Specialized collaborators",
+    "stats_2": "Companies already working with us",
+    "stats_3": "Operational response",
+    "founder_name": "Fabian Noel",
+    "founder_role": "CEO & Founder",
+    "founder_bio": "A leader committed to industrial development in Mexico. He founded Seishin with the mission of connecting talent, leading successful workforce integration processes with foreign-capital companies seeking efficiency and commitment.",
+    "founder_alt": "Fabian Noel - CEO & Founder"
   },
   "services": {
     "heading": "当社の",

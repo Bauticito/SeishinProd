@@ -348,5 +348,18 @@
         "budget_4": "More than 1M MXN"
       }
     }
+  },
+  "about": {
+    "heading": "About",
+    "heading_accent": "Us",
+    "description_1": "Seishin was created to solve difficulties and streamline administrative and human resources work for companies with foreign capital.",
+    "description_2": "We provide outsourcing, recruiting, consulting, compliance procedures, legal translation, and emerging technology solutions.",
+    "stats_1": "Specialized collaborators",
+    "stats_2": "Companies already working with us",
+    "stats_3": "Operational response",
+    "founder_name": "Fabian Noel",
+    "founder_role": "CEO & Founder",
+    "founder_bio": "A leader committed to industrial development in Mexico. He founded Seishin with the mission of connecting talent, leading successful workforce integration processes with foreign-capital companies seeking efficiency and commitment.",
+    "founder_alt": "Fabian Noel - CEO & Founder"
   }
 }

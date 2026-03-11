@@ -73,6 +73,13 @@ type DocumentsPayload = {
   leadId?: number;
 };
 
+type DocumentUploadResult = {
+  fileName: string;
+  documentId: number | null;
+  syncStatus: SyncStatus;
+  syncError: string | null;
+};
+
 type RecruitmentPayload = {
   nombre: string;
   correo: string;
@@ -545,33 +552,17 @@ const findDocumentFolder = async (
   nameOrToken: string
 ): Promise<number | null> => {
   try {
-    // 1. Por access_token (token visible en la URL de Odoo Documents)
-    const byAccessToken = await odooCallKw<{ id: number }[]>(
-      baseUrl, cookie, "documents.document", "search_read",
-      [[["access_token", "=", nameOrToken]]],
-      { fields: ["id"], limit: 1 }
-    );
-    if (byAccessToken.length > 0) return byAccessToken[0].id;
-
-    // 2. Por document_token
-    const byDocToken = await odooCallKw<{ id: number }[]>(
-      baseUrl, cookie, "documents.document", "search_read",
-      [[["document_token", "=", nameOrToken]]],
-      { fields: ["id"], limit: 1 }
-    );
-    if (byDocToken.length > 0) return byDocToken[0].id;
-
-    // 3. Por nombre exacto
+    // Buscar la carpeta de Documents por nombre.
     const byName = await odooCallKw<{ id: number }[]>(
-      baseUrl, cookie, "documents.document", "search_read",
+      baseUrl, cookie, "documents.folder", "search_read",
       [[["name", "=", nameOrToken]]],
       { fields: ["id"], limit: 1 }
     );
     if (byName.length > 0) return byName[0].id;
 
-    // 4. Nombre parcial como último recurso
+    // Nombre parcial como último recurso.
     const byPartial = await odooCallKw<{ id: number }[]>(
-      baseUrl, cookie, "documents.document", "search_read",
+      baseUrl, cookie, "documents.folder", "search_read",
       [[["name", "ilike", nameOrToken]]],
       { fields: ["id"], limit: 1 }
     );
@@ -584,27 +575,41 @@ const findDocumentFolder = async (
 const uploadDocumentsToOdoo = async (
   env: Env,
   payload: DocumentsPayload
-): Promise<number[]> => {
+): Promise<DocumentUploadResult[]> => {
   const { baseUrl, cookie } = await odooAuthenticate(env);
   const folderId = await findDocumentFolder(baseUrl, cookie, payload.folderName);
 
-  const ids: number[] = [];
+  const results: DocumentUploadResult[] = [];
   for (const file of payload.files) {
-    const vals: Record<string, unknown> = {
-      name: file.name,
-      datas: file.datas,
-      mimetype: file.mimetype || "application/octet-stream",
-      type: "binary",
-    };
-    if (folderId) vals.folder_id = folderId;
-    if (payload.customerName) vals.description = `Cotización de: ${payload.customerName}`;
+    try {
+      const vals: Record<string, unknown> = {
+        name: file.name,
+        datas: file.datas,
+        mimetype: file.mimetype || "application/octet-stream",
+        type: "binary",
+      };
+      if (folderId) vals.folder_id = folderId;
+      if (payload.customerName) vals.description = `Cotización de: ${payload.customerName}`;
 
-    const docId = await odooCallKw<number>(
-      baseUrl, cookie, "documents.document", "create", [vals]
-    );
-    ids.push(docId);
+      const docId = await odooCallKw<number>(
+        baseUrl, cookie, "documents.document", "create", [vals]
+      );
+      results.push({
+        fileName: file.name,
+        documentId: docId,
+        syncStatus: "synced",
+        syncError: null,
+      });
+    } catch (error) {
+      results.push({
+        fileName: file.name,
+        documentId: null,
+        syncStatus: "error",
+        syncError: error instanceof Error ? error.message.slice(0, 1000) : "Failed to upload document to Odoo",
+      });
+    }
   }
-  return ids;
+  return results;
 };
 
 const getBase64Size = (input: string): number => {
@@ -616,9 +621,7 @@ const getBase64Size = (input: string): number => {
 const storeDocumentsInD1 = async (
   env: Env,
   payload: DocumentsPayload,
-  odooDocumentIds: number[],
-  syncStatus: SyncStatus,
-  syncError: string | null
+  uploadResults: DocumentUploadResult[]
 ): Promise<number[]> => {
   if (!payload.leadId) {
     throw new Error("leadId is required to persist documents");
@@ -626,6 +629,13 @@ const storeDocumentsInD1 = async (
 
   const storedIds: number[] = [];
   for (const [index, file] of payload.files.entries()) {
+    const result = uploadResults[index] ?? {
+      fileName: file.name,
+      documentId: null,
+      syncStatus: "error" as SyncStatus,
+      syncError: "Missing upload result",
+    };
+
     const insert = await env.DB.prepare(
       `INSERT INTO quote_attachments (
         lead_id, file_name, mime_type, file_size_bytes, file_base64, folder_name,
@@ -640,9 +650,9 @@ const storeDocumentsInD1 = async (
         file.datas,
         payload.folderName,
         payload.customerName ?? null,
-        odooDocumentIds[index] ?? null,
-        syncStatus,
-        syncError,
+        result.documentId,
+        result.syncStatus,
+        result.syncError,
         nowIso(),
         nowIso()
       )
@@ -1151,32 +1161,37 @@ export default {
       }
 
       try {
-        let documentIds: number[] = [];
-        let syncStatus: SyncStatus = "synced";
-        let syncError: string | null = null;
-
-        try {
-          documentIds = await uploadDocumentsToOdoo(env, {
-            files,
-            folderName,
-            customerName: customerName || undefined,
-            leadId,
-          });
-        } catch (error) {
-          syncStatus = "error";
-          syncError =
-            error instanceof Error ? error.message.slice(0, 1000) : "Failed to upload documents to Odoo";
-        }
+        const uploadResults = await uploadDocumentsToOdoo(env, {
+          files,
+          folderName,
+          customerName: customerName || undefined,
+          leadId,
+        });
 
         const storedIds = await storeDocumentsInD1(env, {
           files,
           folderName,
           customerName: customerName || undefined,
           leadId,
-        }, documentIds, syncStatus, syncError);
+        }, uploadResults);
 
-        if (syncStatus === "error") {
-          return json({ ok: false, storedIds, documentIds, error: syncError }, 502, origin);
+        const documentIds = uploadResults
+          .map((result) => result.documentId)
+          .filter((id): id is number => typeof id === "number" && id > 0);
+        const failedUploads = uploadResults.filter((result) => result.syncStatus === "error");
+
+        if (failedUploads.length > 0) {
+          return json(
+            {
+              ok: false,
+              storedIds,
+              documentIds,
+              failedFiles: failedUploads.map((result) => ({ fileName: result.fileName, error: result.syncError })),
+              error: "Some documents could not be uploaded to Odoo",
+            },
+            502,
+            origin
+          );
         }
 
         return json({ ok: true, storedIds, documentIds }, 201, origin);

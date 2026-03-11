@@ -1,22 +1,25 @@
 import { Users, Building2, Clock } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 export default function About() {
+  const { t } = useTranslation();
+
   const stats = [
     {
       icon: Users,
-      number: "200+",
-      text: "Colaboradores especializados"
+      number: '200+',
+      text: t('about.stats_1'),
     },
     {
       icon: Building2,
-      number: "+50",
-      text: "Empresas ya trabajan con nosotros"
+      number: '+50',
+      text: t('about.stats_2'),
     },
     {
       icon: Clock,
-      number: "24/7",
-      text: "Respuesta operativa"
-    }
+      number: '24/7',
+      text: t('about.stats_3'),
+    },
   ];
 
   return (
@@ -24,15 +27,15 @@ export default function About() {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12 sm:mb-16">
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-[var(--text-primary)] mb-4 sm:mb-6 leading-tight tracking-tight">
-            Sobre <span className="gradient-text">Nosotros</span>
+            {t('about.heading')} <span className="gradient-text">{t('about.heading_accent')}</span>
           </h2>
 
           <p className="text-base sm:text-lg lg:text-xl text-[var(--text-secondary)] leading-relaxed max-w-4xl mx-auto mb-6">
-            Seishin es una empresa creada para solucionar las dificultades y facilitar labores de administración y recursos humanos en empresas de capital extranjera.
+            {t('about.description_1')}
           </p>
 
           <p className="text-base sm:text-lg lg:text-xl text-[var(--text-secondary)] leading-relaxed max-w-4xl mx-auto">
-            Brindamos servicios de tercerización, reclutamiento, consultoría, trámites, traducciones legales y soluciones con tecnologías emergentes.
+            {t('about.description_2')}
           </p>
         </div>
 
@@ -52,9 +55,7 @@ export default function About() {
                 <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[var(--accent-primary)] mb-2">
                   {stat.number}
                 </div>
-                <div className="text-sm sm:text-base text-[var(--text-secondary)]">
-                  {stat.text}
-                </div>
+                <div className="text-sm sm:text-base text-[var(--text-secondary)]">{stat.text}</div>
               </div>
             );
           })}
@@ -64,13 +65,13 @@ export default function About() {
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <div className="text-center lg:text-left">
               <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[var(--text-primary)] mb-4">
-                Fabián Noel
+                {t('about.founder_name')}
               </h3>
               <p className="text-lg sm:text-xl text-[var(--accent-primary)] font-semibold mb-6">
-                CEO & Fundador
+                {t('about.founder_role')}
               </p>
               <p className="text-base sm:text-lg text-[var(--text-secondary)] leading-relaxed text-justify">
-                Líder comprometido con el desarrollo industrial en México. Fundó Seishin con la misión de conectar talento, liderando procesos exitosos de vinculación laboral con empresas de capital extranjero que buscan eficiencia y compromiso.
+                {t('about.founder_bio')}
               </p>
             </div>
 
@@ -78,7 +79,7 @@ export default function About() {
               <div className="aspect-square max-w-md mx-auto rounded-3xl border-2 border-[var(--border-color-light)] overflow-hidden shadow-2xl hover:shadow-[0_20px_60px_rgba(30,58,138,0.3)] transition-all duration-500 hover:scale-[1.02]">
                 <img
                   src="/fnoel.jpg"
-                  alt="Fabián Noel - CEO & Fundador"
+                  alt={t('about.founder_alt')}
                   className="w-full h-full object-cover animate-fade-in"
                 />
               </div>

@@ -173,7 +173,7 @@ export default function ProposalModal({ open, onClose, wizardData, files }: Prop
         if (docs.length > 0) {
           const leadId = Number(quoteResult?.leadId || 0);
           if (!leadId) {
-            throw new Error('La cotizacion no devolvio un leadId para vincular documentos.');
+            throw new Error('La cotizaci\u00f3n no devolvi\u00f3 un leadId para vincular documentos.');
           }
 
           await uploadDocumentsToOdoo(docs, leadId, name);
@@ -190,7 +190,7 @@ export default function ProposalModal({ open, onClose, wizardData, files }: Prop
       if (documentsWarning) {
         SwalWarning(
           'Cotización enviada con incidencia',
-          `La cotizacion se registro, pero los documentos no se pudieron guardar en Cloudflare/Odoo. ${documentsWarning}`
+          `La cotizaci\u00f3n se registr\u00f3, pero los documentos no se pudieron guardar en Cloudflare/Odoo. ${documentsWarning}`
         );
       } else {
         SwalSuccess('¡Cotización enviada!', 'Un asesor te contactará pronto.');
@@ -434,3 +434,4 @@ export default function ProposalModal({ open, onClose, wizardData, files }: Prop
     </AnimatePresence>
   );
 }
+
