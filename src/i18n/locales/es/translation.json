@@ -196,6 +196,33 @@
     "error_title": "No se pudo enviar",
     "error_fallback": "Ocurrio un error. Intenta de nuevo."
   },
+  "recruiter": {
+    "badge": "Estamos contratando",
+    "title_prefix": "Se parte del equipo de",
+    "title_brand": "Seishin International",
+    "description": "Buscamos personas apasionadas, creativas y comprometidas con el crecimiento real. Si quieres unirte a nuestro equipo, esta es tu oportunidad.",
+    "highlights": [
+      "Proyectos de impacto",
+      "Equipo de elite",
+      "Crecimiento real"
+    ],
+    "cta": "Quiero unirme al equipo",
+    "form_title": "Cuentanos de ti",
+    "placeholders": {
+      "name": "Nombre completo *",
+      "email": "Correo electronico *",
+      "phone": "Telefono (10-15 digitos)",
+      "job": "Puesto de interes *",
+      "message": "Por que quieres unirte a Seishin International?"
+    },
+    "submit": "Enviar postulacion",
+    "submitting": "Enviando...",
+    "success_title": "Postulacion recibida",
+    "success_desc": "Gracias por tu interes en Seishin International. Nuestro equipo revisara tu perfil y se pondra en contacto contigo pronto.",
+    "error_title": "No se pudo enviar",
+    "close": "Cerrar",
+    "back": "Volver"
+  },
   "footer": {
     "desc1": "Somos un socio de servicio especializado habilitado por tecnologia enfocado en operaciones escalables e inteligentes.",
     "desc2": "Combinamos talento humano con automatizacion para que tu empresa opere mas rapido, con mayor precision y a menor costo.",

@@ -196,6 +196,33 @@
     "error_title": "Could not send",
     "error_fallback": "An error occurred. Please try again."
   },
+  "recruiter": {
+    "badge": "We're hiring",
+    "title_prefix": "Join the team at",
+    "title_brand": "Seishin International",
+    "description": "We are looking for passionate, creative people committed to real growth. If you want to join our team, this is your opportunity.",
+    "highlights": [
+      "Impactful projects",
+      "Elite team",
+      "Real growth"
+    ],
+    "cta": "I want to join the team",
+    "form_title": "Tell us about yourself",
+    "placeholders": {
+      "name": "Full name *",
+      "email": "Email address *",
+      "phone": "Phone (10-15 digits)",
+      "job": "Position of interest *",
+      "message": "Why do you want to join Seishin International?"
+    },
+    "submit": "Send application",
+    "submitting": "Sending...",
+    "success_title": "Application received",
+    "success_desc": "Thank you for your interest in Seishin International. Our team will review your profile and contact you soon.",
+    "error_title": "Could not send",
+    "close": "Close",
+    "back": "Back"
+  },
   "footer": {
     "desc1": "We are a technology-enabled specialized service partner focused on scalable and intelligent operations.",
     "desc2": "We combine human talent with automation so your company operates faster, with greater precision and at lower cost.",
