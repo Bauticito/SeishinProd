@@ -85,6 +85,8 @@ export default function RecruiterNotification() {
     try {
       await createJobApplicant(payload);
       setView('success');
+      setForm(emptyForm);
+      setErrors(emptyErrors);
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
       console.error('[RecruiterNotification] Error:', msg);

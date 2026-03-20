@@ -1,6 +1,7 @@
 import { ArrowRight, Camera, Shield, Eye, Cpu, Lock, Activity } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import CotizadorWizard from '../components/cotizador/CotizadorWizard';
+import SEO from '../components/SEO/SEO';
 
 const features = [
   {
@@ -38,6 +39,13 @@ const features = [
 export default function VigilanciaPage() {
   return (
     <div className="min-h-screen bg-[var(--bg-primary)] pt-28 pb-24 px-4 sm:px-6 lg:px-8">
+      <SEO
+        title="Vigilancia Inteligente con IA | Seguridad Industrial"
+        description="Sistema de vigilancia industrial con Inteligencia Artificial: detección en tiempo real, alertas automáticas, inferencia en el borde con Jetson y control de acceso por roles. Protege tu planta con IA."
+        keywords="vigilancia inteligente IA, seguridad industrial México, cámaras IA manufactura, detección intrusión industrial, Jetson inferencia borde, videovigilancia automatizada"
+        ogTitle="Vigilancia Industrial con IA | Seishin International"
+        ogDescription="Protege tu planta con IA: detección en tiempo real, alertas automáticas y procesamiento local con dispositivos Jetson."
+      />
       <div className="max-w-7xl mx-auto space-y-16">
 
         {/* Hero */}

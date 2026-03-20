@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { ArrowRight, Bot, Brain, Factory, LineChart, ScanSearch, ShieldCheck } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import SEO from '../components/SEO/SEO';
 
 type BriefIaForm = {
   servicio: string;
@@ -128,6 +129,13 @@ export default function SeishinIaPage() {
 
   return (
     <div className="min-h-screen bg-[var(--bg-primary)] pt-28 pb-24 px-4 sm:px-6 lg:px-8">
+      <SEO
+        title="Seishin IA | Soluciones de Inteligencia Artificial para la Industria"
+        description="Soluciones de IA industrial a la medida: visión computarizada, inspección de calidad automatizada, detección de defectos y análisis predictivo para la manufactura mexicana. Contáctanos y solicita tu demo."
+        keywords="inteligencia artificial industrial, visión computarizada manufactura, inspección calidad IA, detección defectos automatizada, IA manufactura México, análisis predictivo industrial"
+        ogTitle="Seishin IA | Inteligencia Artificial para Manufactura"
+        ogDescription="Soluciones de IA a la medida para la industria mexicana: visión computarizada, inspección automatizada y análisis predictivo."
+      />
       <div className="max-w-7xl mx-auto space-y-14">
         <section className="rounded-3xl border border-[var(--border-color-light)] glass p-8 md:p-14 overflow-hidden relative">
           <div className="absolute -top-20 -right-16 w-72 h-72 bg-[#E31E24] rounded-full blur-[110px] opacity-10" />

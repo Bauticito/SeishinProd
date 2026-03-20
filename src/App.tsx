@@ -8,6 +8,7 @@ import Navigation from './components/Navigation';
 import Footer from './components/Footer';
 import ScrollToTopButton from './components/ScrollToTopButton';
 import RecruiterNotification from './components/RecruiterNotification';
+import ScrollToTop from './components/ScrollToTop';
 
 // Marketing pages
 import Home from './pages/Home';
@@ -132,6 +133,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <Router>
+        <ScrollToTop />
         <AuthProvider>
           <AppRoutes />
           <ScrollToTopButton />

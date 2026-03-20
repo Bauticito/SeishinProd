@@ -12,36 +12,33 @@ export function useUnifiedJobs() {
         const odooJobs = await getJobPositions();
         
         const unified = odooJobs.map(oj => {
+          const nameFromOdoo = oj.name.toUpperCase() === 'SOLDADO' ? 'SOLDADOR' : oj.name;
           const staticJob = JOB_VACANCIES.find(sj => 
             sj.title.toLowerCase() === oj.name.toLowerCase() || 
             sj.id === String(oj.id)
           );
 
-          if (staticJob) {
-            return {
-              ...staticJob,
-              id: String(oj.id)
-            };
-          }
-
-          // Fallback if not in static data, using Odoo fields
-          return {
+          // Build job from Odoo data first
+          const job: JobVacancy = {
             id: String(oj.id),
-            slug: oj.name.toLowerCase().replace(/ /g, '-').replace(/[^\w-]/g, ''),
-            title: oj.name,
+            slug: nameFromOdoo.toLowerCase().replace(/ /g, '-').replace(/[^\w-]/g, ''),
+            title: nameFromOdoo,
             company: 'Seishin International',
-            description: oj.website_description || oj.job_details || 'Estamos buscando talento para unirse a nuestro equipo. Contáctanos para más detalles sobre los requisitos y responsabilidades de este puesto.',
-            requirements: oj.requirements ? [oj.requirements] : ['Consultar con el reclutador'],
+            description: oj.website_description || oj.job_details || (staticJob?.description) || 'Contáctanos para más detalles sobre este puesto.',
+            requirements: oj.requirements ? [oj.requirements] : (staticJob?.requirements || ['Consultar con el reclutador']),
             type: 'Full-time' as const,
-            category: 'General',
+            category: staticJob?.category || 'General',
             postedDate: oj.published_date || new Date().toISOString().split('T')[0],
             validThrough: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
             hiringOrganization: {
               name: 'Seishin International',
               sameAs: 'https://seishin.com.mx',
               logo: 'https://seishin.com.mx/seishin-SinFondo.png'
-            }
+            },
+            benefits: staticJob?.benefits || ['Prestaciones de ley']
           };
+
+          return job;
         });
 
         // Use unified if present, otherwise fallback to static for safety
