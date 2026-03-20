@@ -1,21 +1,11 @@
 import { motion } from 'framer-motion';
-import { useParams, Navigate } from 'react-router-dom';
-import { 
-  Clock, 
-  CheckCircle2, 
-  Calendar, 
-  DollarSign, 
-  Building2,
-  Share2,
-  Loader2,
-  ChevronLeft
-} from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useParams, Navigate, useNavigate } from 'react-router-dom';
+import { Clock, CheckCircle2, Calendar, DollarSign, Building2, Share2, Loader2, ChevronLeft, MapPin } from 'lucide-react';
 import JobPostingSchema from '../../components/SEO/JobPostingSchema';
-import { useEffect } from 'react';
 import { useUnifiedJobs } from '../../hooks/useUnifiedJobs';
 import { useRecruitmentStore } from '../../lib/recruitmentStore';
 import { JobVacancy } from '../../data/jobs';
+import SEO from '../../components/SEO/SEO';
 
 export default function JobDetailPage() {
   const { slug } = useParams();
@@ -23,17 +13,6 @@ export default function JobDetailPage() {
   const { jobs, loading } = useUnifiedJobs();
   const { openWithJob } = useRecruitmentStore();
   const job = jobs.find((j: JobVacancy) => j.slug === slug);
-
-  useEffect(() => {
-    if (job) {
-      document.title = `${job.title} en ${job.location ?? 'México'} | Vacante Seishin International`;
-      const cleanDesc = job.description.substring(0, 130).replace(/<[^>]*>/g, '').trim();
-      const metaDesc = document.querySelector('meta[name="description"]');
-      if (metaDesc) {
-        metaDesc.setAttribute('content', `Vacante: ${job.title} — ${job.type ?? 'Tiempo completo'} en ${job.location ?? 'México'}. ${cleanDesc}... Postúlate en Seishin International.`);
-      }
-    }
-  }, [job]);
 
   if (loading) {
     return (
@@ -48,6 +27,18 @@ export default function JobDetailPage() {
     return <Navigate to="/empleos" replace />;
   }
 
+  const location = job.location || 'Aguascalientes y Guanajuato, Mexico';
+  const cleanDesc = job.description.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+  const seoDescription = `Vacante de ${job.title} en ${location}. ${cleanDesc.slice(0, 150)} Postulate en Seishin International.`;
+  const seoKeywords = [
+    `vacante de ${job.title.toLowerCase()} ${location.toLowerCase()}`,
+    `empleo ${job.title.toLowerCase()} ${location.toLowerCase()}`,
+    `trabajo ${job.title.toLowerCase()}`,
+    ...(job.searchKeywords || []),
+    'vacantes seishin international',
+  ].join(', ');
+  const detailUrl = `https://seishin.com.mx/vacante/${job.slug}`;
+
   const handleShare = () => {
     if (navigator.share) {
       navigator.share({
@@ -60,12 +51,21 @@ export default function JobDetailPage() {
 
   return (
     <div className="pt-40 pb-20 min-h-screen bg-[var(--bg-primary)]">
+      <SEO
+        title={`Vacante de ${job.title} en ${location}`}
+        description={seoDescription}
+        keywords={seoKeywords}
+        ogTitle={`Vacante de ${job.title} | Seishin International`}
+        ogDescription={seoDescription}
+        canonicalUrl={detailUrl}
+        ogUrl={detailUrl}
+        ogType="article"
+      />
       <JobPostingSchema job={job} />
-      
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Back Button */}
         <div className="relative z-20 mb-8">
-          <button 
+          <button
             onClick={() => navigate('/empleos')}
             className="inline-flex items-center gap-2 text-sm text-[var(--text-secondary)] hover:text-[#E31E24] transition-colors group cursor-pointer"
           >
@@ -74,16 +74,14 @@ export default function JobDetailPage() {
           </button>
         </div>
 
-        {/* Header Section */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="p-6 md:p-10 rounded-3xl bg-white/5 border border-white/10 mb-8 relative overflow-hidden"
         >
           <div className="absolute top-0 right-0 w-96 h-96 bg-[#E31E24]/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-          
+
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-10">
-            {/* Title Info */}
             <div className="lg:col-span-6 flex flex-col justify-center min-w-0">
               <div className="flex flex-wrap items-center gap-3 mb-4 md:mb-6">
                 <span className="px-3 py-1 rounded-full bg-[#E31E24]/10 text-[#E31E24] text-[10px] font-bold uppercase tracking-widest">
@@ -106,26 +104,32 @@ export default function JobDetailPage() {
                   </div>
                   <span className="text-sm font-medium uppercase tracking-wide">{job.type}</span>
                 </div>
+                <div className="flex items-center gap-3 text-[var(--text-secondary)]">
+                  <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-[#E31E24]">
+                    <MapPin className="w-4 h-4" />
+                  </div>
+                  <span className="text-sm font-medium">{location}</span>
+                </div>
                 {job.salary && (
                   <div className="flex items-center gap-3 text-[var(--text-secondary)]">
                     <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-[#E31E24]">
                       <DollarSign className="w-4 h-4" />
                     </div>
                     <span className="text-sm font-medium">
-                      {new Intl.NumberFormat('es-MX', { style: 'currency', currency: job.salary.currency }).format(job.salary.min)} - {new Intl.NumberFormat('es-MX', { style: 'currency', currency: job.salary.currency }).format(job.salary.max)}
+                      {new Intl.NumberFormat('es-MX', { style: 'currency', currency: job.salary.currency }).format(job.salary.min)} -{' '}
+                      {new Intl.NumberFormat('es-MX', { style: 'currency', currency: job.salary.currency }).format(job.salary.max)}
                     </span>
                   </div>
                 )}
               </div>
             </div>
 
-            {/* Red CTA Box */}
             <div className="lg:col-span-3 flex">
               <div className="w-full p-8 rounded-2xl bg-[#E31E24] text-white flex flex-col justify-between shadow-xl">
                 <div>
-                  <h3 className="text-xl font-bold mb-3">¿Te interesa?</h3>
+                  <h3 className="text-xl font-bold mb-3">Te interesa?</h3>
                   <p className="text-white/80 text-xs leading-relaxed mb-6">
-                    Envía tu perfil hoy mismo para revisión. Estamos buscando talento como el tuyo.
+                    Envia tu perfil hoy mismo para revision. Estamos buscando talento como el tuyo.
                   </p>
                 </div>
                 <div className="space-y-3 mt-auto">
@@ -135,7 +139,7 @@ export default function JobDetailPage() {
                   >
                     Postularme ahora
                   </button>
-                  <button 
+                  <button
                     onClick={handleShare}
                     className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-white/10 text-white border border-white/20 font-bold text-xs hover:bg-white/20 transition-colors"
                   >
@@ -146,47 +150,34 @@ export default function JobDetailPage() {
               </div>
             </div>
 
-            {/* Black/Grey Company Box */}
             <div className="lg:col-span-3 flex">
               <div className="w-full p-8 rounded-2xl bg-white/5 border border-white/10 flex flex-col justify-between">
                 <div>
                   <p className="text-xs font-bold text-[var(--text-primary)] uppercase tracking-wider mb-3">Empresa</p>
                   <p className="text-xs text-[var(--text-secondary)] leading-relaxed mb-6">
-                    Seishin International es líder en servicios de Inteligencia Artificial y consultoría operativa avanzada en México.
+                    Seishin International es lider en servicios de Inteligencia Artificial y consultoria operativa avanzada en Mexico.
                   </p>
                 </div>
                 <div className="mt-auto">
-                  <img 
-                    src="/seishin-SinFondo.png" 
-                    alt="Seishin Logo" 
-                    className="h-10 w-auto opacity-40 grayscale"
-                  />
+                  <img src="/seishin-SinFondo.png" alt="Seishin Logo" className="h-10 w-auto opacity-40 grayscale" />
                 </div>
               </div>
             </div>
           </div>
         </motion.div>
 
-        {/* Content Section */}
         <div className="space-y-12">
-          {/* Main Details */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="space-y-12"
-          >
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="space-y-12">
             <section>
               <h2 className="text-xl font-bold text-[var(--text-primary)] mb-4 flex items-center gap-2">
                 <Building2 className="w-5 h-5 text-[#E31E24]" />
-                Descripción del puesto
+                Descripcion del puesto
               </h2>
-              <div 
-                className="prose prose-invert max-w-none text-[var(--text-secondary)] leading-relaxed"
-                dangerouslySetInnerHTML={{ __html: job.description }}
-              />
+              <div className="prose prose-invert max-w-none text-[var(--text-secondary)] leading-relaxed" dangerouslySetInnerHTML={{ __html: job.description }} />
               {job.schedule && (
-                <p className="mt-4 text-[var(--text-secondary)]"><strong>Horario:</strong> {job.schedule}</p>
+                <p className="mt-4 text-[var(--text-secondary)]">
+                  <strong>Horario:</strong> {job.schedule}
+                </p>
               )}
             </section>
 
