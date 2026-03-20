@@ -1,6 +1,6 @@
 import { Mail, Linkedin, Facebook, Instagram } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 export default function Footer() {
@@ -61,6 +61,11 @@ export default function Footer() {
                 <a href="/#contact" onClick={goToSection('contact')} className="text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors duration-300 hover:translate-x-1 inline-block">
                   {t('footer.link_contacto')}
                 </a>
+              </li>
+              <li>
+                <Link to="/empleos" className="text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors duration-300 hover:translate-x-1 inline-block">
+                  Empleos
+                </Link>
               </li>
               <li>
                 <a href="https://srv.seishin.com.mx/web/login" target="_blank" rel="noopener noreferrer" className="text-[#E31E24] font-bold hover:underline transition-all duration-300 hover:translate-x-1 inline-block">

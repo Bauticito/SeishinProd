@@ -2,7 +2,9 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Briefcase, ArrowRight, Loader2, CheckCircle2, ChevronLeft, Sparkles, Zap, Users } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import { createJobApplicant, getJobPositions, JobPosition } from '../services/odooService';
+import { useRecruitmentStore } from '../lib/recruitmentStore';
 import {
   validateNombre,
   validateCorreo,
@@ -19,6 +21,8 @@ const emptyErrors = { nombre: '', correo: '', telefono: '', mensaje: '' };
 
 export default function RecruiterNotification() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const { isOpen, selectedJobId, close } = useRecruitmentStore();
   const [visible, setVisible] = useState(false);
   const [view, setView] = useState<View>('card');
   const [loading, setLoading] = useState(false);
@@ -33,16 +37,25 @@ export default function RecruiterNotification() {
   }, []);
 
   useEffect(() => {
-    setVisible(false);
-    setView('card');
-    setForm(emptyForm);
-    setErrors(emptyErrors);
-    const timer = setTimeout(() => setVisible(true), 800);
+    if (isOpen) {
+      setVisible(true);
+      setView('form');
+      if (selectedJobId) {
+        setForm(f => ({ ...f, jobId: selectedJobId }));
+      }
+    } else {
+      // Logic for automatic appearance if not triggered by store
+      const timer = setTimeout(() => {
+        if (!isOpen) setVisible(true);
+      }, 5000); // Wait longer for non-store appearance
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen, selectedJobId]);
 
-    return () => {
-      clearTimeout(timer);
-    };
-  }, []);
+  const handleClose = () => {
+    setVisible(false);
+    close();
+  };
 
   const validateAll = () => {
     const newErrors = {
@@ -59,14 +72,18 @@ export default function RecruiterNotification() {
     e.preventDefault();
     if (!validateAll()) return;
     setLoading(true);
+    const selectedPosition = jobPositions.find(p => Number(p.id) === Number(form.jobId));
+    const payload = {
+      nombre: form.nombre,
+      correo: form.correo,
+      telefono: form.telefono,
+      mensaje: form.mensaje,
+      jobId: form.jobId ? Number(form.jobId) : undefined,
+      puesto: selectedPosition ? selectedPosition.name : ''
+    };
+    console.log('[RecruiterNotification] Submitting Payload:', payload);
     try {
-      await createJobApplicant({
-        nombre: form.nombre,
-        correo: form.correo,
-        telefono: form.telefono,
-        mensaje: form.mensaje,
-        jobId: form.jobId ? Number(form.jobId) : undefined,
-      });
+      await createJobApplicant(payload);
       setView('success');
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
@@ -108,7 +125,7 @@ export default function RecruiterNotification() {
           animate={{ x: 0, opacity: 1 }}
           exit={{ x: 420, opacity: 0 }}
           transition={{ type: 'spring', stiffness: 280, damping: 24 }}
-          className="fixed bottom-6 right-6 z-50 w-96 rounded-2xl overflow-hidden shadow-2xl border border-white/5"
+          className="fixed bottom-6 right-6 z-50 w-80 md:w-85 rounded-2xl overflow-hidden shadow-2xl border border-white/5"
           style={{ background: '#111111' }}
         >
           <div className="h-1 w-full bg-gradient-to-r from-[#E31E24] via-[#ff4d52] to-[#E31E24]" />
@@ -116,7 +133,7 @@ export default function RecruiterNotification() {
           {view === 'card' && (
             <div className="p-6">
               <button
-                onClick={() => setVisible(false)}
+                onClick={handleClose}
                 className="absolute top-4 right-4 text-gray-600 hover:text-gray-300 transition-colors"
                 aria-label={t('recruiter.close')}
               >
@@ -148,7 +165,10 @@ export default function RecruiterNotification() {
               </div>
 
               <button
-                onClick={() => setView('form')}
+                onClick={() => {
+                  setVisible(false);
+                  navigate('/empleos');
+                }}
                 className="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-[#E31E24] hover:bg-[#c01a20] transition-colors text-white text-sm font-bold shadow-lg shadow-[#E31E24]/20"
               >
                 {t('recruiter.cta')}
@@ -169,7 +189,7 @@ export default function RecruiterNotification() {
                 </button>
                 <p className="text-base font-bold text-white">{t('recruiter.form_title')}</p>
                 <button
-                  onClick={() => setVisible(false)}
+                  onClick={handleClose}
                   className="ml-auto text-gray-600 hover:text-gray-300 transition-colors"
                   aria-label={t('recruiter.close')}
                 >
@@ -274,7 +294,7 @@ export default function RecruiterNotification() {
               <p className="text-white font-bold text-base">{t('recruiter.success_title')}</p>
               <p className="text-gray-400 text-sm leading-relaxed">{t('recruiter.success_desc')}</p>
               <button
-                onClick={() => setVisible(false)}
+                onClick={handleClose}
                 className="mt-1 text-xs text-gray-600 hover:text-gray-300 transition-colors underline"
               >
                 {t('recruiter.close')}

@@ -18,6 +18,8 @@ import SeishinIaPage from './pages/SeishinIaPage';
 import VigilanciaPage from './pages/VigilanciaPage';
 import PrivacyPage from './pages/PrivacyPage';
 import TermsPage from './pages/TermsPage';
+import JobsPage from './pages/marketing/JobsPage';
+import JobDetailPage from './pages/marketing/JobDetailPage';
 
 // JetsonConsole layout + components
 import { AppLayout } from './components/JetsonConsole/AppLayout';
@@ -79,6 +81,8 @@ function AppRoutes() {
         <Route path="/vigilancia" element={<VigilanciaPage />} />
         <Route path="/privacidad" element={<PrivacyPage />} />
         <Route path="/terminos" element={<TermsPage />} />
+        <Route path="/empleos" element={<JobsPage />} />
+        <Route path="/vacante/:slug" element={<JobDetailPage />} />
       </Route>
 
       {/* ── JetsonConsole public pages ── */}
