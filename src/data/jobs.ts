@@ -7,6 +7,7 @@ export interface JobVacancy {
   requirements: string[];
   type: 'Full-time' | 'Part-time' | 'Contract' | 'Freelance';
   category: string;
+  location?: string;
   salary?: {
     min: number;
     max: number;
