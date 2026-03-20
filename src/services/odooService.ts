@@ -89,6 +89,11 @@ export async function createOdooQuotation(data: QuotePayload): Promise<QuoteResp
 export interface JobPosition {
   id: number;
   name: string;
+  website_description?: string; // HTML
+  job_details?: string;        // HTML
+  requirements?: string;       // Text
+  is_published?: boolean;
+  published_date?: string;
 }
 
 export interface JobApplicantData {
@@ -97,6 +102,7 @@ export interface JobApplicantData {
   telefono: string;
   mensaje?: string;
   jobId?: number;
+  puesto?: string;
 }
 
 export async function getJobPositions(): Promise<JobPosition[]> {
@@ -126,13 +132,27 @@ export async function uploadDocumentsToOdoo(
 }
 
 export async function createJobApplicant(data: JobApplicantData): Promise<number> {
-  const result = await postLead('/api/leads/recruitment', {
+  const job_id = data.jobId ? Number(data.jobId) : undefined;
+  const puesto_nombre = data.puesto || 'Nueva Postulación';
+  
+  const payload: any = {
+    // Standard Odoo fields (as per user list)
+    name: `Solicitud: ${puesto_nombre}`, 
+    partner_name: data.nombre,
+    email_from: data.correo,
+    partner_phone: data.telefono || '',
+    applicant_notes: data.mensaje || '',
+    job_id: !isNaN(job_id as number) ? job_id : undefined,
+    
+    // Additional fields for proxy compatibility
+    jobId: !isNaN(job_id as number) ? job_id : undefined,
+    puesto: data.puesto,
     nombre: data.nombre,
     correo: data.correo,
     telefono: data.telefono || '',
     mensaje: data.mensaje || '',
-    jobId: data.jobId,
-  });
+  };
 
+  const result = await postLead('/api/leads/recruitment', payload);
   return Number(result?.leadId || 0);
 }
