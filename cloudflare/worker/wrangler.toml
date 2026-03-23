@@ -1,11 +1,12 @@
 name = "seishin-media-api"
 main = "src/index.ts"
 compatibility_date = "2025-01-01"
+account_id = "e51b386853a139934436b15048c8f8ed"
 
 [[d1_databases]]
 binding = "DB"
 database_name = "seishin_media"
-database_id = "3f879dc2-0466-40e7-89b1-9afca487e81e"
+database_id = "44739306-48be-42dd-8243-30fc48f369f6"
 
 [vars]
 CORS_ORIGIN = "http://localhost:5173,https://seishin.com.mx,https://www.seishin.com.mx,https://seishinmx.pages.dev,https://d5847500.seishinmx.pages.dev"

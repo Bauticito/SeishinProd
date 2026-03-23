@@ -223,6 +223,58 @@
     "close": "Cerrar",
     "back": "Volver"
   },
+  "jobs": {
+    "seo": {
+      "title": "Bolsa de Trabajo en Aguascalientes y Guanajuato | Vacantes de Soldador, Montacarguista y Operario",
+      "description": "Encuentra vacantes de soldador en Aguascalientes, montacarguista en Guanajuato y operario en Seishin International. Postulate a empleos industriales y de tecnologia desde nuestra bolsa de trabajo.",
+      "keywords": "vacantes de soldador aguascalientes, vacante soldador aguascalientes, vacantes montacarguista guanajuato, vacantes operario aguascalientes, bolsa de trabajo aguascalientes, vacantes industriales mexico, empleos seishin international",
+      "ogTitle": "Vacantes de Empleo | Seishin International",
+      "ogDescription": "Explora vacantes de soldador, montacarguista y operario en Aguascalientes y Guanajuato con Seishin International."
+    },
+    "heading_prefix": "Bolsa de",
+    "heading_accent": "Trabajo",
+    "intro": "Encuentra vacantes de soldador, montacarguista y operario en Aguascalientes y Guanajuato. Buscamos talento apasionado por la innovacion y la excelencia operativa.",
+    "featured": {
+      "soldador_title": "Vacante de Soldador",
+      "soldador_location": "Aguascalientes, Mexico",
+      "montacarguista_title": "Vacante de Montacarguista",
+      "montacarguista_location": "Guanajuato, Mexico",
+      "operario_title": "Vacante de Operario",
+      "operario_location": "Aguascalientes, Mexico"
+    },
+    "search_placeholder": "Buscar vacantes (ej. Soldador, Aguascalientes...)",
+    "loading": "Cargando vacantes...",
+    "view_job": "Ver vacante",
+    "empty_title": "No encontramos vacantes que coincidan",
+    "empty_description": "Intenta con otros terminos de busqueda o envianos tu CV para tenerte en cuenta en futuras oportunidades.",
+    "send_cv": "Enviar mi CV"
+  },
+  "job_detail": {
+    "loading": "Cargando detalles de la vacante...",
+    "default_location": "Aguascalientes y Guanajuato, Mexico",
+    "seo": {
+      "description": "Vacante de {{title}} en {{location}}. {{summary}} Postulate en Seishin International.",
+      "keywords_job": "vacante de {{title}} {{location}}",
+      "keywords_employment": "empleo {{title}} {{location}}",
+      "keywords_work": "trabajo {{title}}",
+      "keywords_brand": "vacantes seishin international",
+      "share_text": "Mira esta vacante de {{title}} en Seishin International",
+      "title": "Vacante de {{title}} en {{location}}",
+      "ogTitle": "Vacante de {{title}} | Seishin International"
+    },
+    "back": "Volver a vacantes",
+    "posted_on": "Publicado el",
+    "interested_title": "Te interesa?",
+    "interested_description": "Envia tu perfil hoy mismo para revision. Estamos buscando talento como el tuyo.",
+    "apply_now": "Postularme ahora",
+    "share_job": "Compartir vacante",
+    "company_label": "Empresa",
+    "company_description": "Seishin International es lider en servicios de Inteligencia Artificial y consultoria operativa avanzada en Mexico.",
+    "job_description": "Descripcion del puesto",
+    "schedule": "Horario:",
+    "requirements": "Requisitos",
+    "benefits": "Beneficios"
+  },
   "footer": {
     "desc1": "Somos un socio de servicio especializado habilitado por tecnologia enfocado en operaciones escalables e inteligentes.",
     "desc2": "Combinamos talento humano con automatizacion para que tu empresa opere mas rapido, con mayor precision y a menor costo.",

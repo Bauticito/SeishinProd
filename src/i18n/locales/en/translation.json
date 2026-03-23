@@ -223,6 +223,58 @@
     "close": "Close",
     "back": "Back"
   },
+  "jobs": {
+    "seo": {
+      "title": "Jobs in Aguascalientes and Guanajuato | Welder, Forklift Operator, and Operator Openings",
+      "description": "Find welder jobs in Aguascalientes, forklift operator jobs in Guanajuato, and operator openings at Seishin International. Apply to industrial and technology roles through our job board.",
+      "keywords": "welder jobs aguascalientes, welder opening aguascalientes, forklift operator jobs guanajuato, operator jobs aguascalientes, job board aguascalientes, industrial jobs mexico, seishin international jobs",
+      "ogTitle": "Job Openings | Seishin International",
+      "ogDescription": "Explore welder, forklift operator, and operator openings in Aguascalientes and Guanajuato with Seishin International."
+    },
+    "heading_prefix": "Job",
+    "heading_accent": "Board",
+    "intro": "Find welder, forklift operator, and operator openings in Aguascalientes and Guanajuato. We are looking for talent passionate about innovation and operational excellence.",
+    "featured": {
+      "soldador_title": "Welder Opening",
+      "soldador_location": "Aguascalientes, Mexico",
+      "montacarguista_title": "Forklift Operator Opening",
+      "montacarguista_location": "Guanajuato, Mexico",
+      "operario_title": "Operator Opening",
+      "operario_location": "Aguascalientes, Mexico"
+    },
+    "search_placeholder": "Search openings (e.g. Welder, Aguascalientes...)",
+    "loading": "Loading openings...",
+    "view_job": "View opening",
+    "empty_title": "No matching openings found",
+    "empty_description": "Try different search terms or send us your resume so we can consider you for future opportunities.",
+    "send_cv": "Send my resume"
+  },
+  "job_detail": {
+    "loading": "Loading job details...",
+    "default_location": "Aguascalientes and Guanajuato, Mexico",
+    "seo": {
+      "description": "{{title}} opening in {{location}}. {{summary}} Apply at Seishin International.",
+      "keywords_job": "{{title}} job {{location}}",
+      "keywords_employment": "{{title}} employment {{location}}",
+      "keywords_work": "{{title}} work",
+      "keywords_brand": "seishin international jobs",
+      "share_text": "Check out this {{title}} opening at Seishin International",
+      "title": "{{title}} opening in {{location}}",
+      "ogTitle": "{{title}} Opening | Seishin International"
+    },
+    "back": "Back to openings",
+    "posted_on": "Posted on",
+    "interested_title": "Interested?",
+    "interested_description": "Send your profile today for review. We are looking for talent like you.",
+    "apply_now": "Apply now",
+    "share_job": "Share opening",
+    "company_label": "Company",
+    "company_description": "Seishin International is a leader in Artificial Intelligence services and advanced operational consulting in Mexico.",
+    "job_description": "Job description",
+    "schedule": "Schedule:",
+    "requirements": "Requirements",
+    "benefits": "Benefits"
+  },
   "footer": {
     "desc1": "We are a technology-enabled specialized service partner focused on scalable and intelligent operations.",
     "desc2": "We combine human talent with automation so your company operates faster, with greater precision and at lower cost.",

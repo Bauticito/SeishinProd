@@ -13,6 +13,23 @@ export default function JobsPage() {
   const { jobs: finalJobs, loading } = useUnifiedJobs();
   const { open } = useRecruitmentStore();
   const [searchTerm, setSearchTerm] = useState('');
+  const featuredJobs = [
+    {
+      to: '/vacante/soldador',
+      title: t('jobs.featured.soldador_title'),
+      location: t('jobs.featured.soldador_location'),
+    },
+    {
+      to: '/vacante/montacarguista',
+      title: t('jobs.featured.montacarguista_title'),
+      location: t('jobs.featured.montacarguista_location'),
+    },
+    {
+      to: '/vacante/operario',
+      title: t('jobs.featured.operario_title'),
+      location: t('jobs.featured.operario_location'),
+    },
+  ];
 
   const filteredJobs = finalJobs.filter(
     (job) =>
@@ -24,11 +41,11 @@ export default function JobsPage() {
   return (
     <div className="pt-32 pb-20 min-h-screen bg-[var(--bg-primary)]">
       <SEO
-        title="Bolsa de Trabajo en Aguascalientes y Guanajuato | Vacantes de Soldador, Montacarguista y Operario"
-        description="Encuentra vacantes de soldador en Aguascalientes, montacarguista en Guanajuato y operario en Seishin International. Postulate a empleos industriales y de tecnologia desde nuestra bolsa de trabajo."
-        keywords="vacantes de soldador aguascalientes, vacante soldador aguascalientes, vacantes montacarguista guanajuato, vacantes operario aguascalientes, bolsa de trabajo aguascalientes, vacantes industriales mexico, empleos seishin international"
-        ogTitle="Vacantes de Empleo | Seishin International"
-        ogDescription="Explora vacantes de soldador, montacarguista y operario en Aguascalientes y Guanajuato con Seishin International."
+        title={t('jobs.seo.title')}
+        description={t('jobs.seo.description')}
+        keywords={t('jobs.seo.keywords')}
+        ogTitle={t('jobs.seo.ogTitle')}
+        ogDescription={t('jobs.seo.ogDescription')}
         canonicalUrl="https://seishin.com.mx/empleos"
         ogUrl="https://seishin.com.mx/empleos"
       />
@@ -40,26 +57,20 @@ export default function JobsPage() {
             {t('recruiter.badge')}
           </span>
           <h1 className="text-4xl md:text-5xl font-bold text-[var(--text-primary)] mb-6">
-            Bolsa de <span className="text-[#E31E24]">Trabajo</span>
+            {t('jobs.heading_prefix')} <span className="text-[#E31E24]">{t('jobs.heading_accent')}</span>
           </h1>
           <p className="text-lg text-[var(--text-secondary)] max-w-3xl mx-auto">
-            Encuentra vacantes de soldador, montacarguista y operario en Aguascalientes y Guanajuato. Buscamos talento apasionado por la innovacion y la excelencia operativa.
+            {t('jobs.intro')}
           </p>
         </motion.div>
 
         <div className="max-w-5xl mx-auto mb-10 grid gap-3 md:grid-cols-3">
-          <Link to="/vacante/soldador" className="rounded-2xl border border-white/10 bg-white/5 px-5 py-4 text-left hover:border-[#E31E24]/50 transition-colors">
-            <p className="text-sm font-bold text-[var(--text-primary)]">Vacante de Soldador</p>
-            <p className="mt-1 text-sm text-[var(--text-secondary)]">Aguascalientes, Mexico</p>
-          </Link>
-          <Link to="/vacante/montacarguista" className="rounded-2xl border border-white/10 bg-white/5 px-5 py-4 text-left hover:border-[#E31E24]/50 transition-colors">
-            <p className="text-sm font-bold text-[var(--text-primary)]">Vacante de Montacarguista</p>
-            <p className="mt-1 text-sm text-[var(--text-secondary)]">Guanajuato, Mexico</p>
-          </Link>
-          <Link to="/vacante/operario" className="rounded-2xl border border-white/10 bg-white/5 px-5 py-4 text-left hover:border-[#E31E24]/50 transition-colors">
-            <p className="text-sm font-bold text-[var(--text-primary)]">Vacante de Operario</p>
-            <p className="mt-1 text-sm text-[var(--text-secondary)]">Aguascalientes, Mexico</p>
-          </Link>
+          {featuredJobs.map((job) => (
+            <Link key={job.to} to={job.to} className="rounded-2xl border border-white/10 bg-white/5 px-5 py-4 text-left hover:border-[#E31E24]/50 transition-colors">
+              <p className="text-sm font-bold text-[var(--text-primary)]">{job.title}</p>
+              <p className="mt-1 text-sm text-[var(--text-secondary)]">{job.location}</p>
+            </Link>
+          ))}
         </div>
 
         <div className="max-w-2xl mx-auto mb-12">
@@ -67,7 +78,7 @@ export default function JobsPage() {
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
             <input
               type="text"
-              placeholder="Buscar vacantes (ej. Soldador, Aguascalientes...)"
+              placeholder={t('jobs.search_placeholder')}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white/5 border border-white/10 text-[var(--text-primary)] focus:outline-none focus:border-[#E31E24] transition-colors"
@@ -79,7 +90,7 @@ export default function JobsPage() {
           {loading ? (
             <div className="flex flex-col items-center justify-center py-20 text-[var(--text-secondary)]">
               <Loader2 className="w-10 h-10 animate-spin mb-4 text-[#E31E24]" />
-              <p>Cargando vacantes...</p>
+              <p>{t('jobs.loading')}</p>
             </div>
           ) : filteredJobs.length > 0 ? (
             filteredJobs.map((job: JobVacancy, index: number) => (
@@ -120,7 +131,7 @@ export default function JobsPage() {
                       to={`/vacante/${job.slug}`}
                       className="flex items-center gap-2 px-6 py-3 rounded-xl bg-[#E31E24] text-white font-bold text-sm hover:bg-[#c01a20] shadow-lg shadow-[#E31E24]/20 transition-all group-hover:translate-x-1"
                     >
-                      Ver vacante
+                      {t('jobs.view_job')}
                       <ArrowRight className="w-4 h-4" />
                     </Link>
                   </div>
@@ -132,15 +143,15 @@ export default function JobsPage() {
               <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-6">
                 <Search className="w-8 h-8 text-gray-500" />
               </div>
-              <h3 className="text-xl font-bold text-[var(--text-primary)] mb-4">No encontramos vacantes que coincidan</h3>
+              <h3 className="text-xl font-bold text-[var(--text-primary)] mb-4">{t('jobs.empty_title')}</h3>
               <p className="text-[var(--text-secondary)] mb-8 max-w-md mx-auto">
-                Intenta con otros terminos de busqueda o envianos tu CV para tenerte en cuenta en futuras oportunidades.
+                {t('jobs.empty_description')}
               </p>
               <button
                 onClick={() => open()}
                 className="inline-flex items-center gap-2 px-8 py-3 rounded-xl bg-[#E31E24] text-white font-bold text-sm hover:bg-[#c01a20] transition-all"
               >
-                Enviar mi CV
+                {t('jobs.send_cv')}
                 <ArrowRight className="w-4 h-4" />
               </button>
             </motion.div>

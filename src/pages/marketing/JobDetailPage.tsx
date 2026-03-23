@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { useParams, Navigate, useNavigate } from 'react-router-dom';
 import { Clock, CheckCircle2, Calendar, DollarSign, Building2, Share2, Loader2, ChevronLeft, MapPin } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import JobPostingSchema from '../../components/SEO/JobPostingSchema';
 import { useUnifiedJobs } from '../../hooks/useUnifiedJobs';
 import { useRecruitmentStore } from '../../lib/recruitmentStore';
@@ -10,6 +11,7 @@ import SEO from '../../components/SEO/SEO';
 export default function JobDetailPage() {
   const { slug } = useParams();
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
   const { jobs, loading } = useUnifiedJobs();
   const { openWithJob } = useRecruitmentStore();
   const job = jobs.find((j: JobVacancy) => j.slug === slug);
@@ -18,7 +20,7 @@ export default function JobDetailPage() {
     return (
       <div className="pt-32 pb-20 min-h-screen bg-[var(--bg-primary)] flex flex-col items-center justify-center text-[var(--text-secondary)]">
         <Loader2 className="w-10 h-10 animate-spin mb-4 text-[#E31E24]" />
-        <p>Cargando detalles de la vacante...</p>
+        <p>{t('job_detail.loading')}</p>
       </div>
     );
   }
@@ -27,15 +29,19 @@ export default function JobDetailPage() {
     return <Navigate to="/empleos" replace />;
   }
 
-  const location = job.location || 'Aguascalientes y Guanajuato, Mexico';
+  const location = job.location || t('job_detail.default_location');
   const cleanDesc = job.description.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
-  const seoDescription = `Vacante de ${job.title} en ${location}. ${cleanDesc.slice(0, 150)} Postulate en Seishin International.`;
+  const seoDescription = t('job_detail.seo.description', {
+    title: job.title,
+    location,
+    summary: cleanDesc.slice(0, 150),
+  });
   const seoKeywords = [
-    `vacante de ${job.title.toLowerCase()} ${location.toLowerCase()}`,
-    `empleo ${job.title.toLowerCase()} ${location.toLowerCase()}`,
-    `trabajo ${job.title.toLowerCase()}`,
+    t('job_detail.seo.keywords_job', { title: job.title.toLowerCase(), location: location.toLowerCase() }),
+    t('job_detail.seo.keywords_employment', { title: job.title.toLowerCase(), location: location.toLowerCase() }),
+    t('job_detail.seo.keywords_work', { title: job.title.toLowerCase() }),
     ...(job.searchKeywords || []),
-    'vacantes seishin international',
+    t('job_detail.seo.keywords_brand'),
   ].join(', ');
   const detailUrl = `https://seishin.com.mx/vacante/${job.slug}`;
 
@@ -43,7 +49,7 @@ export default function JobDetailPage() {
     if (navigator.share) {
       navigator.share({
         title: job.title,
-        text: `Mira esta vacante de ${job.title} en Seishin International`,
+        text: t('job_detail.seo.share_text', { title: job.title }),
         url: window.location.href,
       });
     }
@@ -52,10 +58,10 @@ export default function JobDetailPage() {
   return (
     <div className="pt-40 pb-20 min-h-screen bg-[var(--bg-primary)]">
       <SEO
-        title={`Vacante de ${job.title} en ${location}`}
+        title={t('job_detail.seo.title', { title: job.title, location })}
         description={seoDescription}
         keywords={seoKeywords}
-        ogTitle={`Vacante de ${job.title} | Seishin International`}
+        ogTitle={t('job_detail.seo.ogTitle', { title: job.title })}
         ogDescription={seoDescription}
         canonicalUrl={detailUrl}
         ogUrl={detailUrl}
@@ -70,7 +76,7 @@ export default function JobDetailPage() {
             className="inline-flex items-center gap-2 text-sm text-[var(--text-secondary)] hover:text-[#E31E24] transition-colors group cursor-pointer"
           >
             <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-            Volver a vacantes
+            {t('job_detail.back')}
           </button>
         </div>
 
@@ -89,7 +95,7 @@ export default function JobDetailPage() {
                 </span>
                 <span className="text-gray-500 text-xs flex items-center gap-1.5">
                   <Calendar className="w-3.5 h-3.5" />
-                  Publicado el {job.postedDate}
+                  {t('job_detail.posted_on')} {job.postedDate}
                 </span>
               </div>
 
@@ -116,8 +122,8 @@ export default function JobDetailPage() {
                       <DollarSign className="w-4 h-4" />
                     </div>
                     <span className="text-sm font-medium">
-                      {new Intl.NumberFormat('es-MX', { style: 'currency', currency: job.salary.currency }).format(job.salary.min)} -{' '}
-                      {new Intl.NumberFormat('es-MX', { style: 'currency', currency: job.salary.currency }).format(job.salary.max)}
+                      {new Intl.NumberFormat(i18n.language === 'en' ? 'en-US' : 'es-MX', { style: 'currency', currency: job.salary.currency }).format(job.salary.min)} -{' '}
+                      {new Intl.NumberFormat(i18n.language === 'en' ? 'en-US' : 'es-MX', { style: 'currency', currency: job.salary.currency }).format(job.salary.max)}
                     </span>
                   </div>
                 )}
@@ -127,9 +133,9 @@ export default function JobDetailPage() {
             <div className="lg:col-span-3 flex">
               <div className="w-full p-8 rounded-2xl bg-[#E31E24] text-white flex flex-col justify-between shadow-xl">
                 <div>
-                  <h3 className="text-xl font-bold mb-3">Te interesa?</h3>
+                  <h3 className="text-xl font-bold mb-3">{t('job_detail.interested_title')}</h3>
                   <p className="text-white/80 text-xs leading-relaxed mb-6">
-                    Envia tu perfil hoy mismo para revision. Estamos buscando talento como el tuyo.
+                    {t('job_detail.interested_description')}
                   </p>
                 </div>
                 <div className="space-y-3 mt-auto">
@@ -137,14 +143,14 @@ export default function JobDetailPage() {
                     onClick={() => openWithJob(job.id)}
                     className="w-full py-3 rounded-xl bg-white text-[#E31E24] font-bold text-sm hover:bg-gray-100 transition-all hover:-translate-y-0.5"
                   >
-                    Postularme ahora
+                    {t('job_detail.apply_now')}
                   </button>
                   <button
                     onClick={handleShare}
                     className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-white/10 text-white border border-white/20 font-bold text-xs hover:bg-white/20 transition-colors"
                   >
                     <Share2 className="w-4 h-4" />
-                    Compartir vacante
+                    {t('job_detail.share_job')}
                   </button>
                 </div>
               </div>
@@ -153,9 +159,9 @@ export default function JobDetailPage() {
             <div className="lg:col-span-3 flex">
               <div className="w-full p-8 rounded-2xl bg-white/5 border border-white/10 flex flex-col justify-between">
                 <div>
-                  <p className="text-xs font-bold text-[var(--text-primary)] uppercase tracking-wider mb-3">Empresa</p>
+                  <p className="text-xs font-bold text-[var(--text-primary)] uppercase tracking-wider mb-3">{t('job_detail.company_label')}</p>
                   <p className="text-xs text-[var(--text-secondary)] leading-relaxed mb-6">
-                    Seishin International es lider en servicios de Inteligencia Artificial y consultoria operativa avanzada en Mexico.
+                    {t('job_detail.company_description')}
                   </p>
                 </div>
                 <div className="mt-auto">
@@ -171,18 +177,18 @@ export default function JobDetailPage() {
             <section>
               <h2 className="text-xl font-bold text-[var(--text-primary)] mb-4 flex items-center gap-2">
                 <Building2 className="w-5 h-5 text-[#E31E24]" />
-                Descripcion del puesto
+                {t('job_detail.job_description')}
               </h2>
               <div className="prose prose-invert max-w-none text-[var(--text-secondary)] leading-relaxed" dangerouslySetInnerHTML={{ __html: job.description }} />
               {job.schedule && (
                 <p className="mt-4 text-[var(--text-secondary)]">
-                  <strong>Horario:</strong> {job.schedule}
+                  <strong>{t('job_detail.schedule')}</strong> {job.schedule}
                 </p>
               )}
             </section>
 
             <section>
-              <h3 className="text-xl font-bold text-[var(--text-primary)] mb-6">Requisitos</h3>
+              <h3 className="text-xl font-bold text-[var(--text-primary)] mb-6">{t('job_detail.requirements')}</h3>
               <ul className="space-y-4">
                 {job.requirements.map((req: string, i: number) => (
                   <li key={i} className="flex gap-3 text-[var(--text-secondary)]">
@@ -195,7 +201,7 @@ export default function JobDetailPage() {
 
             {job.benefits && (
               <section>
-                <h3 className="text-xl font-bold text-[var(--text-primary)] mb-6">Beneficios</h3>
+                <h3 className="text-xl font-bold text-[var(--text-primary)] mb-6">{t('job_detail.benefits')}</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {job.benefits.map((benefit: string, i: number) => (
                     <div key={i} className="p-4 rounded-xl bg-white/5 border border-white/10 flex items-center gap-3">

@@ -1,4 +1,4 @@
-const DEFAULT_LEADS_API_URL = 'https://seishin-media-api.seishin-media-api.workers.dev';
+const DEFAULT_LEADS_API_URL = 'https://seishin-media-api.bautista-figueroa.workers.dev';
 
 const API_BASE = (
   import.meta.env.VITE_LEADS_API_URL as string | undefined
