@@ -1,5 +1,6 @@
 import { Users, Building2, Clock } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { SITE_MEDIA } from '../lib/siteMedia';
 
 export default function About() {
   const { t } = useTranslation();
@@ -78,7 +79,7 @@ export default function About() {
             <div className="relative">
               <div className="aspect-square max-w-md mx-auto rounded-3xl border-2 border-[var(--border-color-light)] overflow-hidden shadow-2xl hover:shadow-[0_20px_60px_rgba(30,58,138,0.3)] transition-all duration-500 hover:scale-[1.02]">
                 <img
-                  src="/fnoel.jpg"
+                  src={SITE_MEDIA.photos.founder}
                   alt={t('about.founder_alt')}
                   className="w-full h-full object-cover animate-fade-in"
                 />

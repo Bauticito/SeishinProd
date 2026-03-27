@@ -2,6 +2,7 @@ import { HardDrive, Activity, User, Sun, Moon } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useJarvisSystemStats } from "@/hooks/useJarvis";
 import { useTheme } from "@/context/ThemeContext";
+import { SITE_MEDIA } from "@/lib/siteMedia";
 
 type Status = "ok" | "warning" | "error";
 
@@ -40,7 +41,7 @@ export function SystemStatusBar() {
     <header className="h-12 bg-[var(--bg-secondary)] border-b border-[var(--border-color-light)] flex items-center px-4 gap-3 shrink-0 overflow-x-auto">
       {/* Logo */}
       <div className="flex items-center gap-2 shrink-0">
-        <img src="/seishin-SinFondo.png" alt="Seishin" className="h-7 w-auto object-contain" />
+        <img src={SITE_MEDIA.logos.primary} alt="Seishin" className="h-7 w-auto object-contain" />
         <span className="hidden sm:block text-[10px] font-mono font-bold tracking-[0.15em] text-[var(--text-secondary)] uppercase">
           Portal IA
         </span>

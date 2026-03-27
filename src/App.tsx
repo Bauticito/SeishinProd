@@ -1,134 +1,141 @@
+import { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { AuditProvider } from './context/AuditContext';
-
-// Marketing layout
 import Navigation from './components/Navigation';
 import Footer from './components/Footer';
 import ScrollToTopButton from './components/ScrollToTopButton';
-import RecruiterNotification from './components/RecruiterNotification';
 import ScrollToTop from './components/ScrollToTop';
-
-// Marketing pages
-import Home from './pages/Home';
-import AboutPage from './pages/AboutPage';
-import CalculatorPage from './pages/CalculatorPage';
-import GalleryPage from './pages/GalleryPage';
-import SeishinIaPage from './pages/SeishinIaPage';
-import VigilanciaPage from './pages/VigilanciaPage';
-import PrivacyPage from './pages/PrivacyPage';
-import TermsPage from './pages/TermsPage';
-import JobsPage from './pages/marketing/JobsPage';
-import JobDetailPage from './pages/marketing/JobDetailPage';
-
-// JetsonConsole layout + components
 import { AppLayout } from './components/JetsonConsole/AppLayout';
 import { ProtectedRoute } from './components/JetsonConsole/ProtectedRoute';
 import { InactivityBanner } from './components/JetsonConsole/InactivityBanner';
 
-// JetsonConsole pages
-import LandingPage from './pages/JetsonPages/LandingPage';
-import LoginPage from './pages/JetsonPages/LoginPage';
-import Dashboard from './pages/JetsonPages/Dashboard';
-import InferencePage from './pages/JetsonPages/InferencePage';
-import AutomationsPage from './pages/JetsonPages/AutomationsPage';
-import CamerasPage from './pages/JetsonPages/CamerasPage';
-import CamerasDelimiterPage from './pages/JetsonPages/CamerasDelimiterPage';
-import CamerasInventoryPage from './pages/JetsonPages/CamerasInventoryPage';
-import CamerasValidationPage from './pages/JetsonPages/CamerasValidationPage';
-import ModelsPage from './pages/JetsonPages/ModelsPage';
-import DatasetsPage from './pages/JetsonPages/DatasetsPage';
-import TrainingPage from './pages/JetsonPages/TrainingPage';
-import LogsPage from './pages/JetsonPages/LogsPage';
-import AdminPage from './pages/JetsonPages/AdminPage';
-import BillingPage from './pages/JetsonPages/BillingPage';
-import ModulesPage from './pages/JetsonPages/ModulesPage';
-import AccountsPage from './pages/JetsonPages/AccountsPage';
-import NotFound from './pages/JetsonPages/NotFound';
+const RecruiterNotification = lazy(() => import('./components/RecruiterNotification'));
+
+const Home = lazy(() => import('./pages/Home'));
+const AboutPage = lazy(() => import('./pages/AboutPage'));
+const CalculatorPage = lazy(() => import('./pages/CalculatorPage'));
+const GalleryPage = lazy(() => import('./pages/GalleryPage'));
+const SeishinIaPage = lazy(() => import('./pages/SeishinIaPage'));
+const VigilanciaPage = lazy(() => import('./pages/VigilanciaPage'));
+const PrivacyPage = lazy(() => import('./pages/PrivacyPage'));
+const TermsPage = lazy(() => import('./pages/TermsPage'));
+const JobsPage = lazy(() => import('./pages/marketing/JobsPage'));
+const JobDetailPage = lazy(() => import('./pages/marketing/JobDetailPage'));
+
+const LandingPage = lazy(() => import('./pages/JetsonPages/LandingPage'));
+const LoginPage = lazy(() => import('./pages/JetsonPages/LoginPage'));
+const Dashboard = lazy(() => import('./pages/JetsonPages/Dashboard'));
+const InferencePage = lazy(() => import('./pages/JetsonPages/InferencePage'));
+const AutomationsPage = lazy(() => import('./pages/JetsonPages/AutomationsPage'));
+const CamerasPage = lazy(() => import('./pages/JetsonPages/CamerasPage'));
+const CamerasDelimiterPage = lazy(() => import('./pages/JetsonPages/CamerasDelimiterPage'));
+const CamerasInventoryPage = lazy(() => import('./pages/JetsonPages/CamerasInventoryPage'));
+const CamerasValidationPage = lazy(() => import('./pages/JetsonPages/CamerasValidationPage'));
+const ModelsPage = lazy(() => import('./pages/JetsonPages/ModelsPage'));
+const DatasetsPage = lazy(() => import('./pages/JetsonPages/DatasetsPage'));
+const TrainingPage = lazy(() => import('./pages/JetsonPages/TrainingPage'));
+const LogsPage = lazy(() => import('./pages/JetsonPages/LogsPage'));
+const AdminPage = lazy(() => import('./pages/JetsonPages/AdminPage'));
+const BillingPage = lazy(() => import('./pages/JetsonPages/BillingPage'));
+const ModulesPage = lazy(() => import('./pages/JetsonPages/ModulesPage'));
+const AccountsPage = lazy(() => import('./pages/JetsonPages/AccountsPage'));
+const NotFound = lazy(() => import('./pages/JetsonPages/NotFound'));
 
 const queryClient = new QueryClient();
 
-// ── Marketing layout wrapper ─────────────────────────────────────────────────
+function RouteFallback() {
+  return <div className="min-h-[40vh] bg-[var(--bg-primary)]" />;
+}
+
 function MarketingLayout() {
   return (
     <div className="min-h-screen bg-[var(--bg-primary)]">
       <Navigation />
       <Outlet />
       <Footer />
-      <RecruiterNotification />
+      <Suspense fallback={null}>
+        <RecruiterNotification />
+      </Suspense>
     </div>
   );
 }
 
-// ── JetsonConsole guards ─────────────────────────────────────────────────────
 function LoginGuard() {
   const { isAuthenticated } = useAuth();
   if (isAuthenticated) return <Navigate to="/jetson" replace />;
-  return <LoginPage />;
+
+  return (
+    <Suspense fallback={<RouteFallback />}>
+      <LoginPage />
+    </Suspense>
+  );
 }
 
-// ── Main routes ──────────────────────────────────────────────────────────────
-function AppRoutes() {
+function JetsonRoutes() {
   return (
     <Routes>
-      {/* ── Marketing (public) ── */}
-      <Route element={<MarketingLayout />}>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="/calculator" element={<CalculatorPage />} />
-        <Route path="/gallery" element={<GalleryPage />} />
-        <Route path="/seishinia" element={<SeishinIaPage />} />
-        <Route path="/vigilancia" element={<VigilanciaPage />} />
-        <Route path="/privacidad" element={<PrivacyPage />} />
-        <Route path="/terminos" element={<TermsPage />} />
-        <Route path="/empleos" element={<JobsPage />} />
-        <Route path="/vacante/:slug" element={<JobDetailPage />} />
-      </Route>
-
-      {/* ── JetsonConsole public pages ── */}
-      <Route path="/jetson/landing" element={<LandingPage />} />
-      <Route path="/jetson/login" element={<LoginGuard />} />
-
-      {/* ── JetsonConsole dashboard (protected) ── */}
-      <Route
-        path="/jetson/*"
-        element={
-          <ProtectedRoute>
-            <AuditProvider>
-              <InactivityBanner />
-              <AppLayout>
-                <Routes>
-                  <Route path="/" element={<Dashboard />} />
-                  <Route path="/inference" element={<InferencePage />} />
-                  <Route path="/automations" element={<AutomationsPage />} />
-                  <Route path="/cameras" element={<CamerasPage />} />
-                  <Route path="/cameras/inventory" element={<CamerasInventoryPage />} />
-                  <Route path="/cameras/validation" element={<CamerasValidationPage />} />
-                  <Route path="/cameras/delimiter" element={<CamerasDelimiterPage />} />
-                  <Route path="/models" element={<ModelsPage />} />
-                  <Route path="/datasets" element={<DatasetsPage />} />
-                  <Route path="/training" element={<TrainingPage />} />
-                  <Route path="/logs" element={<LogsPage />} />
-                  <Route path="/admin" element={<AdminPage />} />
-                  <Route path="/billing" element={<BillingPage />} />
-                  <Route path="/modules" element={<ModulesPage />} />
-                  <Route path="/accounts" element={<AccountsPage />} />
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
-              </AppLayout>
-            </AuditProvider>
-          </ProtectedRoute>
-        }
-      />
-
-      {/* ── 404 catch-all ── */}
+      <Route path="/" element={<Dashboard />} />
+      <Route path="/inference" element={<InferencePage />} />
+      <Route path="/automations" element={<AutomationsPage />} />
+      <Route path="/cameras" element={<CamerasPage />} />
+      <Route path="/cameras/inventory" element={<CamerasInventoryPage />} />
+      <Route path="/cameras/validation" element={<CamerasValidationPage />} />
+      <Route path="/cameras/delimiter" element={<CamerasDelimiterPage />} />
+      <Route path="/models" element={<ModelsPage />} />
+      <Route path="/datasets" element={<DatasetsPage />} />
+      <Route path="/training" element={<TrainingPage />} />
+      <Route path="/logs" element={<LogsPage />} />
+      <Route path="/admin" element={<AdminPage />} />
+      <Route path="/billing" element={<BillingPage />} />
+      <Route path="/modules" element={<ModulesPage />} />
+      <Route path="/accounts" element={<AccountsPage />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }
 
-// ── App root ─────────────────────────────────────────────────────────────────
+function AppRoutes() {
+  return (
+    <Suspense fallback={<RouteFallback />}>
+      <Routes>
+        <Route element={<MarketingLayout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/calculator" element={<CalculatorPage />} />
+          <Route path="/gallery" element={<GalleryPage />} />
+          <Route path="/seishinia" element={<SeishinIaPage />} />
+          <Route path="/vigilancia" element={<VigilanciaPage />} />
+          <Route path="/privacidad" element={<PrivacyPage />} />
+          <Route path="/terminos" element={<TermsPage />} />
+          <Route path="/empleos" element={<JobsPage />} />
+          <Route path="/vacante/:slug" element={<JobDetailPage />} />
+        </Route>
+
+        <Route path="/jetson/landing" element={<LandingPage />} />
+        <Route path="/jetson/login" element={<LoginGuard />} />
+
+        <Route
+          path="/jetson/*"
+          element={
+            <ProtectedRoute>
+              <AuditProvider>
+                <InactivityBanner />
+                <AppLayout>
+                  <JetsonRoutes />
+                </AppLayout>
+              </AuditProvider>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </Suspense>
+  );
+}
+
 function App() {
   return (
     <QueryClientProvider client={queryClient}>

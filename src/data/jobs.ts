@@ -1,3 +1,5 @@
+import { SITE_MEDIA } from '../lib/siteMedia';
+
 export interface JobVacancy {
   id: string;
   slug: string;
@@ -50,7 +52,7 @@ export const JOB_VACANCIES: JobVacancy[] = [
     hiringOrganization: {
       name: 'Seishin International',
       sameAs: 'https://seishin.com.mx',
-      logo: 'https://seishin.com.mx/seishin-SinFondo.png',
+      logo: SITE_MEDIA.logos.primary,
     },
     benefits: ['Prestaciones de ley', 'Vales de despensa', 'Bono de puntualidad'],
   },
@@ -75,7 +77,7 @@ export const JOB_VACANCIES: JobVacancy[] = [
     hiringOrganization: {
       name: 'Seishin International',
       sameAs: 'https://seishin.com.mx',
-      logo: 'https://seishin.com.mx/seishin-SinFondo.png',
+      logo: SITE_MEDIA.logos.primary,
     },
     benefits: ['Prestaciones de ley', 'Seguro de vida', 'Capacitacion tecnica'],
   },
@@ -100,7 +102,7 @@ export const JOB_VACANCIES: JobVacancy[] = [
     hiringOrganization: {
       name: 'Seishin International',
       sameAs: 'https://seishin.com.mx',
-      logo: 'https://seishin.com.mx/seishin-SinFondo.png',
+      logo: SITE_MEDIA.logos.primary,
     },
     benefits: ['Prestaciones de ley', 'Transporte', 'Oportunidad de crecimiento'],
   },

@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { SITE_MEDIA } from '../lib/siteMedia';
 
 const LANGUAGES = [
   { code: 'es', flag: 'MX' },
@@ -100,7 +101,7 @@ export default function Navigation() {
                 transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                 className="relative z-10"
               >
-                <img src="/seishin-SinFondo.png" alt="Seishin Logo" className="h-14 md:h-20 w-auto drop-shadow-2xl transition-all duration-700" />
+                <img src={SITE_MEDIA.logos.primary} alt="Seishin Logo" className="h-14 md:h-20 w-auto drop-shadow-2xl transition-all duration-700" />
               </motion.div>
             </Link>
           </motion.div>
@@ -149,7 +150,7 @@ export default function Navigation() {
             <div className="h-5 w-px bg-[var(--border-color-light)] opacity-20 mx-1" />
 
             <div ref={langRef} className="relative">
-              <button onClick={() => setLangOpen((o) => !o)} className="p-2 rounded-full glass border border-[var(--border-color-light)] text-[var(--text-primary)] hover:border-[#E31E24] hover:text-[#E31E24] transition-all duration-300 flex items-center justify-center" aria-label="Seleccionar idioma">
+              <button onClick={() => setLangOpen((o) => !o)} className="p-2 rounded-full glass border border-[var(--border-color-light)] text-[var(--text-primary)] hover:border-[#E31E24] hover:text-[#E31E24] transition-all duration-300 flex items-center justify-center" aria-label={t('nav.select_language')}>
                 <Languages className="w-4 h-4" />
               </button>
 
@@ -179,7 +180,7 @@ export default function Navigation() {
               </AnimatePresence>
             </div>
 
-            <button onClick={toggleTheme} className="p-2 rounded-full glass border border-[var(--border-color-light)] text-[var(--text-primary)] hover:border-[#E31E24] hover:text-[#E31E24] transition-all duration-300 flex items-center justify-center" aria-label="Toggle theme">
+            <button onClick={toggleTheme} className="p-2 rounded-full glass border border-[var(--border-color-light)] text-[var(--text-primary)] hover:border-[#E31E24] hover:text-[#E31E24] transition-all duration-300 flex items-center justify-center" aria-label={t('nav.toggle_theme')}>
               {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
             </button>
 
@@ -191,7 +192,13 @@ export default function Navigation() {
           </div>
 
           <div className="flex md:hidden items-center gap-3">
-            <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="p-2.5 rounded-xl glass border border-[var(--border-color-light)]">
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-2.5 rounded-xl glass border border-[var(--border-color-light)]"
+              aria-label={mobileMenuOpen ? t('nav.close_menu') : t('nav.open_menu')}
+              aria-expanded={mobileMenuOpen}
+              aria-controls="mobile-navigation-menu"
+            >
               {mobileMenuOpen ? <X className="w-6 h-6 text-[#E31E24]" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
@@ -199,7 +206,7 @@ export default function Navigation() {
 
         <AnimatePresence>
           {mobileMenuOpen && (
-            <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="md:hidden mt-4 overflow-hidden glass rounded-2xl border border-[var(--border-color-light)] shadow-2xl">
+            <motion.div id="mobile-navigation-menu" initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="md:hidden mt-4 overflow-hidden glass rounded-2xl border border-[var(--border-color-light)] shadow-2xl">
               <div className="p-6 space-y-4">
                 {navLinks.map((link) => (
                   <Link key={link.name} to={link.href} onClick={(e) => handleLinkClick(e, link.href)} className="block text-lg font-bold text-[var(--text-primary)] hover:text-[var(--accent-primary)] transition-colors">

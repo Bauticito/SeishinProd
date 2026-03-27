@@ -9,7 +9,11 @@
     "calcular": "Calcula tu servicio",
     "contacto": "Contacto",
     "contactanos": "Cont\u00e1ctanos",
-    "erp": "Acceso ERP"
+    "erp": "Acceso ERP",
+    "open_menu": "Abrir menú de navegación",
+    "close_menu": "Cerrar menú de navegación",
+    "select_language": "Seleccionar idioma",
+    "toggle_theme": "Cambiar tema"
   },
   "lang": {
     "es": "Espa\u00f1ol",

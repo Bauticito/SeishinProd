@@ -19,6 +19,7 @@ import { NavLink } from "react-router-dom";
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { getVisibleRoutes } from "@/lib/permissions";
+import { SITE_MEDIA } from "@/lib/siteMedia";
 
 const navItems = [
   { title: "Dashboard", path: "/jetson", icon: LayoutDashboard },
@@ -61,7 +62,7 @@ export function AppSidebar() {
         {!collapsed && (
           <div className="flex items-center gap-2 min-w-0">
             <img
-              src="/seishin-SinFondo.png"
+              src={SITE_MEDIA.logos.primary}
               alt="Seishin"
               className="h-7 w-auto object-contain"
             />

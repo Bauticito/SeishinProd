@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import JobPostingSchema from '../../components/SEO/JobPostingSchema';
 import { useUnifiedJobs } from '../../hooks/useUnifiedJobs';
 import { useRecruitmentStore } from '../../lib/recruitmentStore';
+import { SITE_MEDIA } from '../../lib/siteMedia';
 import { JobVacancy } from '../../data/jobs';
 import SEO from '../../components/SEO/SEO';
 
@@ -165,7 +166,7 @@ export default function JobDetailPage() {
                   </p>
                 </div>
                 <div className="mt-auto">
-                  <img src="/seishin-SinFondo.png" alt="Seishin Logo" className="h-10 w-auto opacity-40 grayscale" />
+                  <img src={SITE_MEDIA.logos.primary} alt="Seishin Logo" className="h-10 w-auto opacity-40 grayscale" />
                 </div>
               </div>
             </div>

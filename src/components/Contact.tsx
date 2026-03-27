@@ -221,7 +221,7 @@ export default function Contact() {
               <button
                 type="submit"
                 disabled={status === 'loading'}
-                className="w-full bg-[#f97316] hover:bg-[#ea580c] hover:shadow-lg hover:shadow-[#f97316]/50 text-white font-bold px-8 py-4 rounded-lg transition-all duration-200 flex items-center justify-center gap-3 disabled:opacity-60 disabled:cursor-not-allowed"
+                className="w-full bg-[#c2410c] hover:bg-[#9a3412] hover:shadow-lg hover:shadow-[#c2410c]/40 text-white font-bold px-8 py-4 rounded-lg transition-all duration-200 flex items-center justify-center gap-3 disabled:opacity-60 disabled:cursor-not-allowed"
               >
                 {status === 'loading' ? (
                   <>
