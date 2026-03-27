@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Navigation from "../../components/Navigation";
 import { useTranslation } from "react-i18next";
 import { useMemo } from "react";
+import { SITE_MEDIA } from "../../lib/siteMedia";
 
 export default function LandingPage() {
   const { t } = useTranslation();
@@ -39,7 +40,7 @@ export default function LandingPage() {
         <header className="flex items-center justify-between">
           <div className="flex items-center gap-4">
             <img
-              src="/seishin-SinFondo.png"
+              src={SITE_MEDIA.logos.primary}
               alt="Seishin Logo"
               className="h-12 w-auto drop-shadow-lg"
             />
@@ -139,8 +140,8 @@ export default function LandingPage() {
                 className="w-full h-56 md:h-64 object-cover opacity-90"
                 style={{ objectPosition: "center 42%" }}
               >
-                <source src="/landing-video.mp4" type="video/mp4" />
-                <source src="/animated-logo.mp4" type="video/mp4" />
+                <source src={SITE_MEDIA.landing.introVideo} type="video/mp4" />
+                <source src={SITE_MEDIA.landing.animatedLogo} type="video/mp4" />
               </video>
               {/* overlay scan line effect */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent pointer-events-none" />
@@ -207,7 +208,7 @@ export default function LandingPage() {
 
         {/* ── Footer ── */}
         <footer className="flex items-center justify-center gap-3 border-t border-[var(--border-color-light)] pt-8">
-          <img src="/seishin-SinFondo.png" alt="Seishin" className="h-8 w-auto opacity-80" />
+          <img src={SITE_MEDIA.logos.primary} alt="Seishin" className="h-8 w-auto opacity-80" />
           <span className="text-xs text-[var(--text-tertiary)] font-mono">
             {t('jetson.footer_rights')}
           </span>

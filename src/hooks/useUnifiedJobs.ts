@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { JOB_VACANCIES, JobVacancy } from '../data/jobs';
 import { getJobPositions } from '../services/odooService';
+import { SITE_MEDIA } from '../lib/siteMedia';
 
 export function useUnifiedJobs() {
   const [jobs, setJobs] = useState<JobVacancy[]>([]);
@@ -33,7 +34,7 @@ export function useUnifiedJobs() {
             hiringOrganization: {
               name: 'Seishin International',
               sameAs: 'https://seishin.com.mx',
-              logo: 'https://seishin.com.mx/seishin-SinFondo.png',
+              logo: SITE_MEDIA.logos.primary,
             },
             benefits: staticJob?.benefits || ['Prestaciones de ley'],
           };

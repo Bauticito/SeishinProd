@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { SITE_MEDIA } from '../../lib/siteMedia';
 
 interface SEOProps {
   title: string;
@@ -78,7 +79,7 @@ export default function SEO({
 
     updateOG('og:title', ogTitle || fullTitle);
     updateOG('og:description', ogDescription || description);
-    updateOG('og:image', ogImage || 'https://seishin.com.mx/og-image.jpg');
+    updateOG('og:image', ogImage || SITE_MEDIA.logos.og);
     updateOG('og:type', ogType || 'website');
     updateOG('og:url', ogUrl || canonicalUrl);
   }, [title, description, keywords, ogTitle, ogDescription, ogImage, canonicalUrl, ogUrl, robots, ogType]);

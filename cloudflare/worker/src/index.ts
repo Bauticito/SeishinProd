@@ -1,5 +1,6 @@
 export interface Env {
   DB: D1Database;
+  MEDIA_BUCKET: R2Bucket;
   ADMIN_TOKEN?: string;
   CORS_ORIGIN?: string;
   ODOO_BASE_URL?: string;

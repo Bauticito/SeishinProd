@@ -8,5 +8,10 @@ binding = "DB"
 database_name = "seishin_media"
 database_id = "44739306-48be-42dd-8243-30fc48f369f6"
 
+[[r2_buckets]]
+binding = "MEDIA_BUCKET"
+bucket_name = "galeria"
+preview_bucket_name = "galeria"
+
 [vars]
 CORS_ORIGIN = "http://localhost:5173,https://seishin.com.mx,https://www.seishin.com.mx,https://seishinmx.pages.dev,https://d5847500.seishinmx.pages.dev"

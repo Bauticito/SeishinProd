@@ -26,15 +26,20 @@ export default function RecruiterNotification() {
   const [visible, setVisible] = useState(false);
   const [view, setView] = useState<View>('card');
   const [loading, setLoading] = useState(false);
+  const [jobPositionsLoading, setJobPositionsLoading] = useState(false);
   const [form, setForm] = useState(emptyForm);
   const [errors, setErrors] = useState(emptyErrors);
   const [jobPositions, setJobPositions] = useState<JobPosition[]>([]);
 
   useEffect(() => {
+    if (view !== 'form' || jobPositions.length > 0 || jobPositionsLoading) return;
+
+    setJobPositionsLoading(true);
     getJobPositions()
       .then(setJobPositions)
-      .catch(() => {});
-  }, []);
+      .catch(() => {})
+      .finally(() => setJobPositionsLoading(false));
+  }, [view, jobPositions.length, jobPositionsLoading]);
 
   useEffect(() => {
     if (isOpen) {
@@ -143,7 +148,7 @@ export default function RecruiterNotification() {
               </button>
 
               <div className="flex items-center gap-2 mb-4">
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#E31E24]/15 text-[#E31E24] text-[11px] font-bold uppercase tracking-widest">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#7f1d1d] text-[#ffd5d6] text-[11px] font-bold uppercase tracking-widest">
                   <Sparkles className="w-3 h-3" />
                   {t('recruiter.badge')}
                 </span>
@@ -155,13 +160,13 @@ export default function RecruiterNotification() {
                 <span className="text-[#E31E24]">{t('recruiter.title_brand')}</span>
               </h3>
 
-              <p className="text-sm text-gray-400 leading-relaxed mb-5">{t('recruiter.description')}</p>
+              <p className="text-sm text-gray-200 leading-relaxed mb-5">{t('recruiter.description')}</p>
 
               <div className="grid grid-cols-3 gap-2 mb-5">
                 {highlights.map(({ icon: Icon, label }) => (
                   <div key={label} className="flex flex-col items-center gap-1.5 p-2.5 rounded-xl bg-white/5 text-center">
                     <Icon className="w-4 h-4 text-[#E31E24]" />
-                    <span className="text-[10px] text-gray-400 leading-tight">{label}</span>
+                    <span className="text-[10px] text-gray-200 leading-tight">{label}</span>
                   </div>
                 ))}
               </div>
@@ -239,11 +244,12 @@ export default function RecruiterNotification() {
                   required
                   value={form.jobId}
                   onChange={(e) => setForm((f) => ({ ...f, jobId: e.target.value }))}
+                  disabled={jobPositionsLoading}
                   className="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-sm text-white focus:outline-none focus:border-[#E31E24] transition-colors appearance-none"
                   style={{ colorScheme: 'dark' }}
                 >
                   <option value="" disabled className="bg-[#1a1a1a]">
-                    {t('recruiter.placeholders.job')}
+                    {jobPositionsLoading ? t('jobs.loading') : t('recruiter.placeholders.job')}
                   </option>
                   {jobPositions.map((job) => (
                     <option key={job.id} value={job.id} className="bg-[#1a1a1a]">
@@ -294,7 +300,7 @@ export default function RecruiterNotification() {
                 <CheckCircle2 className="w-7 h-7 text-green-400" />
               </div>
               <p className="text-white font-bold text-base">{t('recruiter.success_title')}</p>
-              <p className="text-gray-400 text-sm leading-relaxed">{t('recruiter.success_desc')}</p>
+              <p className="text-gray-200 text-sm leading-relaxed">{t('recruiter.success_desc')}</p>
               <button
                 onClick={handleClose}
                 className="mt-1 text-xs text-gray-600 hover:text-gray-300 transition-colors underline"

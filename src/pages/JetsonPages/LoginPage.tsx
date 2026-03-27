@@ -4,6 +4,7 @@ import { ShieldCheck, LogIn, Eye, EyeOff, ArrowLeft } from "lucide-react";
 import { useAuth, MOCK_USERS } from "@/context/AuthContext";
 import { useTheme } from "@/context/ThemeContext";
 import type { User } from "@/context/AuthContext";
+import { SITE_MEDIA } from "@/lib/siteMedia";
 
 const paletteByTheme = {
   light: {
@@ -117,7 +118,7 @@ export default function LoginPage() {
           </div>
           <div>
             <div className="flex items-center justify-center gap-2 mb-1">
-              <img src="/seishin-SinFondo.png" alt="Seishin" className="h-8 w-auto object-contain" />
+              <img src={SITE_MEDIA.logos.primary} alt="Seishin" className="h-8 w-auto object-contain" />
               <h1
                 className="text-xl font-bold tracking-tight"
                 style={{ color: C.text, fontFamily: outfit, letterSpacing: "-0.02em" }}

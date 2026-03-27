@@ -2,6 +2,7 @@ import { Mail, Linkedin, Facebook, Instagram } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { SITE_MEDIA } from '../lib/siteMedia';
 
 export default function Footer() {
   const { t } = useTranslation();
@@ -31,7 +32,7 @@ export default function Footer() {
               className="flex items-center gap-3 mb-5 justify-center sm:justify-start"
             >
               <img
-                src="/seishin-logo-SinFondo-removebg-preview.png"
+                src={SITE_MEDIA.logos.footer}
                 alt="Seishin Logo"
                 className="h-12 sm:h-14 w-auto"
               />
@@ -68,7 +69,7 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <a href="https://srv.seishin.com.mx/web/login" target="_blank" rel="noopener noreferrer" className="text-[#E31E24] font-bold hover:underline transition-all duration-300 hover:translate-x-1 inline-block">
+                <a href="https://srv.seishin.com.mx/web/login" target="_blank" rel="noopener noreferrer" className="text-[#ff6b70] font-bold hover:text-[#ff8589] hover:underline transition-all duration-300 hover:translate-x-1 inline-block">
                   {t('footer.link_erp')}
                 </a>
               </li>
@@ -99,7 +100,7 @@ export default function Footer() {
                     <Linkedin className="w-5 h-5" />
                   </a>
                   <a
-                    href="https://facebook.com/seishin.ia"
+                    href="https://www.facebook.com/share/177bwdGcKR/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-10 h-10 flex items-center justify-center rounded-full bg-[var(--card-bg)] hover:bg-[var(--accent-primary)] text-[var(--text-secondary)] hover:text-white transition-all duration-300 hover:scale-110 shadow-sm"
@@ -119,7 +120,7 @@ export default function Footer() {
                     </svg>
                   </a>
                   <a
-                    href="https://instagram.com/seishin.ia"
+                    href="https://www.instagram.com/seishin_hg?igsh=MWcwcWV1N3o4b2N4eg=="
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-10 h-10 flex items-center justify-center rounded-full bg-[var(--card-bg)] hover:bg-[var(--accent-primary)] text-[var(--text-secondary)] hover:text-white transition-all duration-300 hover:scale-110 shadow-sm"

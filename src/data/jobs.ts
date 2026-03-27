@@ -1,3 +1,5 @@
+import { SITE_MEDIA } from '../lib/siteMedia';
+
 export interface JobVacancy {
   id: string;
   slug: string;
@@ -8,10 +10,7 @@ export interface JobVacancy {
   type: 'Full-time' | 'Part-time' | 'Contract' | 'Freelance';
   category: string;
   location?: string;
-<<<<<<< HEAD
-=======
   searchKeywords?: string[];
->>>>>>> 49dde14e91c2d2e058c81189e3bfd6c0e55507a5
   salary?: {
     min: number;
     max: number;
@@ -45,20 +44,15 @@ export const JOB_VACANCIES: JobVacancy[] = [
       'Disponibilidad para rolar turnos.',
     ],
     type: 'Full-time',
-<<<<<<< HEAD
     category: 'Logística',
-    location: 'México',
-=======
-    category: 'Logistica',
     location: 'Guanajuato, Mexico',
     searchKeywords: ['vacante montacarguista guanajuato', 'empleo montacarguista guanajuato', 'trabajo montacarguista'],
->>>>>>> 49dde14e91c2d2e058c81189e3bfd6c0e55507a5
     postedDate: '2024-03-20',
     validThrough: '2024-06-20',
     hiringOrganization: {
       name: 'Seishin International',
       sameAs: 'https://seishin.com.mx',
-      logo: 'https://seishin.com.mx/seishin-SinFondo.png',
+      logo: SITE_MEDIA.logos.primary,
     },
     benefits: ['Prestaciones de ley', 'Vales de despensa', 'Bono de puntualidad'],
   },
@@ -75,20 +69,15 @@ export const JOB_VACANCIES: JobVacancy[] = [
       'Certificacion vigente (deseable).',
     ],
     type: 'Full-time',
-<<<<<<< HEAD
     category: 'Producción',
-    location: 'México',
-=======
-    category: 'Produccion',
     location: 'Aguascalientes, Mexico',
     searchKeywords: ['vacante soldador aguascalientes', 'empleo soldador aguascalientes', 'trabajo de soldador'],
->>>>>>> 49dde14e91c2d2e058c81189e3bfd6c0e55507a5
     postedDate: '2024-03-20',
     validThrough: '2024-06-20',
     hiringOrganization: {
       name: 'Seishin International',
       sameAs: 'https://seishin.com.mx',
-      logo: 'https://seishin.com.mx/seishin-SinFondo.png',
+      logo: SITE_MEDIA.logos.primary,
     },
     benefits: ['Prestaciones de ley', 'Seguro de vida', 'Capacitacion tecnica'],
   },
@@ -105,20 +94,15 @@ export const JOB_VACANCIES: JobVacancy[] = [
       'No se requiere experiencia previa (entrenamiento brindado).',
     ],
     type: 'Full-time',
-<<<<<<< HEAD
     category: 'Producción',
-    location: 'México',
-=======
-    category: 'Produccion',
     location: 'Aguascalientes, Mexico',
     searchKeywords: ['vacante operario aguascalientes', 'empleo operario aguascalientes', 'trabajo operario produccion'],
->>>>>>> 49dde14e91c2d2e058c81189e3bfd6c0e55507a5
     postedDate: '2024-03-20',
     validThrough: '2024-06-20',
     hiringOrganization: {
       name: 'Seishin International',
       sameAs: 'https://seishin.com.mx',
-      logo: 'https://seishin.com.mx/seishin-SinFondo.png',
+      logo: SITE_MEDIA.logos.primary,
     },
     benefits: ['Prestaciones de ley', 'Transporte', 'Oportunidad de crecimiento'],
   },
