@@ -19,33 +19,36 @@ import { NavLink } from "react-router-dom";
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { getVisibleRoutes } from "@/lib/permissions";
-
-const navItems = [
-  { title: "Dashboard", path: "/jetson", icon: LayoutDashboard },
-  { title: "Inference", path: "/jetson/inference", icon: Video },
-  { title: "Automatizaciones", path: "/jetson/automations", icon: Bot },
-  { title: "Cámaras", path: "/jetson/cameras", icon: Camera },
-  { title: "Modelos", path: "/jetson/models", icon: Box },
-  { title: "Datasets", path: "/jetson/datasets", icon: Database },
-  { title: "Entrenamiento", path: "/jetson/training", icon: GraduationCap },
-  { title: "Logs", path: "/jetson/logs", icon: FileText },
-  { title: "Módulos", path: "/jetson/modules", icon: Puzzle },
-  { title: "Cuentas", path: "/jetson/accounts", icon: UserCircle },
-  { title: "Administración", path: "/jetson/admin", icon: Settings },
-  { title: "Facturación", path: "/jetson/billing", icon: CreditCard },
-];
-
-const roleLabels: Record<string, string> = {
-  superadmin: "SUPERADMIN",
-  admin: "ADMIN",
-  operador: "OPERADOR",
-  etiquetador: "ETIQUETADOR",
-  cliente: "CLIENTE",
-};
+import { useTranslation } from "react-i18next";
+import { useMemo } from "react";
 
 export function AppSidebar() {
+  const { t } = useTranslation();
   const [collapsed, setCollapsed] = useState(false);
   const { user, logout } = useAuth();
+
+  const navItems = useMemo(() => [
+    { title: t('jetson.nav.dashboard'), path: "/jetson", icon: LayoutDashboard },
+    { title: t('jetson.nav.inference'), path: "/jetson/inference", icon: Video },
+    { title: t('jetson.nav.automations'), path: "/jetson/automations", icon: Bot },
+    { title: t('jetson.nav.cameras'), path: "/jetson/cameras", icon: Camera },
+    { title: t('jetson.nav.models'), path: "/jetson/models", icon: Box },
+    { title: t('jetson.nav.datasets'), path: "/jetson/datasets", icon: Database },
+    { title: t('jetson.nav.training'), path: "/jetson/training", icon: GraduationCap },
+    { title: t('jetson.nav.logs'), path: "/jetson/logs", icon: FileText },
+    { title: t('jetson.nav.modules'), path: "/jetson/modules", icon: Puzzle },
+    { title: t('jetson.nav.accounts'), path: "/jetson/accounts", icon: UserCircle },
+    { title: t('jetson.nav.admin'), path: "/jetson/admin", icon: Settings },
+    { title: t('jetson.nav.billing'), path: "/jetson/billing", icon: CreditCard },
+  ], [t]);
+
+  const roleLabels = useMemo(() => ({
+    superadmin: t('jetson.roles.superadmin'),
+    admin: t('jetson.roles.admin'),
+    operador: t('jetson.roles.operador'),
+    etiquetador: t('jetson.roles.etiquetador'),
+    cliente: t('jetson.roles.cliente'),
+  }), [t]);
 
   const visiblePaths = user ? getVisibleRoutes(user.role) : [];
   const filteredNav = navItems.filter((item) => visiblePaths.includes(item.path));
@@ -112,7 +115,7 @@ export function AppSidebar() {
                 <button
                   onClick={logout}
                   className="p-1 rounded hover:bg-[var(--bg-tertiary)] text-[var(--text-secondary)] hover:text-[#E31E24] transition-colors"
-                  title="Cerrar sesión"
+                  title={t('jetson.nav.logout')}
                 >
                   <LogOut className="w-3.5 h-3.5" />
                 </button>
@@ -121,7 +124,7 @@ export function AppSidebar() {
               <button
                 onClick={logout}
                 className="w-full flex justify-center p-1 rounded hover:bg-[var(--bg-tertiary)] text-[var(--text-secondary)] hover:text-[#E31E24] transition-colors"
-                title="Cerrar sesión"
+                title={t('jetson.nav.logout')}
               >
                 <LogOut className="w-4 h-4" />
               </button>

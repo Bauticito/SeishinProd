@@ -9,11 +9,16 @@
     "calcular": "Calcula tu servicio",
     "contacto": "Contacto",
     "contactanos": "Cont\u00e1ctanos",
-    "erp": "Acceso ERP"
+    "erp": "Acceso ERP",
+    "jobs": "Empleos",
+    "select_language": "Seleccionar idioma",
+    "toggle_theme": "Cambiar tema",
+    "scroll_to_top": "Volver arriba"
   },
   "lang": {
     "es": "Espa\u00f1ol",
-    "en": "English"
+    "en": "English",
+    "ja": "Japon\u00e9s"
   },
   "hero": {
     "badge": "Liderando la industria 4.0 en M\u00e9xico",
@@ -231,6 +236,7 @@
     "link_nosotros": "Nosotros",
     "link_contacto": "Contacto",
     "link_erp": "Acceso ERP",
+    "link_jobs": "Empleos",
     "contact_title": "Contacto",
     "social_title": "Siguenos",
     "legal_title": "Legales",
@@ -269,7 +275,143 @@
     "next": "Siguiente",
     "error_prefix": "Error en API Cloudflare:",
     "error_suffix": "Mostrando archivos locales.",
-    "error_fallback": "No se pudo cargar la galeria desde Cloudflare."
+    "error_fallback": "No se pudo cargar la galeria desde Cloudflare.",
+    "description": "Buscas trabajo, observa nuestras vacantes, eventos, cultura organizacional, procesos industriales y el talento que impulsa la innovación en Seishin.",
+    "search_placeholder": "Buscar por puesto o proceso (ej. Soldador, Montacarguista...)",
+    "filter_jobs": "Empleos",
+    "filter_events": "Eventos",
+    "cta_jobs_title": "¿Buscas nuevos retos?",
+    "cta_jobs_desc": "Únete a una de las empresas con mayor crecimiento tecnológico en México. Estamos buscando soldadores, montacarguistas y talento apasionado.",
+    "cta_jobs_btn": "Ver vacantes activas",
+    "cta_services_title": "Excelencia en Servicios",
+    "cta_services_desc": "Desde inspección de calidad asistida por IA hasta logística industrial 4.0. Conoce cómo transformamos la industria.",
+    "cta_services_btn": "Explorar servicios"
+  },
+  "jetson": {
+    "header_badge": "TODOS LOS SERVICIOS OPERATIVOS",
+    "system_active": "Sistema de seguridad activo",
+    "hero_h1_1": "Control total.",
+    "hero_h1_2": "En el borde.",
+    "hero_h1_3": "Sin latencia de nube.",
+    "hero_desc": "Monitorea cámaras, automatizaciones y modelos desde una sola consola industrial con seguridad por rol y trazabilidad completa.",
+    "stats_nodos": "NODOS ACTIVOS",
+    "stats_inferencias": "INFERENCIAS/MIN",
+    "stats_uptime": "UPTIME",
+    "stats_sesiones": "SESIONES",
+    "stats_seguras": "SEGURAS",
+    "cta_portal": "Acceder al portal",
+    "cta_calculator": "Ver cotizador",
+    "badge_pronto": "PRONTO",
+    "badge_live": "FEED EN VIVO",
+    "login_secure_access": "ACCESO SEGURO",
+    "login_welcome": "Bienvenido",
+    "login_desc": "Inicia sesión para continuar. Acceso diferenciado por rol de operación.",
+    "login_btn": "INICIAR SESIÓN",
+    "platform_badge": "Plataforma",
+    "platform_title": "Capacidades del sistema",
+    "capabilities": [
+      { "title": "Visión en tiempo real", "desc": "Detección y clasificación de eventos en cada frame del stream." },
+      { "title": "Multi-cámara", "desc": "Hasta 16 cámaras IP simultáneas con RTSP/ONVIF." },
+      { "title": "Roles y permisos", "desc": "Acceso diferenciado por operador, admin y cliente." },
+      { "title": "Alertas automáticas", "desc": "Notificaciones push y webhook ante eventos críticos." },
+      { "title": "Logs de auditoría", "desc": "Registro inmutable de cada acción del sistema." },
+      { "title": "Edge computing", "desc": "Inferencia local con NVIDIA Jetson — sin depender de la nube." }
+    ],
+    "footer_rights": "© 2026 Seishin — Todos los derechos reservados",
+    "nav": {
+      "dashboard": "Dashboard",
+      "inference": "Inferencia",
+      "automations": "Automatizaciones",
+      "cameras": "Cámaras",
+      "models": "Modelos",
+      "datasets": "Datasets",
+      "training": "Entrenamiento",
+      "logs": "Logs",
+      "modules": "Módulos",
+      "accounts": "Cuentas",
+      "admin": "Administración",
+      "billing": "Facturación",
+      "logout": "Cerrar sesión"
+    },
+    "roles": {
+      "superadmin": "SUPERADMIN",
+      "admin": "ADMIN",
+      "operador": "OPERADOR",
+      "etiquetador": "ETIQUETADOR",
+      "cliente": "CLIENTE"
+    },
+    "status": {
+      "portal_ia": "Portal IA",
+      "all_operational": "Todos los servicios operativos",
+      "theme_dark": "Cambiar a modo oscuro",
+      "theme_light": "Cambiar a modo claro",
+      "osc": "OSC",
+      "cla": "CLA"
+    }
+  },
+  "jobs_ui": {
+    "page_title": "Bolsa de Trabajo",
+    "page_subtitle": "Únete a una empresa líder en tecnología industrial e Inteligencia Artificial. Buscamos talento apasionado por la innovación y la excelencia operativa.",
+    "search_placeholder": "Buscar vacantes (ej. Ingeniero, Aguascalientes...)",
+    "loading": "Cargando vacantes...",
+    "view_btn": "Ver vacante",
+    "no_results_title": "No encontramos vacantes que coincidan",
+    "no_results_desc": "Intenta con otros términos de búsqueda o envíanos tu CV para tenerte en cuenta en futuras oportunidades.",
+    "send_cv": "Enviar mi CV",
+    "not_found_title": "¿No encuentras lo que buscas?",
+    "not_found_desc": "Envíanos tu CV para futuras oportunidades y nos pondremos en contacto contigo cuando se abra una posición alineada a tu perfil.",
+    "loading_details": "Cargando detalles de la vacante...",
+    "back_to_jobs": "Volver a vacantes",
+    "posted_on": "Publicado el",
+    "interested_title": "¿Te interesa?",
+    "interested_desc": "Envía tu perfil hoy mismo para revisión. Estamos buscando talento como el tuyo.",
+    "apply_now": "Postularme ahora",
+    "share_vacant": "Compartir vacante",
+    "company_label": "Empresa",
+    "company_desc": "Seishin International es líder en servicios de Inteligencia Artificial y consultoría operativa avanzada en México.",
+    "description_title": "Descripción del puesto",
+    "requirements_title": "Requisitos",
+    "benefits_title": "Beneficios",
+    "schedule_label": "Horario:",
+    "share_text": "Mira esta vacante de {{title}} en Seishin International"
+  },
+  "jobs_data": {
+    "montacarguista": {
+      "title": "MONTACARGUISTA",
+      "description": "Operación segura de montacargas, carga y descarga de materiales, control de inventarios y apoyo en almacén industrial.",
+      "requirements": [
+        "Licencia de montacarguista vigente (DC-3).",
+        "Experiencia mínima de 2 años en almacenes industriales.",
+        "Conocimiento de normas de seguridad e higiene.",
+        "Disponibilidad para rolar turnos."
+      ],
+      "benefits": ["Prestaciones de ley", "Vales de despensa", "Bono de puntualidad"],
+      "category": "Logística"
+    },
+    "soldador": {
+      "title": "SOLDADOR",
+      "description": "Soldadura industrial especializada, interpretación de planos técnicos y ensamble de estructuras metálicas de alta precisión.",
+      "requirements": [
+        "Experiencia comprobable en soldadura MIG/TIG.",
+        "Habilidad para lectura e interpretación de planos.",
+        "Uso de herramientas de medición y corte.",
+        "Certificación vigente (deseable)."
+      ],
+      "benefits": ["Prestaciones de ley", "Seguro de vida", "Capacitación técnica"],
+      "category": "Producción"
+    },
+    "operario": {
+      "title": "OPERARIO",
+      "description": "Apoyo general en líneas de producción automatizadas, ensamble de componentes y cumplimiento de estándares de calidad.",
+      "requirements": [
+        "Secundaria o bachillerato terminado.",
+        "Ganas de aprender y proactividad.",
+        "Puntualidad y compromiso.",
+        "No se requiere experiencia previa (entrenamiento brindado)."
+      ],
+      "benefits": ["Prestaciones de ley", "Transporte", "Oportunidad de crecimiento"],
+      "category": "Producción"
+    }
   },
   "seishinia": {
     "badge": "SeishinIA",

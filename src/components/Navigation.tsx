@@ -8,10 +8,13 @@ import { useTranslation } from 'react-i18next';
 const LANGUAGES = [
   { code: 'es', flag: 'MX' },
   { code: 'en', flag: 'EN' },
+  { code: 'ja', flag: 'JP' },
 ] as const;
 
 function resolveLanguage(language?: string) {
-  return language?.startsWith('en') ? 'en' : 'es';
+  if (language?.startsWith('ja')) return 'ja';
+  if (language?.startsWith('en')) return 'en';
+  return 'es';
 }
 
 export default function Navigation() {
@@ -19,7 +22,7 @@ export default function Navigation() {
   const { t, i18n } = useTranslation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [lang, setLang] = useState<'es' | 'en'>(resolveLanguage(i18n.resolvedLanguage ?? i18n.language));
+  const [lang, setLang] = useState<'es' | 'en' | 'ja'>(resolveLanguage(i18n.resolvedLanguage ?? i18n.language));
   const [langOpen, setLangOpen] = useState(false);
   const langRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
@@ -82,7 +85,7 @@ export default function Navigation() {
     }
   };
 
-  const handleLanguageChange = (code: 'es' | 'en') => {
+  const handleLanguageChange = (code: 'es' | 'en' | 'ja') => {
     setLang(code);
     void i18n.changeLanguage(code);
     localStorage.setItem('seishin_lang', code);
@@ -149,7 +152,7 @@ export default function Navigation() {
             <div className="h-5 w-px bg-[var(--border-color-light)] opacity-20 mx-1" />
 
             <div ref={langRef} className="relative">
-              <button onClick={() => setLangOpen((o) => !o)} className="p-2 rounded-full glass border border-[var(--border-color-light)] text-[var(--text-primary)] hover:border-[#E31E24] hover:text-[#E31E24] transition-all duration-300 flex items-center justify-center" aria-label="Seleccionar idioma">
+              <button onClick={() => setLangOpen((o) => !o)} className="p-2 rounded-full glass border border-[var(--border-color-light)] text-[var(--text-primary)] hover:border-[#E31E24] hover:text-[#E31E24] transition-all duration-300 flex items-center justify-center" aria-label={t('nav.select_language')}>
                 <Languages className="w-4 h-4" />
               </button>
 
@@ -179,7 +182,7 @@ export default function Navigation() {
               </AnimatePresence>
             </div>
 
-            <button onClick={toggleTheme} className="p-2 rounded-full glass border border-[var(--border-color-light)] text-[var(--text-primary)] hover:border-[#E31E24] hover:text-[#E31E24] transition-all duration-300 flex items-center justify-center" aria-label="Toggle theme">
+            <button onClick={toggleTheme} className="p-2 rounded-full glass border border-[var(--border-color-light)] text-[var(--text-primary)] hover:border-[#E31E24] hover:text-[#E31E24] transition-all duration-300 flex items-center justify-center" aria-label={t('nav.toggle_theme')}>
               {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
             </button>
 
@@ -199,21 +202,83 @@ export default function Navigation() {
 
         <AnimatePresence>
           {mobileMenuOpen && (
-            <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="md:hidden mt-4 overflow-hidden glass rounded-2xl border border-[var(--border-color-light)] shadow-2xl">
-              <div className="p-6 space-y-4">
+            <motion.div 
+              initial={{ opacity: 0, height: 0 }} 
+              animate={{ opacity: 1, height: 'auto' }} 
+              exit={{ opacity: 0, height: 0 }} 
+              className="md:hidden mt-4 glass rounded-2xl border border-[var(--border-color-light)] shadow-2xl overflow-y-auto max-h-[80vh] custom-scrollbar"
+            >
+              <div className="p-4 space-y-3">
                 {navLinks.map((link) => (
-                  <Link key={link.name} to={link.href} onClick={(e) => handleLinkClick(e, link.href)} className="block text-lg font-bold text-[var(--text-primary)] hover:text-[var(--accent-primary)] transition-colors">
+                  <Link key={link.name} to={link.href} onClick={(e) => handleLinkClick(e, link.href)} className="block text-base font-bold text-[var(--text-primary)] hover:text-[#E31E24] transition-colors py-1">
                     {link.name}
                   </Link>
                 ))}
-                <div className="pt-4 space-y-4">
-                  <Link to="/calculator" onClick={() => setMobileMenuOpen(false)} className="block w-full py-4 text-center border-2 border-[var(--accent-primary)] text-[var(--accent-primary)] rounded-xl font-bold">
-                    {t('nav.calcular')}
+                <div className="pt-2 space-y-3">
+                  <div className="flex items-center gap-2">
+                    <button 
+                      onClick={toggleTheme} 
+                      className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl glass border border-[var(--border-color-light)] text-[var(--text-primary)]"
+                    >
+                      {theme === 'dark' ? <Sun className="w-4 h-4 text-yellow-400" /> : <Moon className="w-4 h-4 text-blue-400" />}
+                      <span className="text-xs font-medium">{t('nav.toggle_theme')}</span>
+                    </button>
+                    
+                    <div className="flex-1 relative">
+                       <button 
+                        onClick={() => setLangOpen(!langOpen)} 
+                        className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl glass border border-[var(--border-color-light)] text-[var(--text-primary)]"
+                      >
+                        <Languages className="w-4 h-4 text-[#E31E24]" />
+                        <span className="text-xs font-medium uppercase">{lang}</span>
+                      </button>
+                      
+                      <AnimatePresence>
+                        {langOpen && (
+                          <motion.div 
+                            initial={{ opacity: 0, scale: 0.95 }} 
+                            animate={{ opacity: 1, scale: 1 }} 
+                            exit={{ opacity: 0, scale: 0.95 }}
+                            className="absolute bottom-full mb-2 left-0 right-0 glass rounded-xl border border-[var(--border-color-light)] shadow-2xl overflow-hidden z-[60]"
+                          >
+                            {LANGUAGES.map(({ code, flag }) => (
+                              <button
+                                key={code}
+                                onClick={() => handleLanguageChange(code)}
+                                className={`w-full flex items-center justify-between px-3 py-2.5 text-xs ${
+                                  lang === code ? 'bg-[#E31E24]/10 text-[#E31E24] font-bold' : 'text-[var(--text-primary)] hover:bg-white/5'
+                                }`}
+                              >
+                                <span>{t(`lang.${code}`)}</span>
+                                <span className="text-[9px] opacity-60 font-mono">{flag}</span>
+                              </button>
+                            ))}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  </div>
+
+                  <Link 
+                    to="/jetson/landing" 
+                    onClick={() => setMobileMenuOpen(false)} 
+                    className="flex items-center justify-center gap-2 w-full py-3 text-center bg-[#E31E24]/10 text-[#E31E24] border border-[#E31E24]/30 rounded-xl font-bold text-sm"
+                  >
+                    Portal IA
+                    <span className="w-1 h-1 rounded-full bg-[#E31E24] animate-pulse" />
                   </Link>
-                  <a href="https://srv.seishin.com.mx/web/login" target="_blank" rel="noopener noreferrer" className="block w-full py-4 text-center bg-[var(--bg-tertiary)] text-[var(--text-primary)] rounded-xl font-bold border border-[var(--border-color-light)]">
-                    {t('nav.erp')}
-                  </a>
-                  <a href="/#contact" onClick={goToContact} className="btn-primary block w-full py-4 text-center">
+
+                  <div className="grid grid-cols-2 gap-2">
+                    <Link to="/calculator" onClick={() => setMobileMenuOpen(false)} className="block py-3 text-center border border-[#E31E24]/30 text-[#E31E24] rounded-xl font-bold text-xs bg-[#E31E24]/5">
+                      {t('nav.calcular')}
+                    </Link>
+
+                    <a href="https://srv.seishin.com.mx/web/login" target="_blank" rel="noopener noreferrer" className="block py-3 text-center bg-[var(--bg-tertiary)] text-[var(--text-primary)] rounded-xl font-bold border border-[var(--border-color-light)] text-xs">
+                      {t('nav.erp')}
+                    </a>
+                  </div>
+
+                  <a href="/#contact" onClick={goToContact} className="btn-primary block w-full py-3.5 text-center text-xs font-bold uppercase tracking-wider">
                     {t('nav.contacto')}
                   </a>
                 </div>

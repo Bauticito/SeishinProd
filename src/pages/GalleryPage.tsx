@@ -32,7 +32,7 @@ export default function GalleryPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [activeItemId, setActiveItemId] = useState<number | null>(null);
 
-  const quickFilters = ['Empleos', 'Eventos'];
+  const quickFilters = [t('gallery.filter_jobs'), t('gallery.filter_events')];
 
   useEffect(() => {
     if (!hasMediaApiConfigured) return;
@@ -156,7 +156,7 @@ export default function GalleryPage() {
             {t('gallery.heading_prefix')} <span className="gradient-text">{t('gallery.heading_suffix')}</span>
           </h1>
           <p className="text-lg text-[var(--text-secondary)] max-w-2xl mx-auto leading-relaxed mb-4">
-            Buscas trabajo, observa nuestras vacantes, eventos, cultura organizacional, procesos industriales y el talento que impulsa la innovación en Seishin.
+            {t('gallery.description')}
           </p>
         </motion.div>
 
@@ -168,7 +168,7 @@ export default function GalleryPage() {
             </div>
             <input
               type="text"
-              placeholder="Buscar por puesto o proceso (ej. Soldador, Montacarguista...)"
+              placeholder={t('gallery.search_placeholder')}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white/5 border border-white/10 text-[var(--text-primary)] focus:outline-none focus:border-[#E31E24] transition-colors shadow-2xl"
@@ -306,30 +306,30 @@ export default function GalleryPage() {
         >
           <div className="p-16 rounded-3xl bg-[#E31E24] text-white relative overflow-hidden group shadow-2xl">
             <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2" />
-            <h3 className="text-4xl font-black mb-6 relative z-10">¿Buscas nuevos retos?</h3>
+            <h3 className="text-4xl font-black mb-6 relative z-10">{t('gallery.cta_jobs_title')}</h3>
             <p className="text-white/80 mb-10 relative z-10 text-lg leading-relaxed font-medium">
-              Únete a una de las empresas con mayor crecimiento tecnológico en México. Estamos buscando soldadores, montacarguistas y talento apasionado.
+              {t('gallery.cta_jobs_desc')}
             </p>
             <Link
               to="/empleos"
               className="inline-flex items-center gap-2 px-10 py-5 bg-white text-[#E31E24] rounded-2xl font-bold hover:shadow-2xl transition-all hover:-translate-y-1 text-lg"
             >
-              Ver vacantes activas
+              {t('gallery.cta_jobs_btn')}
               <ArrowRight className="w-6 h-6" />
             </Link>
           </div>
 
           <div className="p-16 rounded-3xl bg-white/5 border border-white/10 relative overflow-hidden group shadow-2xl">
             <div className="absolute top-0 right-0 w-64 h-64 bg-[#E31E24]/5 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2" />
-            <h3 className="text-4xl font-black text-[var(--text-primary)] mb-6 relative z-10">Excelencia en Servicios</h3>
+            <h3 className="text-4xl font-black text-[var(--text-primary)] mb-6 relative z-10">{t('gallery.cta_services_title')}</h3>
             <p className="text-[var(--text-secondary)] mb-10 relative z-10 text-lg leading-relaxed">
-              Desde inspección de calidad asistida por IA hasta logística industrial 4.0. Conoce cómo transformamos la industria.
+              {t('gallery.cta_services_desc')}
             </p>
             <a
               href="http://localhost:5173/#services"
               className="inline-flex items-center gap-2 px-10 py-5 border-2 border-[#E31E24] text-[#E31E24] rounded-2xl font-bold hover:bg-[#E31E24] hover:text-white transition-all hover:-translate-y-1 text-lg"
             >
-              Explorar servicios
+              {t('gallery.cta_services_btn')}
               <ArrowRight className="w-6 h-6" />
             </a>
           </div>

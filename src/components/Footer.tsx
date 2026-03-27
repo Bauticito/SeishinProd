@@ -64,7 +64,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link to="/empleos" className="text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors duration-300 hover:translate-x-1 inline-block">
-                  Empleos
+                  {t('footer.link_jobs')}
                 </Link>
               </li>
               <li>

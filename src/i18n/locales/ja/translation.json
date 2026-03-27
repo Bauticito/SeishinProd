@@ -1,158 +1,586 @@
 {
-  "nav": {
-    "inicio": "ホーム",
-    "sobre": "会社概要",
-    "servicios": "サービス",
-    "industria": "インダストリー4.0",
-    "seishinia": "SeishinIA",
-    "galeria": "ギャラリー",
-    "calcular": "サービスを計算する",
-    "contacto": "お問い合わせ",
-    "contáctanos": "お問い合わせ",
-    "erp": "ERPアクセス"
-  },
-  "lang": {
-    "es": "Español",
-    "en": "English",
-    "ja": "日本語"
-  },
-  "hero": {
-    "badge": "メキシコのインダストリー4.0をリード",
-    "heading": "人的資源の壁を取り除くビジネスソリューション",
-    "heading_1": "ビジネス",
-    "heading_2": "ソリューション",
-    "heading_3": "人的資源の壁を取り除く",
-    "description": "人材管理と産業オペレーションを変革します。メキシコとラテンアメリカで卓越性を求める企業に専門的な経験を結びつけます。",
-    "cta_primary": "見積もりを依頼する",
-    "cta_secondary": "サービスを計算する",
-    "cta_vigilancia": "SeishinIA 監視システム",
-    "trust_1": "専門的な人材",
-    "trust_2": "品質保証",
-    "trust_3": "24/7 サポート"
-  },
-  "about": {
-    "heading": "Company",
-    "heading_accent": "Overview",
-    "description_1": "Seishin was created to solve difficulties and streamline administrative and human resources work for companies with foreign capital.",
-    "description_2": "We provide outsourcing, recruiting, consulting, compliance procedures, legal translation, and emerging technology solutions.",
-    "stats_1": "Specialized collaborators",
-    "stats_2": "Companies already working with us",
-    "stats_3": "Operational response",
-    "founder_name": "Fabian Noel",
-    "founder_role": "CEO & Founder",
-    "founder_bio": "A leader committed to industrial development in Mexico. He founded Seishin with the mission of connecting talent, leading successful workforce integration processes with foreign-capital companies seeking efficiency and commitment.",
-    "founder_alt": "Fabian Noel - CEO & Founder"
-  },
-  "services": {
-    "heading": "当社の",
-    "heading_accent": "サービス",
-    "intro": "自動車・製造業における卓越した業務運営のために設計された総合ソリューション。",
-    "more": "詳しく見る →",
-    "s1_title": "戦略的人材計画",
-    "s1_desc": "予測分析を活用した戦略的人材管理。",
-    "s2_title": "フォークリフトによる内部物流",
-    "s2_desc": "効率的なマテリアルハンドリングとフロー最適化。",
-    "s3_title": "品質検査サービス",
-    "s3_desc": "国際基準に基づく厳格な品質管理・保証。",
-    "s4_title": "部品リワークと保管",
-    "s4_desc": "完全なトレーサビリティを持つ製造品の総合管理。",
-    "s5_title": "AI自動化",
-    "s5_desc": "データ分析とインテリジェントな管理プロセスの自動化。",
-    "s6_title": "品質保証",
-    "s6_desc": "産業プロセスの標準化と継続的改善。",
-    "s7_title": "技術翻訳サービス",
-    "s7_desc": "産業向け専門法律・技術翻訳。",
-    "s8_title": "JIGS製造",
-    "s8_desc": "製造用精密工具の設計・製造。"
-  },
-  "contact": {
-    "heading": "お問い合わせ",
-    "intro": "見積もりをご依頼いただき、どのようにお手伝いできるかご確認ください",
-    "info_title": "連絡先情報",
-    "phone_label": "電話番号",
-    "email_label": "メール",
-    "hours_label": "営業時間",
-    "hours_value": "月曜〜金曜、9:00〜17:00",
-    "location_label": "所在地",
-    "location_value": "グアナファト、アグアスカリエンテス",
-    "callout_title": "24時間365日オペレーション対応",
-    "callout_desc": "いつでも業務開始できる体制。10日以内に最大100名のオペレーターを迅速に配置。",
-    "name_label": "氏名 *",
-    "name_placeholder": "お名前",
-    "email_field_label": "メールアドレス *",
-    "email_placeholder": "you@company.com",
-    "company_label": "会社名",
-    "company_placeholder": "会社名を入力",
-    "message_label": "メッセージ *",
-    "message_placeholder": "プロジェクトについてお聞かせください...",
-    "submit": "送信する",
-    "submitting": "送信中...",
-    "success_title": "送信完了！",
-    "success_desc": "メッセージを受け付けました。近日中にご連絡いたします。",
-    "error_title": "送信できませんでした"
-  },
-  "recruiter": {
-    "badge": "採用中",
-    "title_prefix": "Seishin Internationalの",
-    "title_brand": "チームに参加",
-    "description": "情熱と創造力があり、着実な成長にコミットできる方を探しています。私たちのチームに加わりたい方にとって、今がその機会です。",
-    "highlights": [
-      "社会的インパクトのある案件",
-      "優秀なチーム",
-      "本質的な成長"
-    ],
-    "cta": "チームに応募する",
-    "form_title": "あなたについて教えてください",
-    "placeholders": {
-      "name": "氏名 *",
-      "email": "メールアドレス *",
-      "phone": "電話番号（10〜15桁）",
-      "job": "希望職種 *",
-      "message": "Seishin Internationalに応募したい理由を教えてください"
+    "nav": {
+        "inicio": "ホーム",
+        "sobre": "会社概要",
+        "servicios": "サービス",
+        "industria": "モノづくり産業4.0",
+        "seishinia": "SeishinIA",
+        "galeria": "ギャラリー",
+        "calcular": "お見積もり計算",
+        "contacto": "お問い合わせ",
+        "contactanos": "お問い合わせ",
+        "erp": "ERPログイン",
+        "jobs": "採用情報",
+        "select_language": "言語を選択",
+        "toggle_theme": "テーマを切り替え",
+        "scroll_to_top": "トップへ戻る"
     },
-    "submit": "応募を送信",
-    "submitting": "送信中...",
-    "success_title": "応募を受け付けました",
-    "success_desc": "Seishin Internationalにご関心をお寄せいただきありがとうございます。担当チームがプロフィールを確認し、近日中にご連絡します。",
-    "error_title": "送信できませんでした",
-    "close": "閉じる",
-    "back": "戻る"
-  },
-  "footer": {
-    "desc1": "テクノロジーを活用した専門サービスパートナーとして、スケーラブルでインテリジェントなオペレーションに特化しています。",
-    "desc2": "人間の才能と自動化を組み合わせ、より速く、より精密に、より低コストで企業を運営できるよう支援します。",
-    "links_title": "リンク",
-    "link_servicios": "サービス",
-    "link_nosotros": "会社概要",
-    "link_contacto": "お問い合わせ",
-    "link_erp": "ERPアクセス",
-    "contact_title": "連絡先",
-    "social_title": "フォローする",
-    "legal_title": "法的情報",
-    "privacy": "プライバシーポリシー",
-    "terms": "利用規約",
-    "copyright": "© 2025 Seishin. 全著作権所有。"
-  },
-  "calculator": {
-    "tag": "見積もり計算",
-    "heading": "提案を依頼する",
-    "subheading": "ステップを完了して、ニーズに合わせたカスタム見積もりをお受け取りください。"
-  },
-  "gallery": {
-    "heading": "ギャラリー",
-    "desc": "Seishinの実際の素材の画像・動画をご覧ください。",
-    "filter_all": "すべて",
-    "filter_images": "画像",
-    "filter_videos": "動画",
-    "loading": "Cloudflareからギャラリーを読み込み中...",
-    "empty": "このフィルターに一致するアイテムはありません。",
-    "image": "画像",
-    "video": "動画",
-    "cta_title": "特定の素材が必要ですか？",
-    "cta_desc": "追加のリソースや成功事例をご要望の場合は、チームまでお問い合わせください。",
-    "cta_btn": "今すぐ連絡",
-    "close": "閉じる",
-    "prev": "前へ",
-    "next": "次へ"
-  }
+    "lang": {
+        "es": "スペイン語",
+        "en": "英語",
+        "ja": "日本語"
+    },
+    "hero": {
+        "badge": "メキシコにおけるモノづくり4.0のリーディングカンパニー",
+        "heading_1": "企業向け",
+        "heading_2": "ソリューション",
+        "heading_3": "人財の壁を乗り越えるサービス",
+        "description": "人材管理と産業現場の運営を変革します。メキシコやラテンアメリカで卓越した成果を目指す企業に、専門的な人材ネットワークを提供します。",
+        "cta_primary": "お見積もり依頼",
+        "cta_secondary": "お見積もり計算",
+        "cta_vigilancia": "SeishinIA監視システム",
+        "trust_1": "専門人材の提供",
+        "trust_2": "品質保証",
+        "trust_3": "24時間365日サポート"
+    },
+    "mission": {
+        "title": "ミッション",
+        "description": "日常業務における人的リソースの制約を解消し、生産時間の短縮と改善を実現すること。お客様の人材管理業務をサポートし、事業目標および社会的目標の達成に向けて最大限の貢献を行うこと。AI（人工知能）ツールを人間の良きパートナーとして統合し、運用管理と生産性の最適化を図ること。"
+    },
+    "vision": {
+        "title": "ビジョン",
+        "description": "全国のお客様のニーズに応えるべく、各専門分野における高度な人的ネットワークを構築すること。誠実（誠心）で献身的なサービスを通じて、業界のトップ企業としての地位を確立すること。最先端のテクノロジーを積極的に導入し、サービスの革新と継続的改善を推進するソリューションを提供すること。"
+    },
+    "services": {
+        "heading": "弊社の",
+        "heading_accent": "サービス",
+        "intro": "自動車産業および製造業におけるオペレーションの卓越性を追求するための、包括的ソリューション。",
+        "more": "詳細を見る ->",
+        "s1_title": "戦略的人材計画",
+        "s1_desc": "予測分析を活用した、人的リソースの戦略的マネジメント。",
+        "s2_title": "フォークリフトによる構内物流",
+        "s2_desc": "効率的な資材管理業務と物流フローの最適化。",
+        "s3_title": "品質検査サービス",
+        "s3_desc": "国際規格に準拠した厳格な管理体制と品質保証。",
+        "s4_title": "部品の手直しおよび保管",
+        "s4_desc": "完全なトレーサビリティを確保した製造品の総合管理。",
+        "s5_title": "AIによる自動化",
+        "s5_desc": "データ分析および管理プロセスの高度な自動化。",
+        "s6_title": "品質保証 (QA)",
+        "s6_desc": "産業プロセスの標準化と継続的改善。",
+        "s7_title": "専門技術翻訳サービス",
+        "s7_desc": "製造業界に特化した法務および技術文書の翻訳。",
+        "s8_title": "治具（JIG）の製造",
+        "s8_desc": "製造現場向け精密治具の設計と製造。"
+    },
+    "value": {
+        "heading": "付加価値の",
+        "heading_accent": "ご提案",
+        "intro": "人財の壁を乗り越えるサービス",
+        "proposition_title": "弊社の提供価値",
+        "items": [
+            {
+                "title": "200%検査コンテインメント",
+                "description": "専門プロセスにおける高度な信頼性の確保"
+            },
+            {
+                "title": "人材育成プログラム",
+                "description": "ILUマトリックス評価に基づく、重要課題に焦点を当てたトレーニング"
+            },
+            {
+                "title": "品質保証オペレーションサービス",
+                "description": "プロセスの標準化と改善を推進する有資格エンジニアの配置"
+            },
+            {
+                "title": "定期報告書",
+                "description": "傾向分析および業務効率化に向けた改善提案レポート"
+            },
+            {
+                "title": "新規立ち上げサポート",
+                "description": "プロジェクト初期段階における品質保証を伴う包括的支援"
+            },
+            {
+                "title": "AI技術ツールを活用したプロセス効率化",
+                "description": "人工知能を活用したプロセスの自動最適化の実現"
+            }
+        ],
+        "propositions": [
+            "お客様のニーズを最優先に考えます",
+            "お客様の基準や仕様を厳格に遵守いたします",
+            "人材不足を解決するため、高品質かつ革新的なソリューションをご提供いたします",
+            "専門知識を有する経験豊富なエキスパートチームが対応いたします",
+            "卓越したサービスを通じ、業界内でのリーダーシップを確立いたします"
+        ]
+    },
+    "branding": {
+        "badge": "次世代ソリューション",
+        "line_1": "専門サービスの未来を、",
+        "line_2": "人工知能と",
+        "line_3": "産業オペレーションの卓越性が融合し、再定義する場所。",
+        "items": [
+            {
+                "title": "AIコア",
+                "desc": "プロセス最適化のための独自アルゴリズム。"
+            },
+            {
+                "title": "グローバルスタンダード",
+                "desc": "インダストリー4.0の国際基準に完全準拠。"
+            },
+            {
+                "title": "超高効率化",
+                "desc": "インテリジェントな自動化による業務時間の短縮化。"
+            }
+        ]
+    },
+    "industry": {
+        "badge": "次のレベルへ",
+        "heading": "モノづくり業界",
+        "heading_accent": "4.0",
+        "intro": "デジタルトランスフォーメーション（DX）はもはや選択肢ではなく、現代の競争力の源泉です。弊社は、その進化を牽引する準備が整っております。",
+        "timeline_title": "産業の進化",
+        "elements_title": "主要要件",
+        "solutions_title": "弊社のソリューション",
+        "cta": "モノづくり産業4.0への移行",
+        "elements": [
+            "デジタル情報",
+            "スマートな従業員",
+            "スマートカメラ",
+            "24時間365日接続された顧客環境",
+            "戦略的アライメント",
+            "効率的なオペレーション"
+        ],
+        "solutions": [
+            {
+                "title": "AI自動コールセンター",
+                "desc": "AIを活用した人事管理"
+            },
+            {
+                "title": "ERP + AI エコシステム",
+                "desc": "管理業務の自律的自動化"
+            },
+            {
+                "title": "自律型ワークフロー",
+                "desc": "バリューストリームの能動的最適化"
+            }
+        ],
+        "timeline": [
+            {
+                "year": "1760",
+                "label": "機械化"
+            },
+            {
+                "year": "1870",
+                "label": "電気・大量生産"
+            },
+            {
+                "year": "1969",
+                "label": "デジタル化"
+            },
+            {
+                "year": "現在",
+                "label": "AIとデータ"
+            }
+        ]
+    },
+    "contact": {
+        "heading": "お問い合わせ",
+        "intro": "お見積もりのご依頼やご相談など、お気軽にお問い合わせください",
+        "info_title": "お問い合わせ先情報",
+        "phone_label": "電話番号",
+        "email_label": "メールアドレス",
+        "hours_label": "営業時間",
+        "hours_value_line_1": "月曜日〜金曜日",
+        "hours_value_line_2": "9:00 - 17:00",
+        "location_label": "所在地",
+        "location_value_line_1": "グアナファト州",
+        "location_value_line_2": "アグアスカリエンテス州",
+        "callout_title": "24時間365日のオペレーション対応",
+        "callout_desc": "いつでも稼働開始可能な体制を整えております。最短10日以内で最大100名のオペレーターを迅速に配置することが可能です。",
+        "name_label": "ご担当者名 *",
+        "name_placeholder": "氏名をご入力ください",
+        "email_field_label": "メールアドレス *",
+        "email_placeholder": "tu@empresa.com",
+        "company_label": "貴社名",
+        "company_placeholder": "貴社名をご入力ください",
+        "message_label": "メッセージ *",
+        "message_placeholder": "プロジェクトの詳細についてお聞かせください...",
+        "submit": "メッセージを送信する",
+        "submitting": "送信中...",
+        "success_title": "送信完了",
+        "success_desc": "メッセージは正常に送信されました。担当者より折り返しご連絡いたします。",
+        "error_title": "送信エラー",
+        "error_fallback": "エラーが発生しました。申し訳ございませんが、再度お試しください。"
+    },
+    "recruiter": {
+        "badge": "採用情報",
+        "title_prefix": "共に働く仲間を募集しています",
+        "title_brand": "Seishin International",
+        "description": "情熱と創造性を持ち、真の成長にコミットできる人材を求めています。当社のチームに参加し、活躍する絶好の機会です。",
+        "highlights": [
+            "社会的影響力の大きなプロジェクト",
+            "プロフェッショナルなチーム環境",
+            "確かな成長機会"
+        ],
+        "cta": "応募する",
+        "form_title": "自己紹介をお願いします",
+        "placeholders": {
+            "name": "氏名（フルネーム） *",
+            "email": "メールアドレス *",
+            "phone": "電話番号（10〜15桁）",
+            "job": "希望職種 *",
+            "message": "Seishin Internationalへの志望動機をお聞かせください"
+        },
+        "submit": "応募を送信する",
+        "submitting": "送信中...",
+        "success_title": "応募の受付を完了しました",
+        "success_desc": "Seishin Internationalへのご応募ありがとうございます。採用チームにてご経歴を確認後、追ってご連絡させていただきます。",
+        "error_title": "送信エラー",
+        "close": "閉じる",
+        "back": "戻る"
+    },
+    "jobs": {
+        "seo": {
+            "title": "アグアスカリエンテスおよびグアナファトの求人| 溶接作業員、フォークリフト オペレーター、作業員",
+            "description": "Seishin Internationalが提供するアグアスカリエンテスの溶接工、グアナファトのフォークリフト オペレーター等の求人情報。当社のポータルから、産業およびテクノロジー関連の職務にご応募いただけます。",
+            "keywords": "溶接加工 求人 アグアスカリエンテス, フォークリフト 求人 グアナファト, 作業員 求人 アグアスカリエンテス, メキシコ 産業 求人, Seishin International 求人",
+            "ogTitle": "採用情報 | Seishin International",
+            "ogDescription": "アグアスカリエンテスおよびグアナファトにおける溶接加工、フォークリフト オペレーター、作業員の求人情報をご覧ください。"
+        },
+        "heading_prefix": "求人",
+        "heading_accent": "情報",
+        "intro": "アグアスカリエンテス州およびグアナファト州での溶接工、フォークリフト オペレーター、作業員の求人情報を掲載しています。技術革新とオペレーションの卓越性に情熱を注ぐ人材を募集しております。",
+        "featured": {
+            "soldador_title": "溶接加工の求人",
+            "soldador_location": "メキシコ, アグアスカリエンテス州",
+            "montacarguista_title": "フォークリフト オペレーターの求人",
+            "montacarguista_location": "メキシコ, グアナファト州",
+            "operario_title": "作業員の求人",
+            "operario_location": "メキシコ, アグアスカリエンテス州"
+        },
+        "search_placeholder": "求人を検索 (例: 溶接作業員、アグアスカリエンテス...)",
+        "loading": "求人情報を読み込んでいます...",
+        "view_job": "求人詳細を見る",
+        "empty_title": "該当する求人が見つかりませんでした",
+        "empty_description": "別のキーワードで検索するか、今後の採用機会のために履歴書をお送りください。",
+        "send_cv": "履歴書を送付する"
+    },
+    "job_detail": {
+        "loading": "求人詳細を読み込んでいます...",
+        "default_location": "メキシコ, アグアスカリエンテス州およびグアナファト州",
+        "seo": {
+            "description": "{{location}}での{{title}}の求人。{{summary}} Seishin Internationalからご応募ください。",
+            "keywords_job": "{{title}} {{location}} 求人",
+            "keywords_employment": "{{title}} {{location}} 採用情報",
+            "keywords_work": "{{title}} 職務",
+            "keywords_brand": "Seishin International 採用情報",
+            "share_text": "Seishin Internationalの求人を共有：{{title}}",
+            "title": "{{location}}の{{title}}の求人",
+            "ogTitle": "{{title}} 求人 | Seishin International"
+        },
+        "back": "求人一覧に戻る",
+        "posted_on": "掲載日",
+        "interested_title": "ご興味をお持ちですか？",
+        "interested_description": "選考のため、今すぐプロフィールと経歴書をお送りください。あなたのような優秀な人材をお待ちしております。",
+        "apply_now": "今すぐ応募する",
+        "share_job": "この求人を共有する",
+        "company_label": "企業名",
+        "company_description": "Seishin Internationalは、メキシコにおけるAI（人工知能）サービスと高度なオペレーション・コンサルティングのリーディングカンパニーです。",
+        "job_description": "職務内容について",
+        "schedule": "勤務時間帯:",
+        "requirements": "応募要件",
+        "benefits": "福利厚生等"
+    },
+    "footer": {
+        "desc1": "私たちは、スケーラブルかつインテリジェントなオペレーション運用に特化した、技術主導の専門サービス・パートナーです。",
+        "desc2": "人間の才能と自動化技術を融合させることで、企業がより迅速、正確、かつ低コストで事業運営を行えるよう支援いたします。",
+        "links_title": "クイックリンク",
+        "link_servicios": "弊社のサービス",
+        "link_nosotros": "企業情報",
+        "link_contacto": "お問い合わせ",
+        "link_erp": "ERPログイン",
+        "link_jobs": "採用情報",
+        "contact_title": "お問い合わせ先",
+        "social_title": "公式SNS",
+        "legal_title": "法的ポリシー",
+        "privacy": "プライバシーポリシー",
+        "terms": "利用規約",
+        "copyright": "© 2026 Seishin. All rights reserved."
+    },
+    "cta": {
+        "heading": "事業のオペレーションを変革する準備はできていますか？",
+        "description": "人に焦点を当てたAI専門サービスを導入し、共にビジネスを迅速に前進させましょう。",
+        "button": "ご相談・お問い合わせ"
+    },
+    "calculator": {
+        "tag": "お見積もり計算",
+        "heading": "ご提案の依頼",
+        "subheading": "お客様のニーズに合わせた個別のお見積もりを作成するため、以下の手順を完了してください。"
+    },
+    "gallery": {
+        "heading_prefix": "当社の",
+        "heading_suffix": "ギャラリー",
+        "heading": "メディアギャラリー",
+        "desc": "Seishinの事業現場や実績を収めた画像・動画をご覧ください。",
+        "filter_all": "すべて",
+        "filter_images": "画像",
+        "filter_videos": "動画",
+        "loading": "Cloudflareからギャラリーを読み込んでいます...",
+        "empty": "条件に一致するアイテムが見つかりませんでした。",
+        "image": "画像",
+        "video": "動画",
+        "cta_title": "特定の資料やデータをお探しですか？",
+        "cta_desc": "追加資料や成功事例などの詳細情報については、当社チームまでお問い合わせください。",
+        "cta_btn": "今すぐ連絡する",
+        "close": "閉じる",
+        "of": "/",
+        "prev": "前へ",
+        "next": "次へ",
+        "error_prefix": "Cloudflare API エラー:",
+        "error_suffix": "ローカルファイルを表示します。",
+        "error_fallback": "Cloudflareからのギャラリー読み込みに失敗しました。",
+        "description": "お仕事をお探しですか？Seishinの求人情報、イベント、組織文化、産業プロセス、そしてイノベーションを推進する人財をご覧ください。",
+        "search_placeholder": "職種やプロセスで検索（例：溶接工、フォークリフト オペレーター...）",
+        "filter_jobs": "採用情報",
+        "filter_events": "イベント",
+        "cta_jobs_title": "新しい挑戦をお探しですか？",
+        "cta_jobs_desc": "メキシコで最も急速に成長しているテクノロジー企業の一員になりませんか？溶接工、フォークリフト オペレーター、そして情熱ある人財を募集しています。",
+        "cta_jobs_btn": "募集中の職種を見る",
+        "cta_services_title": "卓越したサービス",
+        "cta_services_desc": "AI支援による品質検査からインダストリー4.0の物流まで。私たちがどのように業界を変革しているかご覧ください。",
+        "cta_services_btn": "サービスを見る"
+    },
+    "jetson": {
+        "header_badge": "すべてのサービスが稼働中",
+        "system_active": "セキュリティシステム稼働中",
+        "hero_h1_1": "トータルコントロール。",
+        "hero_h1_2": "エッジで。",
+        "hero_h1_3": "クラウド遅延ゼロ。",
+        "hero_desc": "単一の産業用コンソールから、ロールベースのセキュリティと完全なトレーサビリティを備えたカメラ、自動化、およびモデルを監視します。",
+        "stats_nodos": "アクティブなノード",
+        "stats_inferencias": "推論/分",
+        "stats_uptime": "アップタイム",
+        "stats_sesiones": "セッション",
+        "stats_seguras": "セキュリティー",
+        "cta_portal": "ポータルにアクセス",
+        "cta_calculator": "見積もりを見る",
+        "badge_pronto": "近日公開",
+        "badge_live": "ライブフィード",
+        "login_secure_access": "セキュアアクセス",
+        "login_welcome": "ようこそ",
+        "login_desc": "続行するにはログインしてください。職務に応じたアクセス権限が適用されます。",
+        "login_btn": "ログイン",
+        "platform_badge": "プラットフォーム",
+        "platform_title": "システムの機能",
+        "capabilities": [
+            { "title": "リアルタイムビジョン", "desc": "ストリームの各フレームでイベントを検出および分類します。" },
+            { "title": "マルチカメラ", "desc": "RTSP/ONVIF経由で最大16台のIPカメラを同時監視。" },
+            { "title": "ロールと権限", "desc": "オペレーター、管理者、クライアントごとにアクセス制限を適用。" },
+            { "title": "自動アラート", "desc": "重大なイベント発生時にプッシュ通知とWebhookで通知。" },
+            { "title": "監査ログ", "desc": "システムの各アクションを不変のログとして記録。" },
+            { "title": "エッジコンピューティング", "desc": "NVIDIA Jetsonによるローカル推論 — クラウドに依存しません。" }
+        ],
+        "footer_rights": "© 2026 Seishin — All rights reserved",
+        "nav": {
+            "dashboard": "ダッシュボード",
+            "inference": "推論",
+            "automations": "自動化",
+            "cameras": "カメラ",
+            "models": "モデル",
+            "datasets": "データセット",
+            "training": "トレーニング",
+            "logs": "ログ",
+            "modules": "モジュール",
+            "accounts": "アカウント",
+            "admin": "管理",
+            "billing": "請求",
+            "logout": "ログアウト"
+        },
+        "roles": {
+            "superadmin": "スーパー管理者",
+            "admin": "管理者",
+            "operador": "オペレーター",
+            "etiquetador": "ラベラー",
+            "cliente": "クライアント"
+        },
+        "status": {
+            "portal_ia": "AIポータル",
+            "all_operational": "すべてのサービスが正常稼働中",
+            "theme_dark": "ダークモードに切り替え",
+            "theme_light": "ライトモードに切り替え",
+            "osc": "暗",
+            "cla": "明"
+        }
+    },
+    "jobs_ui": {
+        "page_title": "求人情報",
+        "page_subtitle": "産業テクノロジーと人工知能のリーディングカンパニーに参加しませんか。イノベーションと卓越したオペレーションに情熱を持つ人財を募集しています。",
+        "search_placeholder": "求人を検索（例：エンジニア、アグアスカリエンテスなど...）",
+        "loading": "求人を読み込み中...",
+        "view_btn": "詳細を見る",
+        "no_results_title": "条件に一致する求人が見つかりませんでした",
+        "no_results_desc": "他の検索キーワードを試すか、履歴書をお送りいただければ、将来の機会について検討させていただきます。",
+        "send_cv": "履歴書を送る",
+        "not_found_title": "お探しのものが見つかりませんか？",
+        "not_found_desc": "将来の機会のために履歴書をお送りください。あなたのプロフィールに合うポジションが空き次第、ご連絡いたします。",
+        "loading_details": "求人の詳細を読み込み中...",
+        "back_to_jobs": "求人一覧に戻る",
+        "posted_on": "掲載日：",
+        "interested_title": "興味がありますか？",
+        "interested_desc": "今すぐプロフィールをお送りください。あなたのような才能を求めています。",
+        "apply_now": "今すぐ応募する",
+        "share_vacant": "求人を共有",
+        "company_label": "企業",
+        "company_desc": "Seishin Internationalは、メキシコにおける人工知能サービスおよび高度なオペレーショナル・コンサルティングのリーダーです。",
+        "description_title": "職務内容",
+        "requirements_title": "応募要件",
+        "benefits_title": "福利厚生",
+        "schedule_label": "勤務時間：",
+        "share_text": "Seishin Internationalの {{title}} の求人をご覧ください"
+    },
+    "jobs_data": {
+        "montacarguista": {
+            "title": "フォークリフトオペレーター",
+            "description": "フォークリフトの安全な操作、資材の積み下ろし、在庫管理、および産業倉庫内のサポート。",
+            "requirements": [
+                "有効なフォークリフト運転免許（DC-3）。",
+                "産業倉庫での実務経験2年以上。",
+                "安全衛生基準に関する知識。",
+                "交替制勤務が可能なこと。"
+            ],
+            "benefits": ["法定福利厚生", "食事券（パントリークーポン）", "皆勤手当"],
+            "category": "ロジスティクス"
+        },
+        "soldador": {
+            "title": "溶接工",
+            "description": "特殊な産業用溶接、技術図面の解読、および高精度な金属構造物の組み立て。",
+            "requirements": [
+                "MIG/TIG溶接の実務経験。",
+                "図面の読解および解釈能力。",
+                "測定・切断工具の使用経験。",
+                "有効な認証（あれば尚可）。"
+            ],
+            "benefits": ["法定福利厚生", "生命保険", "技術トレーニング"],
+            "category": "生産・製造"
+        },
+        "operario": {
+            "title": "ライン作業員",
+            "description": "自動化された生産ラインの一般サポート、コンポーネントの組み立て、および品質基準の遵守。",
+            "requirements": [
+                "中学校または高校卒業以上。",
+                "学習意欲と主体性があること。",
+                "時間厳守と責任感があること。",
+                "未経験可（教育・トレーニングあり）。"
+            ],
+            "benefits": ["法定福利厚生", "交通手段", "昇進機会あり"],
+            "category": "生産・製造"
+        }
+    },
+    "seishinia": {
+        "badge": "SeishinIA",
+        "hero_title": "実際の業務オペレーションに適用可能なAI",
+        "hero_desc": "時間を短縮し、品質を向上させ、現場チームとの摩擦を起こすことなくオペレーション能力を高めるための実践的な人工知能ソリューションを設計・導入いたします。",
+        "cta_quote": "AIサービスのお見積もり",
+        "cta_specialist": "IA専門家へのご相談",
+        "solutions_title": "主要ソリューション・ご提供価値",
+        "solutions": [
+            {
+                "title": "オペレーショナルAIエージェント",
+                "description": "人材採用、候補者フォローアップ、データレポート作成、内部対応など、反復的な業務プロセスを自動化します。"
+            },
+            {
+                "title": "コンピュータービジョン（画像認識）",
+                "description": "AI支援による外観検査、精密な品質管理、欠陥検出、および完全なトレーサビリティを実現します。"
+            },
+            {
+                "title": "予測分析（プレディクティブアナリティクス）",
+                "description": "業務需要の予測、必要な人員体制の算出、およびネック工程の早期発見をデータドリブンで支援します。"
+            }
+        ],
+        "sectors_title": "対象分野・インダストリー",
+        "sectors": [
+            "自動車産業",
+            "高度な製造業",
+            "ロジスティクスおよび倉庫管理",
+            "人事オペレーション (HR)",
+            "管理サービス部門",
+            "DX推進・トランスフォーメーション事業"
+        ],
+        "process_title": "導入・実装アプローチ",
+        "process": [
+            {
+                "title": "1. 現状診断",
+                "text": "現在のプロセスマッピング、ベンチマーク指標の特定、ビジネス目標のすり合わせを行います。"
+            },
+            {
+                "title": "2. ソリューション設計",
+                "text": "機能的要件の定義、技術範囲の決定、および成功基準（KPI）の策定を行います。"
+            },
+            {
+                "title": "3. パイロット実装",
+                "text": "実際の運用環境下にて、結果検証を伴う管理されたテスト（PoC）を実施します。"
+            },
+            {
+                "title": "4. スケーリング（本番展開）",
+                "text": "段階的な展開、ユーザートレーニング、および収集データに基づいた継続的改善を実施します。"
+            }
+        ],
+        "results_title": "期待されるROI（投資対効果）",
+        "results_desc": "手戻りの大幅な削減、応答速度の向上、データに基づいたより予測可能なオペレーションの実現。すべてのプロジェクトは、初期段階で合意された重要業績評価指標（KPI）に基づいて評価されます。",
+        "results_call": "オンライン診断を予約する",
+        "results_gallery": "運用のギャラリー（事例）を見る",
+        "brief": {
+            "title": "AI導入ブリーフ",
+            "description": "貴社の現在のオペレーション状況を共有いただければ、開発範囲と実行計画を含む実装の初期提案をご連絡いたします。",
+            "submit": "AIブリーフを送信する",
+            "success_title": "ブリーフが送信されました",
+            "success_desc": "入力情報が記載されたメールクライアントが起動しました。もしよろしければ、fabian.noel@seishin.com.mx に直接メールをお送りいただくことも可能です。",
+            "mail_subject": "AI導入ブリーフの提出",
+            "mail_intro": "新規AIブリーフを受信しました:",
+            "new_lead": "新規お申込み（リード）",
+            "labels": {
+                "name": "ご担当者名",
+                "company": "貴社名",
+                "email": "メールアドレス",
+                "phone": "電話番号",
+                "service": "関心のあるサービス分野",
+                "process": "最適化したいプロセス名称",
+                "volume": "現在の業務ボリューム",
+                "objective": "導入の主な目標",
+                "timeline": "導入予定のタイムライン",
+                "budget": "ご予算の範囲"
+            },
+            "placeholders": {
+                "service": "関心のあるサービスをご選択ください",
+                "name": "ご担当者名を入力してください",
+                "company": "貴社名を入力してください",
+                "email": "会社用メールアドレス",
+                "phone": "お電話番号",
+                "process": "最適化したいプロセスについてご説明ください",
+                "volume": "現在のボリューム (例: 1日あたり300件の検査)",
+                "objective": "最大の目標（コスト削減、品質向上など）",
+                "timeline": "予定される導入時期の要件",
+                "budget": "想定されるご予算範囲"
+            },
+            "options": {
+                "service_1": "AIエージェント",
+                "service_2": "コンピュータービジョン",
+                "service_3": "予測分析",
+                "objective_1": "コスト削減",
+                "objective_2": "業務の時短化",
+                "objective_3": "品質の改善",
+                "objective_4": "運用のスケーリング",
+                "timeline_1": "直ちに〜30日以内",
+                "timeline_2": "1〜3ヶ月",
+                "timeline_3": "3〜6ヶ月",
+                "timeline_4": "6ヶ月以上",
+                "budget_1": "100,000 MXN未満",
+                "budget_2": "100,000 〜 300,000 MXN",
+                "budget_3": "300,000 〜 1,000,000 MXN",
+                "budget_4": "1,000,000 MXN以上"
+            }
+        }
+    },
+    "about": {
+        "heading": "企業",
+        "heading_accent": "情報",
+        "description_1": "Seishinは、外資系企業が直面する人事・管理業務の課題を解決し、事業運営を円滑化することを目的として設立されたコンサルティングおよび専門サービス企業です。",
+        "description_2": "業務アウトソーシング、人材採用支援、経営コンサルティング、行政手続き代行、法務翻訳、並びに最先端のテクノロジーを駆使したDXソリューションを幅広くご提供しております。",
+        "stats_1": "専門知識を持つ協力者・エンジニア",
+        "stats_2": "現在取引のある企業数",
+        "stats_3": "迅速な運用対応能力（アジリティ）",
+        "founder_name": "ノエル・ファビアン (Fabian Noel)",
+        "founder_role": "CEO 兼 創設者",
+        "founder_bio": "メキシコの産業発展と成長に深くコミットするリーダー。優秀な人材と企業をつなぐという強い使命のもとSeishinを設立し、効率性と高いエンゲージメントを求める外資系企業における数々の採用とビジネスプロセス構築を牽引しています。",
+        "founder_alt": "Fabian Noel - CEO 兼 創設者"
+    }
 }

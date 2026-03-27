@@ -2,6 +2,7 @@ import { HardDrive, Activity, User, Sun, Moon } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useJarvisSystemStats } from "@/hooks/useJarvis";
 import { useTheme } from "@/context/ThemeContext";
+import { useTranslation } from "react-i18next";
 
 type Status = "ok" | "warning" | "error";
 
@@ -12,6 +13,7 @@ const statusColor: Record<Status, string> = {
 };
 
 export function SystemStatusBar() {
+  const { t } = useTranslation();
   const { data: stats } = useJarvisSystemStats();
   const { user } = useAuth();
   const { theme, toggleTheme } = useTheme();
@@ -42,7 +44,7 @@ export function SystemStatusBar() {
       <div className="flex items-center gap-2 shrink-0">
         <img src="/seishin-SinFondo.png" alt="Seishin" className="h-7 w-auto object-contain" />
         <span className="hidden sm:block text-[10px] font-mono font-bold tracking-[0.15em] text-[var(--text-secondary)] uppercase">
-          Portal IA
+          {t('jetson.status.portal_ia')}
         </span>
       </div>
 
@@ -70,10 +72,10 @@ export function SystemStatusBar() {
       <button
         onClick={toggleTheme}
         className="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-[var(--bg-tertiary)] border border-[var(--border-color-light)] hover:border-[#E31E24]/40 hover:text-[#E31E24] text-[var(--text-secondary)] transition-all duration-200"
-        title={theme === "light" ? "Cambiar a modo oscuro" : "Cambiar a modo claro"}
+        title={theme === "light" ? t('jetson.status.theme_dark') : t('jetson.status.theme_light')}
       >
         {theme === "light" ? <Moon className="w-3 h-3" /> : <Sun className="w-3 h-3" />}
-        <span className="text-[10px] font-mono">{theme === "light" ? "OSC" : "CLA"}</span>
+        <span className="text-[10px] font-mono">{theme === "light" ? t('jetson.status.osc') : t('jetson.status.cla')}</span>
       </button>
 
       {/* User info */}
@@ -92,7 +94,7 @@ export function SystemStatusBar() {
       <div className="ml-auto flex items-center gap-1.5">
         <span className="w-1.5 h-1.5 rounded-full bg-[#22C55E] animate-pulse" />
         <span className="hidden sm:block text-[9px] font-mono text-[var(--text-secondary)] tracking-widest uppercase">
-          Todos los servicios operativos
+          {t('jetson.status.all_operational')}
         </span>
       </div>
     </header>

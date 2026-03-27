@@ -39,10 +39,15 @@ export default function JobsPage() {
             {t('recruiter.badge')}
           </span>
           <h1 className="text-4xl md:text-5xl font-bold text-[var(--text-primary)] mb-6">
-            Bolsa de <span className="text-[#E31E24]">Trabajo</span>
+            {t('jobs_ui.page_title').includes('Trabajo') ? (
+              <>
+                {t('jobs_ui.page_title').replace('Trabajo', '')}
+                <span className="text-[#E31E24]">Trabajo</span>
+              </>
+            ) : t('jobs_ui.page_title')}
           </h1>
           <p className="text-lg text-[var(--text-secondary)] max-w-3xl mx-auto">
-            Únete a una empresa líder en tecnología industrial e Inteligencia Artificial. Buscamos talento apasionado por la innovación y la excelencia operativa.
+            {t('jobs_ui.page_subtitle')}
           </p>
         </motion.div>
 
@@ -52,7 +57,7 @@ export default function JobsPage() {
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
             <input
               type="text"
-              placeholder="Buscar vacantes (ej. Ingeniero, Aguascalientes...)"
+              placeholder={t('jobs_ui.search_placeholder')}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white/5 border border-white/10 text-[var(--text-primary)] focus:outline-none focus:border-[#E31E24] transition-colors"
@@ -65,7 +70,7 @@ export default function JobsPage() {
           {loading ? (
             <div className="flex flex-col items-center justify-center py-20 text-[var(--text-secondary)]">
               <Loader2 className="w-10 h-10 animate-spin mb-4 text-[#E31E24]" />
-              <p>Cargando vacantes...</p>
+              <p>{t('jobs_ui.loading')}</p>
             </div>
                     ) : filteredJobs.length > 0 ? (
             filteredJobs.map((job: JobVacancy, index: number) => (
@@ -80,12 +85,12 @@ export default function JobsPage() {
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-3">
                     <span className="px-2.5 py-1 rounded-lg bg-white/5 text-[10px] font-bold text-gray-400 uppercase tracking-widest">
-                      {job.category}
+                      {t(`jobs_data.${job.slug}.category`)}
                     </span>
                     <span className="text-xs text-gray-500">{job.postedDate}</span>
                   </div>
                   <h2 className="text-2xl font-bold text-[var(--text-primary)] mb-3 group-hover:text-[#E31E24] transition-colors">
-                    {job.title}
+                    {t(`jobs_data.${job.slug}.title`)}
                   </h2>
                   <div className="flex flex-wrap gap-4 text-sm text-[var(--text-secondary)]">
                     <div className="flex items-center gap-1.5">
@@ -100,7 +105,7 @@ export default function JobsPage() {
                     to={`/vacante/${job.slug}`}
                     className="flex items-center gap-2 px-6 py-3 rounded-xl bg-[#E31E24] text-white font-bold text-sm hover:bg-[#c01a20] shadow-lg shadow-[#E31E24]/20 transition-all group-hover:translate-x-1"
                   >
-                    Ver vacante
+                    {t('jobs_ui.view_btn')}
                     <ArrowRight className="w-4 h-4" />
                   </Link>
                 </div>
@@ -117,16 +122,16 @@ export default function JobsPage() {
                 <Search className="w-8 h-8 text-gray-500" />
               </div>
               <h3 className="text-xl font-bold text-[var(--text-primary)] mb-4">
-                No encontramos vacantes que coincidan
+                {t('jobs_ui.no_results_title')}
               </h3>
               <p className="text-[var(--text-secondary)] mb-8 max-w-md mx-auto">
-                Intenta con otros términos de búsqueda o envíanos tu CV para tenerte en cuenta en futuras oportunidades.
+                {t('jobs_ui.no_results_desc')}
               </p>
               <button
                 onClick={() => open()}
                 className="inline-flex items-center gap-2 px-8 py-3 rounded-xl bg-[#E31E24] text-white font-bold text-sm hover:bg-[#c01a20] transition-all"
               >
-                Enviar mi CV
+                {t('jobs_ui.send_cv')}
                 <ArrowRight className="w-4 h-4" />
               </button>
             </motion.div>
@@ -137,16 +142,16 @@ export default function JobsPage() {
         {finalJobs.length > 0 && filteredJobs.length > 0 && (
           <div className="mt-16 p-14 rounded-3xl bg-gradient-to-r from-[#E31E24]/10 to-transparent border border-[#E31E24]/20 text-center">
             <h3 className="text-2xl font-bold text-[var(--text-primary)] mb-4">
-              ¿No encuentras lo que buscas?
+              {t('jobs_ui.not_found_title')}
             </h3>
             <p className="text-[var(--text-secondary)] mb-8 text-lg">
-              Envíanos tu CV para futuras oportunidades y nos pondremos en contacto contigo cuando se abra una posición alineada a tu perfil.
+              {t('jobs_ui.not_found_desc')}
             </p>
             <a
               href="/#contact"
               className="inline-flex items-center gap-2 text-[#E31E24] font-bold text-lg hover:underline"
             >
-              Contáctanos <ArrowRight className="w-5 h-5" />
+              {t('nav.contacto')} <ArrowRight className="w-5 h-5" />
             </a>
           </div>
         )}

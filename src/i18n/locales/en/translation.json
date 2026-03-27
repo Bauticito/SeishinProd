@@ -9,11 +9,16 @@
     "calcular": "Calculate your service",
     "contacto": "Contact",
     "contactanos": "Contact us",
-    "erp": "ERP Access"
+    "erp": "ERP Access",
+    "jobs": "Jobs",
+    "select_language": "Select language",
+    "toggle_theme": "Toggle theme",
+    "scroll_to_top": "Scroll to top"
   },
   "lang": {
     "es": "Spanish",
-    "en": "English"
+    "en": "English",
+    "ja": "Japanese"
   },
   "hero": {
     "badge": "Leading Industry 4.0 in Mexico",
@@ -231,6 +236,7 @@
     "link_nosotros": "About us",
     "link_contacto": "Contact",
     "link_erp": "ERP Access",
+    "link_jobs": "Jobs",
     "contact_title": "Contact",
     "social_title": "Follow us",
     "legal_title": "Legal",
@@ -269,7 +275,143 @@
     "next": "Next",
     "error_prefix": "Cloudflare API error:",
     "error_suffix": "Showing local files.",
-    "error_fallback": "Could not load the gallery from Cloudflare."
+    "error_fallback": "Could not load the gallery from Cloudflare.",
+    "description": "Looking for a job? Check out our vacancies, events, organizational culture, industrial processes, and the talent driving innovation at Seishin.",
+    "search_placeholder": "Search by position or process (e.g. Welder, Forklift Operator...)",
+    "filter_jobs": "Jobs",
+    "filter_events": "Events",
+    "cta_jobs_title": "Looking for new challenges?",
+    "cta_jobs_desc": "Join one of the fastest-growing technology companies in Mexico. We are looking for welders, forklift operators, and passionate talent.",
+    "cta_jobs_btn": "View active vacancies",
+    "cta_services_title": "Excellence in Services",
+    "cta_services_desc": "From AI-assisted quality inspection to industrial logistics 4.0. Learn how we transform the industry.",
+    "cta_services_btn": "Explore services"
+  },
+  "jetson": {
+    "header_badge": "ALL SERVICES OPERATIONAL",
+    "system_active": "Security system active",
+    "hero_h1_1": "Total control.",
+    "hero_h1_2": "At the edge.",
+    "hero_h1_3": "Zero cloud latency.",
+    "hero_desc": "Monitor cameras, automations, and models from a single industrial console with role-based security and full traceability.",
+    "stats_nodos": "ACTIVE NODES",
+    "stats_inferencias": "INFERENCES/MIN",
+    "stats_uptime": "UPTIME",
+    "stats_sesiones": "SESSIONS",
+    "stats_seguras": "SECURE",
+    "cta_portal": "Access Portal",
+    "cta_calculator": "View Calculator",
+    "badge_pronto": "SOON",
+    "badge_live": "LIVE FEED",
+    "login_secure_access": "SECURE ACCESS",
+    "login_welcome": "Welcome",
+    "login_desc": "Log in to continue. Role-based operational access.",
+    "login_btn": "LOG IN",
+    "platform_badge": "Platform",
+    "platform_title": "System Capabilities",
+    "capabilities": [
+      { "title": "Real-time Vision", "desc": "Detection and classification of events in every frame of the stream." },
+      { "title": "Multi-camera", "desc": "Up to 16 IP cameras simultaneously with RTSP/ONVIF." },
+      { "title": "Roles and Permissions", "desc": "Differentiated access by operator, admin, and client." },
+      { "title": "Automatic Alerts", "desc": "Push and webhook notifications for critical events." },
+      { "title": "Audit Logs", "desc": "Immutable record of every system action." },
+      { "title": "Edge Computing", "desc": "Local inference with NVIDIA Jetson — without relying on the cloud." }
+    ],
+    "footer_rights": "© 2026 Seishin — All rights reserved",
+    "nav": {
+      "dashboard": "Dashboard",
+      "inference": "Inference",
+      "automations": "Automations",
+      "cameras": "Cameras",
+      "models": "Models",
+      "datasets": "Datasets",
+      "training": "Training",
+      "logs": "Logs",
+      "modules": "Modules",
+      "accounts": "Accounts",
+      "admin": "Admin",
+      "billing": "Billing",
+      "logout": "Log out"
+    },
+    "roles": {
+      "superadmin": "SUPERADMIN",
+      "admin": "ADMIN",
+      "operador": "OPERATOR",
+      "etiquetador": "LABELER",
+      "cliente": "CLIENT"
+    },
+    "status": {
+      "portal_ia": "AI Portal",
+      "all_operational": "All services operational",
+      "theme_dark": "Switch to dark mode",
+      "theme_light": "Switch to light mode",
+      "osc": "DRK",
+      "cla": "LGT"
+    }
+  },
+  "jobs_ui": {
+    "page_title": "Job Board",
+    "page_subtitle": "Join a leading industrial technology and Artificial Intelligence company. We are looking for talent passionate about innovation and operational excellence.",
+    "search_placeholder": "Search vacancies (e.g. Engineer, Aguascalientes...)",
+    "loading": "Loading vacancies...",
+    "view_btn": "View vacancy",
+    "no_results_title": "No matching vacancies found",
+    "no_results_desc": "Try other search terms or send us your CV to keep you in mind for future opportunities.",
+    "send_cv": "Send my CV",
+    "not_found_title": "Can't find what you're looking for?",
+    "not_found_desc": "Send us your CV for future opportunities and we will contact you when a position matches your profile.",
+    "loading_details": "Loading vacancy details...",
+    "back_to_jobs": "Back to vacancies",
+    "posted_on": "Posted on",
+    "interested_title": "Are you interested?",
+    "interested_desc": "Submit your profile today for review. We are looking for talent like yours.",
+    "apply_now": "Apply now",
+    "share_vacant": "Share vacancy",
+    "company_label": "Company",
+    "company_desc": "Seishin International is a leader in Artificial Intelligence services and advanced operational consulting in Mexico.",
+    "description_title": "Job description",
+    "requirements_title": "Requirements",
+    "benefits_title": "Benefits",
+    "schedule_label": "Schedule:",
+    "share_text": "Check out this vacancy for {{title}} at Seishin International"
+  },
+  "jobs_data": {
+    "montacarguista": {
+      "title": "FORKLIFT OPERATOR",
+      "description": "Safe operation of forklifts, loading and unloading materials, inventory control, and industrial warehouse support.",
+      "requirements": [
+        "Valid forklift operator license (DC-3).",
+        "Minimum 2 years experience in industrial warehouses.",
+        "Knowledge of health and safety regulations.",
+        "Availability to work rotating shifts."
+      ],
+      "benefits": ["Legal benefits", "Grocery vouchers", "Punctuality bonus"],
+      "category": "Logistics"
+    },
+    "soldador": {
+      "title": "WELDER",
+      "description": "Specialized industrial welding, interpretation of technical blueprints, and high-precision metal structure assembly.",
+      "requirements": [
+        "Provable experience in MIG/TIG welding.",
+        "Ability to read and interpret blueprints.",
+        "Use of measurement and cutting tools.",
+        "Valid certification (desirable)."
+      ],
+      "benefits": ["Legal benefits", "Life insurance", "Technical training"],
+      "category": "Production"
+    },
+    "operario": {
+      "title": "OPERATOR",
+      "description": "General support in automated production lines, component assembly, and compliance with quality standards.",
+      "requirements": [
+        "High school diploma or equivalent.",
+        "Willingness to learn and proactivity.",
+        "Punctuality and commitment.",
+        "No prior experience required (training provided)."
+      ],
+      "benefits": ["Legal benefits", "Transport", "Growth opportunities"],
+      "category": "Production"
+    }
   },
   "seishinia": {
     "badge": "SeishinIA",

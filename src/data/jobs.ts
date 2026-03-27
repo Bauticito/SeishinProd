@@ -7,6 +7,7 @@ export interface JobVacancy {
   requirements: string[];
   type: 'Full-time' | 'Part-time' | 'Contract' | 'Freelance';
   category: string;
+  location?: string;
   salary?: {
     min: number;
     max: number;
@@ -41,6 +42,7 @@ export const JOB_VACANCIES: JobVacancy[] = [
     ],
     type: 'Full-time',
     category: 'Logística',
+    location: 'México',
     postedDate: '2024-03-20',
     validThrough: '2024-06-20',
     hiringOrganization: {
@@ -64,6 +66,7 @@ export const JOB_VACANCIES: JobVacancy[] = [
     ],
     type: 'Full-time',
     category: 'Producción',
+    location: 'México',
     postedDate: '2024-03-20',
     validThrough: '2024-06-20',
     hiringOrganization: {
@@ -87,6 +90,7 @@ export const JOB_VACANCIES: JobVacancy[] = [
     ],
     type: 'Full-time',
     category: 'Producción',
+    location: 'México',
     postedDate: '2024-03-20',
     validThrough: '2024-06-20',
     hiringOrganization: {

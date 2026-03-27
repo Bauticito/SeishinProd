@@ -16,8 +16,10 @@ import { useEffect } from 'react';
 import { useUnifiedJobs } from '../../hooks/useUnifiedJobs';
 import { useRecruitmentStore } from '../../lib/recruitmentStore';
 import { JobVacancy } from '../../data/jobs';
+import { useTranslation } from 'react-i18next';
 
 export default function JobDetailPage() {
+  const { t } = useTranslation();
   const { slug } = useParams();
   const navigate = useNavigate();
   const { jobs, loading } = useUnifiedJobs();
@@ -39,7 +41,7 @@ export default function JobDetailPage() {
     return (
       <div className="pt-32 pb-20 min-h-screen bg-[var(--bg-primary)] flex flex-col items-center justify-center text-[var(--text-secondary)]">
         <Loader2 className="w-10 h-10 animate-spin mb-4 text-[#E31E24]" />
-        <p>Cargando detalles de la vacante...</p>
+        <p>{t('jobs_ui.loading_details')}</p>
       </div>
     );
   }
@@ -52,7 +54,7 @@ export default function JobDetailPage() {
     if (navigator.share) {
       navigator.share({
         title: job.title,
-        text: `Mira esta vacante de ${job.title} en Seishin International`,
+        text: t('jobs_ui.share_text', { title: job.title }),
         url: window.location.href,
       });
     }
@@ -70,7 +72,7 @@ export default function JobDetailPage() {
             className="inline-flex items-center gap-2 text-sm text-[var(--text-secondary)] hover:text-[#E31E24] transition-colors group cursor-pointer"
           >
             <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-            Volver a vacantes
+            {t('jobs_ui.back_to_jobs')}
           </button>
         </div>
 
@@ -87,16 +89,16 @@ export default function JobDetailPage() {
             <div className="lg:col-span-6 flex flex-col justify-center min-w-0">
               <div className="flex flex-wrap items-center gap-3 mb-4 md:mb-6">
                 <span className="px-3 py-1 rounded-full bg-[#E31E24]/10 text-[#E31E24] text-[10px] font-bold uppercase tracking-widest">
-                  {job.category}
+                  {t(`jobs_data.${job.slug}.category`)}
                 </span>
                 <span className="text-gray-500 text-xs flex items-center gap-1.5">
                   <Calendar className="w-3.5 h-3.5" />
-                  Publicado el {job.postedDate}
+                  {t('jobs_ui.posted_on')} {job.postedDate}
                 </span>
               </div>
 
               <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-black text-[var(--text-primary)] mb-6 leading-tight uppercase tracking-tight break-words">
-                {job.title}
+                {t(`jobs_data.${job.slug}.title`)}
               </h1>
 
               <div className="flex flex-wrap gap-4 md:gap-6 mt-auto">
@@ -123,9 +125,9 @@ export default function JobDetailPage() {
             <div className="lg:col-span-3 flex">
               <div className="w-full p-8 rounded-2xl bg-[#E31E24] text-white flex flex-col justify-between shadow-xl">
                 <div>
-                  <h3 className="text-xl font-bold mb-3">¿Te interesa?</h3>
+                  <h3 className="text-xl font-bold mb-3">{t('jobs_ui.interested_title')}</h3>
                   <p className="text-white/80 text-xs leading-relaxed mb-6">
-                    Envía tu perfil hoy mismo para revisión. Estamos buscando talento como el tuyo.
+                    {t('jobs_ui.interested_desc')}
                   </p>
                 </div>
                 <div className="space-y-3 mt-auto">
@@ -133,14 +135,14 @@ export default function JobDetailPage() {
                     onClick={() => openWithJob(job.id)}
                     className="w-full py-3 rounded-xl bg-white text-[#E31E24] font-bold text-sm hover:bg-gray-100 transition-all hover:-translate-y-0.5"
                   >
-                    Postularme ahora
+                    {t('jobs_ui.apply_now')}
                   </button>
                   <button 
                     onClick={handleShare}
                     className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-white/10 text-white border border-white/20 font-bold text-xs hover:bg-white/20 transition-colors"
                   >
                     <Share2 className="w-4 h-4" />
-                    Compartir vacante
+                    {t('jobs_ui.share_vacant')}
                   </button>
                 </div>
               </div>
@@ -150,9 +152,9 @@ export default function JobDetailPage() {
             <div className="lg:col-span-3 flex">
               <div className="w-full p-8 rounded-2xl bg-white/5 border border-white/10 flex flex-col justify-between">
                 <div>
-                  <p className="text-xs font-bold text-[var(--text-primary)] uppercase tracking-wider mb-3">Empresa</p>
+                  <p className="text-xs font-bold text-[var(--text-primary)] uppercase tracking-wider mb-3">{t('jobs_ui.company_label')}</p>
                   <p className="text-xs text-[var(--text-secondary)] leading-relaxed mb-6">
-                    Seishin International es líder en servicios de Inteligencia Artificial y consultoría operativa avanzada en México.
+                    {t('jobs_ui.company_desc')}
                   </p>
                 </div>
                 <div className="mt-auto">
@@ -179,21 +181,21 @@ export default function JobDetailPage() {
             <section>
               <h2 className="text-xl font-bold text-[var(--text-primary)] mb-4 flex items-center gap-2">
                 <Building2 className="w-5 h-5 text-[#E31E24]" />
-                Descripción del puesto
+                {t('jobs_ui.description_title')}
               </h2>
               <div 
                 className="prose prose-invert max-w-none text-[var(--text-secondary)] leading-relaxed"
-                dangerouslySetInnerHTML={{ __html: job.description }}
+                dangerouslySetInnerHTML={{ __html: t(`jobs_data.${job.slug}.description`) }}
               />
               {job.schedule && (
-                <p className="mt-4 text-[var(--text-secondary)]"><strong>Horario:</strong> {job.schedule}</p>
+                <p className="mt-4 text-[var(--text-secondary)]"><strong>{t('jobs_ui.schedule_label')}</strong> {job.schedule}</p>
               )}
             </section>
 
             <section>
-              <h3 className="text-xl font-bold text-[var(--text-primary)] mb-6">Requisitos</h3>
+              <h3 className="text-xl font-bold text-[var(--text-primary)] mb-6">{t('jobs_ui.requirements_title')}</h3>
               <ul className="space-y-4">
-                {job.requirements.map((req: string, i: number) => (
+                {(t(`jobs_data.${job.slug}.requirements`, { returnObjects: true }) as string[]).map((req: string, i: number) => (
                   <li key={i} className="flex gap-3 text-[var(--text-secondary)]">
                     <CheckCircle2 className="w-5 h-5 text-[#E31E24] shrink-0 mt-0.5" />
                     <span>{req}</span>
@@ -204,9 +206,9 @@ export default function JobDetailPage() {
 
             {job.benefits && (
               <section>
-                <h3 className="text-xl font-bold text-[var(--text-primary)] mb-6">Beneficios</h3>
+                <h3 className="text-xl font-bold text-[var(--text-primary)] mb-6">{t('jobs_ui.benefits_title')}</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {job.benefits.map((benefit: string, i: number) => (
+                  {(t(`jobs_data.${job.slug}.benefits`, { returnObjects: true }) as string[]).map((benefit: string, i: number) => (
                     <div key={i} className="p-4 rounded-xl bg-white/5 border border-white/10 flex items-center gap-3">
                       <div className="w-2 h-2 rounded-full bg-[#E31E24]" />
                       <span className="text-sm text-[var(--text-secondary)]">{benefit}</span>

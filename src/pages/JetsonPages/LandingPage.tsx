@@ -1,24 +1,27 @@
 import { ArrowRight, ShieldCheck, Server, Cpu, Lock, Activity } from "lucide-react";
 import { Link } from "react-router-dom";
 import Navigation from "../../components/Navigation";
-
-const stats = [
-  { icon: Server,   label: "NODOS ACTIVOS",    value: "12"     },
-  { icon: Cpu,      label: "INFERENCIAS/MIN",   value: "2.4K"   },
-  { icon: Activity, label: "UPTIME",            value: "99.9%"  },
-  { icon: Lock,     label: "SESIONES",          value: "SEGURAS" },
-];
-
-const capabilities = [
-  { title: "Visión en tiempo real",   desc: "Detección y clasificación de eventos en cada frame del stream."         },
-  { title: "Multi-cámara",            desc: "Hasta 16 cámaras IP simultáneas con RTSP/ONVIF."                        },
-  { title: "Roles y permisos",        desc: "Acceso diferenciado por operador, admin y cliente."                     },
-  { title: "Alertas automáticas",     desc: "Notificaciones push y webhook ante eventos críticos."                   },
-  { title: "Logs de auditoría",       desc: "Registro inmutable de cada acción del sistema."                         },
-  { title: "Edge computing",          desc: "Inferencia local con NVIDIA Jetson — sin depender de la nube."          },
-];
+import { useTranslation } from "react-i18next";
+import { useMemo } from "react";
 
 export default function LandingPage() {
+  const { t } = useTranslation();
+
+  const stats = useMemo(() => [
+    { icon: Server,   label: t('jetson.stats_nodos'),      value: "12"     },
+    { icon: Cpu,      label: t('jetson.stats_inferencias'), value: "2.4K"   },
+    { icon: Activity, label: t('jetson.stats_uptime'),      value: "99.9%"  },
+    { icon: Lock,     label: t('jetson.stats_sesiones'),    value: t('jetson.stats_seguras') },
+  ], [t]);
+
+  const capabilities = useMemo(() => [
+    { title: t('jetson.capabilities.0.title'), desc: t('jetson.capabilities.0.desc') },
+    { title: t('jetson.capabilities.1.title'), desc: t('jetson.capabilities.1.desc') },
+    { title: t('jetson.capabilities.2.title'), desc: t('jetson.capabilities.2.desc') },
+    { title: t('jetson.capabilities.3.title'), desc: t('jetson.capabilities.3.desc') },
+    { title: t('jetson.capabilities.4.title'), desc: t('jetson.capabilities.4.desc') },
+    { title: t('jetson.capabilities.5.title'), desc: t('jetson.capabilities.5.desc') },
+  ], [t]);
   return (
     <div className="min-h-screen bg-[var(--bg-primary)] overflow-hidden relative">
       <Navigation />
@@ -51,7 +54,7 @@ export default function LandingPage() {
           </div>
           <span className="hidden sm:flex items-center gap-1.5 text-[10px] font-mono px-3 py-1.5 rounded-full border border-[#22C55E]/30 bg-[#22C55E]/10 text-[#22C55E]">
             <span className="w-1.5 h-1.5 rounded-full bg-[#22C55E] animate-pulse" />
-            TODOS LOS SERVICIOS OPERATIVOS
+            {t('jetson.header_badge')}
           </span>
         </header>
 
@@ -63,23 +66,22 @@ export default function LandingPage() {
             <div className="inline-flex items-center gap-2 rounded-full border border-[#E31E24]/30 bg-[#E31E24]/10 px-3 py-1.5">
               <ShieldCheck className="w-4 h-4 text-[#E31E24]" />
               <span className="text-[11px] font-bold tracking-[0.15em] uppercase text-[#E31E24]">
-                Sistema de seguridad activo
+                {t('jetson.system_active')}
               </span>
             </div>
 
             <div className="space-y-4">
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-[var(--text-primary)] leading-tight tracking-tight">
-                Control total.
+                {t('jetson.hero_h1_1')}
                 <br />
-                <span className="text-[#E31E24]">En el borde.</span>
+                <span className="text-[#E31E24]">{t('jetson.hero_h1_2')}</span>
                 <br />
                 <span className="text-[var(--text-secondary)] text-3xl md:text-4xl font-light">
-                  Sin latencia de nube.
+                  {t('jetson.hero_h1_3')}
                 </span>
               </h1>
               <p className="text-base md:text-lg text-[var(--text-secondary)] max-w-xl leading-relaxed">
-                Monitorea cámaras, automatizaciones y modelos desde una sola
-                consola industrial con seguridad por rol y trazabilidad completa.
+                {t('jetson.hero_desc')}
               </p>
             </div>
 
@@ -110,18 +112,18 @@ export default function LandingPage() {
                   disabled
                   className="btn-primary inline-flex items-center justify-center gap-2 px-8 py-3.5 text-sm font-bold opacity-50 cursor-not-allowed"
                 >
-                  Acceder al portal
+                  {t('jetson.cta_portal')}
                   <ArrowRight className="w-5 h-5" />
                 </button>
                 <span className="absolute -top-2 -right-2 text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-[#E31E24] text-white tracking-wide">
-                  PRONTO
+                  {t('jetson.badge_pronto')}
                 </span>
               </div>
               <Link
                 to="/vigilancia"
                 className="inline-flex items-center justify-center gap-2 px-8 py-3.5 text-sm font-bold rounded-xl border border-[var(--border-color-light)] text-[var(--text-secondary)] hover:border-[#E31E24]/50 hover:text-[var(--text-primary)] transition-all duration-300"
               >
-                Ver cotizador
+                {t('jetson.cta_calculator')}
               </Link>
             </div>
           </section>
@@ -144,18 +146,18 @@ export default function LandingPage() {
               <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent pointer-events-none" />
               <div className="absolute bottom-3 left-4 flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-[#22C55E] animate-pulse" />
-                <span className="text-[10px] font-mono text-white/70">FEED EN VIVO</span>
+                <span className="text-[10px] font-mono text-white/70">{t('jetson.badge_live')}</span>
               </div>
             </div>
 
             <div className="p-6 md:p-8 space-y-5">
               <div>
                 <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-[var(--text-tertiary)] font-mono mb-1">
-                  ACCESO SEGURO
+                  {t('jetson.login_secure_access')}
                 </p>
-                <h2 className="text-xl font-bold text-[var(--text-primary)]">Bienvenido</h2>
+                <h2 className="text-xl font-bold text-[var(--text-primary)]">{t('jetson.login_welcome')}</h2>
                 <p className="text-sm text-[var(--text-secondary)] mt-1 leading-relaxed">
-                  Inicia sesión para continuar. Acceso diferenciado por rol de operación.
+                  {t('jetson.login_desc')}
                 </p>
               </div>
 
@@ -164,11 +166,11 @@ export default function LandingPage() {
                   disabled
                   className="btn-primary flex items-center justify-center gap-2 w-full py-3 text-sm font-bold opacity-50 cursor-not-allowed"
                 >
-                  INICIAR SESIÓN
+                  {t('jetson.login_btn')}
                   <ArrowRight className="w-4 h-4" />
                 </button>
                 <span className="absolute -top-2 -right-2 text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-[#E31E24] text-white tracking-wide">
-                  PRONTO
+                  {t('jetson.badge_pronto')}
                 </span>
               </div>
 
@@ -184,9 +186,9 @@ export default function LandingPage() {
         {/* ── Capabilities grid ── */}
         <section>
           <div className="mb-8">
-            <span className="text-xs font-bold tracking-[0.2em] uppercase text-[#E31E24]">Plataforma</span>
+            <span className="text-xs font-bold tracking-[0.2em] uppercase text-[#E31E24]">{t('jetson.platform_badge')}</span>
             <h2 className="text-2xl md:text-3xl font-black text-[var(--text-primary)] mt-2 tracking-tight">
-              Capacidades del sistema
+              {t('jetson.platform_title')}
             </h2>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -207,7 +209,7 @@ export default function LandingPage() {
         <footer className="flex items-center justify-center gap-3 border-t border-[var(--border-color-light)] pt-8">
           <img src="/seishin-SinFondo.png" alt="Seishin" className="h-8 w-auto opacity-80" />
           <span className="text-xs text-[var(--text-tertiary)] font-mono">
-            © 2026 Seishin — Todos los derechos reservados
+            {t('jetson.footer_rights')}
           </span>
         </footer>
 
