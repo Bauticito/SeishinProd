@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Send, StretchVerticalIcon } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Send } from 'lucide-react';
 import { SwalWarning } from '../../lib/swal';
 import { validateRazonSocial, validateRFC } from '../../lib/formValidation';
 import Step0 from './Step0';

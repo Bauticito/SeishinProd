@@ -41,7 +41,7 @@ export default function RecruiterNotification() {
       setVisible(true);
       setView('form');
       if (selectedJobId) {
-        setForm(f => ({ ...f, jobId: selectedJobId }));
+        setForm(f => ({ ...f, jobId: String(selectedJobId) }));
       }
     } else {
       // Logic for automatic appearance if not triggered by store

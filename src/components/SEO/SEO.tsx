@@ -7,26 +7,28 @@ interface SEOProps {
   ogTitle?: string;
   ogDescription?: string;
   ogImage?: string;
+  canonicalUrl?: string;
+  ogUrl?: string;
+  robots?: string;
+  ogType?: string;
 }
 
-/**
- * Reusable SEO component to manage standard meta tags and page titles.
- * Updates the document head dynamically using useEffect.
- */
-export default function SEO({ 
-  title, 
-  description, 
-  keywords, 
-  ogTitle, 
-  ogDescription, 
-  ogImage 
+export default function SEO({
+  title,
+  description,
+  keywords,
+  ogTitle,
+  ogDescription,
+  ogImage,
+  canonicalUrl,
+  ogUrl,
+  robots,
+  ogType,
 }: SEOProps) {
   useEffect(() => {
-    // 1. Update Title
     const fullTitle = `${title} | Seishin IA`;
     document.title = fullTitle;
 
-    // 2. Update Meta Description
     let metaDescription = document.querySelector('meta[name="description"]');
     if (!metaDescription) {
       metaDescription = document.createElement('meta');
@@ -35,7 +37,6 @@ export default function SEO({
     }
     metaDescription.setAttribute('content', description);
 
-    // 3. Update Meta Keywords
     if (keywords) {
       let metaKeywords = document.querySelector('meta[name="keywords"]');
       if (!metaKeywords) {
@@ -46,7 +47,24 @@ export default function SEO({
       metaKeywords.setAttribute('content', keywords);
     }
 
-    // 4. Update Open Graph Tags
+    let metaRobots = document.querySelector('meta[name="robots"]');
+    if (!metaRobots) {
+      metaRobots = document.createElement('meta');
+      metaRobots.setAttribute('name', 'robots');
+      document.head.appendChild(metaRobots);
+    }
+    metaRobots.setAttribute('content', robots || 'index, follow');
+
+    if (canonicalUrl) {
+      let canonical = document.querySelector('link[rel="canonical"]');
+      if (!canonical) {
+        canonical = document.createElement('link');
+        canonical.setAttribute('rel', 'canonical');
+        document.head.appendChild(canonical);
+      }
+      canonical.setAttribute('href', canonicalUrl);
+    }
+
     const updateOG = (property: string, content?: string) => {
       if (!content) return;
       let tag = document.querySelector(`meta[property="${property}"]`);
@@ -60,10 +78,10 @@ export default function SEO({
 
     updateOG('og:title', ogTitle || fullTitle);
     updateOG('og:description', ogDescription || description);
-    updateOG('og:image', ogImage || '/og-image.jpg');
-    updateOG('og:type', 'website');
-
-  }, [title, description, keywords, ogTitle, ogDescription, ogImage]);
+    updateOG('og:image', ogImage || 'https://seishin.com.mx/og-image.jpg');
+    updateOG('og:type', ogType || 'website');
+    updateOG('og:url', ogUrl || canonicalUrl);
+  }, [title, description, keywords, ogTitle, ogDescription, ogImage, canonicalUrl, ogUrl, robots, ogType]);
 
   return null;
 }

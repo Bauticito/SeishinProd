@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Briefcase, Clock, Search, ArrowRight, Loader2 } from 'lucide-react';
+import { Briefcase, Clock, Search, ArrowRight, Loader2, MapPin } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { JobVacancy } from '../../data/jobs';
 import { useState } from 'react';
@@ -13,32 +13,51 @@ export default function JobsPage() {
   const { jobs: finalJobs, loading } = useUnifiedJobs();
   const { open } = useRecruitmentStore();
   const [searchTerm, setSearchTerm] = useState('');
+  const featuredJobs = [
+    {
+      to: '/vacante/soldador',
+      title: t('jobs.featured.soldador_title'),
+      location: t('jobs.featured.soldador_location'),
+    },
+    {
+      to: '/vacante/montacarguista',
+      title: t('jobs.featured.montacarguista_title'),
+      location: t('jobs.featured.montacarguista_location'),
+    },
+    {
+      to: '/vacante/operario',
+      title: t('jobs.featured.operario_title'),
+      location: t('jobs.featured.operario_location'),
+    },
+  ];
 
-  const filteredJobs = finalJobs.filter(job => 
-    job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    job.category.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredJobs = finalJobs.filter(
+    (job) =>
+      job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      job.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (job.location || '').toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   return (
     <div className="pt-32 pb-20 min-h-screen bg-[var(--bg-primary)]">
       <SEO
-        title="Bolsa de Trabajo | Vacantes en Aguascalientes y Guanajuato"
-        description="Encuentra empleo en Seishin International: vacantes de Ingeniería, IA, Logística e Industria 4.0 en Aguascalientes y Guanajuato. Postúlate hoy y únete a una empresa de tecnología industrial en crecimiento."
-        keywords="vacantes Aguascalientes, empleos Guanajuato, trabajo ingeniería industrial, vacantes IA México, empleo Industria 4.0, bolsa trabajo tecnología, Seishin International empleo"
-        ogTitle="Vacantes de Empleo | Seishin International"
-        ogDescription="Únete al equipo de Seishin International. Vacantes en Aguascalientes y Guanajuato en Ingeniería, IA e Industria 4.0."
+        title={t('jobs.seo.title')}
+        description={t('jobs.seo.description')}
+        keywords={t('jobs.seo.keywords')}
+        ogTitle={t('jobs.seo.ogTitle')}
+        ogDescription={t('jobs.seo.ogDescription')}
+        canonicalUrl="https://seishin.com.mx/empleos"
+        ogUrl="https://seishin.com.mx/empleos"
       />
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-16"
-        >
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-16">
           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#E31E24]/10 text-[#E31E24] text-xs font-bold uppercase tracking-widest mb-4">
             <Briefcase className="w-3.5 h-3.5" />
             {t('recruiter.badge')}
           </span>
           <h1 className="text-4xl md:text-5xl font-bold text-[var(--text-primary)] mb-6">
+<<<<<<< HEAD
             {t('jobs_ui.page_title').includes('Trabajo') ? (
               <>
                 {t('jobs_ui.page_title').replace('Trabajo', '')}
@@ -48,16 +67,34 @@ export default function JobsPage() {
           </h1>
           <p className="text-lg text-[var(--text-secondary)] max-w-3xl mx-auto">
             {t('jobs_ui.page_subtitle')}
+=======
+            {t('jobs.heading_prefix')} <span className="text-[#E31E24]">{t('jobs.heading_accent')}</span>
+          </h1>
+          <p className="text-lg text-[var(--text-secondary)] max-w-3xl mx-auto">
+            {t('jobs.intro')}
+>>>>>>> 49dde14e91c2d2e058c81189e3bfd6c0e55507a5
           </p>
         </motion.div>
 
-        {/* Search Bar (Visual only for now) */}
+        <div className="max-w-5xl mx-auto mb-10 grid gap-3 md:grid-cols-3">
+          {featuredJobs.map((job) => (
+            <Link key={job.to} to={job.to} className="rounded-2xl border border-white/10 bg-white/5 px-5 py-4 text-left hover:border-[#E31E24]/50 transition-colors">
+              <p className="text-sm font-bold text-[var(--text-primary)]">{job.title}</p>
+              <p className="mt-1 text-sm text-[var(--text-secondary)]">{job.location}</p>
+            </Link>
+          ))}
+        </div>
+
         <div className="max-w-2xl mx-auto mb-12">
           <div className="relative">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
             <input
               type="text"
+<<<<<<< HEAD
               placeholder={t('jobs_ui.search_placeholder')}
+=======
+              placeholder={t('jobs.search_placeholder')}
+>>>>>>> 49dde14e91c2d2e058c81189e3bfd6c0e55507a5
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white/5 border border-white/10 text-[var(--text-primary)] focus:outline-none focus:border-[#E31E24] transition-colors"
@@ -65,14 +102,17 @@ export default function JobsPage() {
           </div>
         </div>
 
-        {/* Jobs List */}
         <div className="grid gap-6">
           {loading ? (
             <div className="flex flex-col items-center justify-center py-20 text-[var(--text-secondary)]">
               <Loader2 className="w-10 h-10 animate-spin mb-4 text-[#E31E24]" />
+<<<<<<< HEAD
               <p>{t('jobs_ui.loading')}</p>
+=======
+              <p>{t('jobs.loading')}</p>
+>>>>>>> 49dde14e91c2d2e058c81189e3bfd6c0e55507a5
             </div>
-                    ) : filteredJobs.length > 0 ? (
+          ) : filteredJobs.length > 0 ? (
             filteredJobs.map((job: JobVacancy, index: number) => (
               <motion.div
                 key={job.id}
@@ -81,6 +121,7 @@ export default function JobsPage() {
                 transition={{ delay: index * 0.1 }}
                 className="group relative p-6 md:p-8 rounded-2xl bg-white/5 border border-white/10 hover:border-[#E31E24]/50 transition-all duration-300"
               >
+<<<<<<< HEAD
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-3">
@@ -96,10 +137,34 @@ export default function JobsPage() {
                     <div className="flex items-center gap-1.5">
                       <Clock className="w-4 h-4 text-[#E31E24]" />
                       {job.type}
+=======
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-3 mb-3">
+                      <span className="px-2.5 py-1 rounded-lg bg-white/5 text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                        {job.category}
+                      </span>
+                      <span className="text-xs text-gray-500">{job.postedDate}</span>
+                    </div>
+                    <h2 className="text-2xl font-bold text-[var(--text-primary)] mb-3 group-hover:text-[#E31E24] transition-colors">
+                      {job.title}
+                    </h2>
+                    <div className="flex flex-wrap gap-4 text-sm text-[var(--text-secondary)]">
+                      <div className="flex items-center gap-1.5">
+                        <Clock className="w-4 h-4 text-[#E31E24]" />
+                        {job.type}
+                      </div>
+                      {job.location && (
+                        <div className="flex items-center gap-1.5">
+                          <MapPin className="w-4 h-4 text-[#E31E24]" />
+                          {job.location}
+                        </div>
+                      )}
+>>>>>>> 49dde14e91c2d2e058c81189e3bfd6c0e55507a5
                     </div>
                   </div>
-                </div>
 
+<<<<<<< HEAD
                 <div className="flex items-center gap-4">
                   <Link
                     to={`/vacante/${job.slug}`}
@@ -108,35 +173,52 @@ export default function JobsPage() {
                     {t('jobs_ui.view_btn')}
                     <ArrowRight className="w-4 h-4" />
                   </Link>
+=======
+                  <div className="flex items-center gap-4">
+                    <Link
+                      to={`/vacante/${job.slug}`}
+                      className="flex items-center gap-2 px-6 py-3 rounded-xl bg-[#E31E24] text-white font-bold text-sm hover:bg-[#c01a20] shadow-lg shadow-[#E31E24]/20 transition-all group-hover:translate-x-1"
+                    >
+                      {t('jobs.view_job')}
+                      <ArrowRight className="w-4 h-4" />
+                    </Link>
+                  </div>
+>>>>>>> 49dde14e91c2d2e058c81189e3bfd6c0e55507a5
                 </div>
-              </div>
-            </motion.div>
-          ))
+              </motion.div>
+            ))
           ) : (
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="text-center py-20 bg-white/5 rounded-3xl border border-dashed border-white/10"
-            >
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-20 bg-white/5 rounded-3xl border border-dashed border-white/10">
               <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-6">
                 <Search className="w-8 h-8 text-gray-500" />
               </div>
+<<<<<<< HEAD
               <h3 className="text-xl font-bold text-[var(--text-primary)] mb-4">
                 {t('jobs_ui.no_results_title')}
               </h3>
               <p className="text-[var(--text-secondary)] mb-8 max-w-md mx-auto">
                 {t('jobs_ui.no_results_desc')}
+=======
+              <h3 className="text-xl font-bold text-[var(--text-primary)] mb-4">{t('jobs.empty_title')}</h3>
+              <p className="text-[var(--text-secondary)] mb-8 max-w-md mx-auto">
+                {t('jobs.empty_description')}
+>>>>>>> 49dde14e91c2d2e058c81189e3bfd6c0e55507a5
               </p>
               <button
                 onClick={() => open()}
                 className="inline-flex items-center gap-2 px-8 py-3 rounded-xl bg-[#E31E24] text-white font-bold text-sm hover:bg-[#c01a20] transition-all"
               >
+<<<<<<< HEAD
                 {t('jobs_ui.send_cv')}
+=======
+                {t('jobs.send_cv')}
+>>>>>>> 49dde14e91c2d2e058c81189e3bfd6c0e55507a5
                 <ArrowRight className="w-4 h-4" />
               </button>
             </motion.div>
           )}
         </div>
+<<<<<<< HEAD
 
         {/* Global Fallback for Jobs Page */}
         {finalJobs.length > 0 && filteredJobs.length > 0 && (
@@ -155,6 +237,8 @@ export default function JobsPage() {
             </a>
           </div>
         )}
+=======
+>>>>>>> 49dde14e91c2d2e058c81189e3bfd6c0e55507a5
       </div>
     </div>
   );
