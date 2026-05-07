@@ -33,3 +33,7 @@ cloudflare/worker/.wrangler/
 *.sqlite-shm
 *.sqlite-wal
 .gitnexus
+.claude/
+AGENTS.md
+CLAUDE.md
+open_gitnexus.html

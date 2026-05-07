@@ -41,21 +41,21 @@ function PricePanelCard() {
 
   return (
     <>
-      <div className="bg-gradient-to-br from-[#3A3A3A] to-[#1c1c1c] rounded-[2rem] p-6 md:p-8 text-white space-y-6 shadow-2xl border border-white/5">
+      <div className="bg-gradient-to-br from-[var(--bg-tertiary)] to-[var(--bg-primary)] rounded-[2rem] p-6 md:p-8 text-[var(--text-primary)] space-y-6 shadow-2xl border border-[var(--border-color-light)]">
         {/* Inversión inicial */}
         <div>
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/40 mb-1">
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--text-tertiary)] mb-1">
             Inversión inicial estimada
           </p>
-          <p className="text-3xl font-black text-white">{formatMXN(quote.setup)}</p>
+          <p className="text-3xl font-black text-[var(--text-primary)]">{formatMXN(quote.setup)}</p>
         </div>
 
         {/* Costo mensual */}
-        <div className="border-t border-white/10 pt-4">
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#E31E24] mb-1">
+        <div className="border-t border-[var(--border-color-light)] pt-4">
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--accent-primary)] mb-1">
             Costo mensual estimado
           </p>
-          <p className="text-5xl font-black text-white">{formatMXN(quote.monthly)}</p>
+          <p className="text-5xl font-black text-[var(--text-primary)]">{formatMXN(quote.monthly)}</p>
         </div>
 
         <ProgressBar value={quote.riskScore} label={quote.coverageLabel} />
@@ -70,7 +70,7 @@ function PricePanelCard() {
           </button>
           <button
             onClick={handleDownloadPDF}
-            className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl border border-white/10 text-white/60 text-sm font-medium hover:border-[#E31E24]/40 hover:text-white transition-colors"
+            className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl border border-[var(--border-color-light)] text-[var(--text-secondary)] text-sm font-medium hover:border-[var(--accent-primary)]/40 hover:text-[var(--text-primary)] transition-colors"
           >
             <FileDown className="w-4 h-4" />
             Descargar PDF
@@ -99,17 +99,17 @@ export function PricePanel() {
       </aside>
 
       {/* Mobile: bottom drawer */}
-      <div className="fixed inset-x-0 bottom-0 z-30 border-t border-white/10 bg-[#1c1c1c]/95 backdrop-blur-md p-3 shadow-2xl lg:hidden">
+      <div className="fixed inset-x-0 bottom-0 z-30 border-t border-[var(--border-color-light)] bg-[var(--bg-primary)]/95 backdrop-blur-md p-3 shadow-2xl lg:hidden">
         <button
           type="button"
           onClick={() => setMobileOpen((v) => !v)}
-          className="flex w-full items-center justify-between rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-left"
+          className="flex w-full items-center justify-between rounded-xl border border-[var(--border-color-light)] bg-[var(--bg-secondary)]/50 px-4 py-3 text-left"
         >
           <div>
-            <p className="text-xs font-bold uppercase tracking-wider text-[#E31E24]">Costo mensual</p>
-            <p className="text-xl font-black text-white">{formatMXN(quote.monthly)}</p>
+            <p className="text-xs font-bold uppercase tracking-wider text-[var(--accent-primary)]">Costo mensual</p>
+            <p className="text-xl font-black text-[var(--text-primary)]">{formatMXN(quote.monthly)}</p>
           </div>
-          <span className="text-xs text-white/40 font-bold">{mobileOpen ? "▼ Cerrar" : "▲ Ver detalle"}</span>
+          <span className="text-xs text-[var(--text-tertiary)] font-bold">{mobileOpen ? "▼ Cerrar" : "▲ Ver detalle"}</span>
         </button>
 
         {mobileOpen && (

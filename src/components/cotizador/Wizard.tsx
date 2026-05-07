@@ -77,14 +77,14 @@ function OptionGroup<T extends string>({
           className={[
             "rounded-xl border px-4 py-3 text-left text-sm font-medium transition-all duration-200",
             value === option.value
-              ? "border-[#E31E24] bg-[#E31E24]/10 text-[var(--text-primary)] shadow-md shadow-[#E31E24]/10"
-              : "border-[var(--border-color-light)] glass text-[var(--text-secondary)] hover:border-[#E31E24]/40 hover:text-[var(--text-primary)]",
+              ? "border-[var(--accent-primary)] bg-[var(--accent-primary)]/10 text-[var(--text-primary)] shadow-md shadow-[var(--accent-primary)]/10"
+              : "border-[var(--border-color-light)] glass text-[var(--text-secondary)] hover:border-[var(--accent-primary)]/40 hover:text-[var(--text-primary)]",
           ].join(" ")}
         >
           <span
             className={[
               "mr-2 inline-block w-2 h-2 rounded-full align-middle transition-colors",
-              value === option.value ? "bg-[#E31E24]" : "bg-[var(--text-tertiary)]",
+              value === option.value ? "bg-[var(--accent-primary)]" : "bg-[var(--text-tertiary)]",
             ].join(" ")}
           />
           {option.label}
@@ -115,7 +115,7 @@ function CameraRangeSlider() {
         <span className="text-sm font-bold text-[var(--text-primary)] uppercase tracking-wider text-xs">
           Cámaras a integrar
         </span>
-        <strong className="text-[#E31E24] font-black text-lg">{cameraRange}</strong>
+        <strong className="text-[var(--accent-primary)] font-black text-lg">{cameraRange}</strong>
       </div>
       <input
         type="range"
@@ -127,11 +127,11 @@ function CameraRangeSlider() {
           const next = marks[Number(e.target.value)]?.value ?? "3-5";
           updateAnswer("cameraRange", next);
         }}
-        className="w-full h-2 rounded-lg appearance-none cursor-pointer accent-[#E31E24] bg-[var(--bg-tertiary)]/40"
+        className="w-full h-2 rounded-lg appearance-none cursor-pointer accent-[var(--accent-primary)] bg-[var(--bg-tertiary)]/40"
       />
       <div className="grid grid-cols-4 text-center text-xs text-[var(--text-tertiary)]">
         {marks.map((mark) => (
-          <span key={mark.value} className={cameraRange === mark.value ? "text-[#E31E24] font-bold" : ""}>
+          <span key={mark.value} className={cameraRange === mark.value ? "text-[var(--accent-primary)] font-bold" : ""}>
             {mark.label}
           </span>
         ))}
@@ -168,7 +168,7 @@ function SuggestedPlans() {
             >
               <div className="flex items-center justify-between mb-2">
                 <p className="text-sm font-bold text-[var(--text-primary)]">{plan.title}</p>
-                <span className="text-xs font-black text-[#E31E24] bg-[#E31E24]/10 px-2 py-0.5 rounded-md">
+                <span className="text-xs font-black text-[var(--accent-primary)] bg-[var(--accent-primary)]/10 px-2 py-0.5 rounded-md">
                   {plan.recommendedLevel}
                 </span>
               </div>
@@ -176,7 +176,7 @@ function SuggestedPlans() {
               <ul className="mb-3 space-y-1.5">
                 {plan.highlights.map((item) => (
                   <li key={item} className="flex items-start gap-2 text-xs text-[var(--text-secondary)]">
-                    <span className="text-[#E31E24] mt-0.5 shrink-0">▸</span>
+                    <span className="text-[var(--accent-primary)] mt-0.5 shrink-0">▸</span>
                     {item}
                   </li>
                 ))}
@@ -187,8 +187,8 @@ function SuggestedPlans() {
                 className={[
                   "w-full rounded-lg px-3 py-2 text-xs font-bold transition-all duration-200",
                   selected
-                    ? "bg-[#E31E24] text-white"
-                    : "border border-[#E31E24]/40 text-[#E31E24] hover:bg-[#E31E24]/10",
+                    ? "bg-[var(--accent-primary)] text-white"
+                    : "border border-[var(--accent-primary)]/40 text-[var(--accent-primary)] hover:bg-[var(--accent-primary)]/10",
                 ].join(" ")}
               >
                 {selected ? "✓ Seleccionado" : "Seleccionar"}
@@ -395,20 +395,20 @@ export function Wizard() {
                     setCopyMessage(ok ? "Resumen copiado ✓" : "No se pudo copiar");
                     setTimeout(() => setCopyMessage(""), 2200);
                   }}
-                  className="rounded-xl border border-[#E31E24]/40 bg-[#E31E24]/10 px-4 py-2 text-xs font-bold text-[#E31E24] hover:bg-[#E31E24]/20 transition-colors"
+                  className="rounded-xl border border-[var(--accent-primary)]/40 bg-[var(--accent-primary)]/10 px-4 py-2 text-xs font-bold text-[var(--accent-primary)] hover:bg-[var(--accent-primary)]/20 transition-colors"
                 >
                   Copiar resumen
                 </button>
                 <button
                   type="button"
                   onClick={reset}
-                  className="rounded-xl border border-[var(--border-color-light)] px-4 py-2 text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[#E31E24]/30 transition-colors"
+                  className="rounded-xl border border-[var(--border-color-light)] px-4 py-2 text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--accent-primary)]/30 transition-colors"
                 >
                   Reiniciar
                 </button>
               </div>
               {copyMessage && (
-                <p className="mt-2 text-xs font-bold text-[#E31E24]">{copyMessage}</p>
+                <p className="mt-2 text-xs font-bold text-[var(--accent-primary)]">{copyMessage}</p>
               )}
             </div>
           </Step>
@@ -426,9 +426,9 @@ export function Wizard() {
               className={[
                 "h-1 rounded-full transition-all duration-500",
                 idx < currentStep
-                  ? "bg-[#E31E24]"
+                  ? "bg-[var(--accent-primary)]"
                   : idx === currentStep
-                  ? "bg-[#E31E24]/70"
+                  ? "bg-[var(--accent-primary)]/70"
                   : "bg-[var(--border-color-light)]",
               ].join(" ")}
             />
@@ -455,7 +455,7 @@ export function Wizard() {
           type="button"
           onClick={prevStep}
           disabled={currentStep === 0}
-          className="rounded-xl border border-[var(--border-color-light)] px-5 py-2.5 text-sm font-bold text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[#E31E24]/40 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+          className="rounded-xl border border-[var(--border-color-light)] px-5 py-2.5 text-sm font-bold text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--accent-primary)]/40 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
         >
           ← Anterior
         </button>

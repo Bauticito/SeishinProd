@@ -28,18 +28,18 @@ export function Breakdown({ breakdown }: BreakdownProps) {
   ];
 
   return (
-    <div className="rounded-2xl border border-white/10 overflow-hidden">
+    <div className="rounded-2xl border border-[var(--border-color-light)] overflow-hidden">
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
         className="flex w-full items-center justify-between px-4 py-3 text-sm font-bold text-white/80 hover:text-white transition-colors"
       >
         <span>Ver desglose</span>
-        <span className="text-[#E31E24] text-xs font-black tracking-wider">{open ? "▲ Ocultar" : "▼ Mostrar"}</span>
+        <span className="text-[var(--accent-primary)] text-xs font-black tracking-wider">{open ? "▲ Ocultar" : "▼ Mostrar"}</span>
       </button>
 
       {open && (
-        <div className="border-t border-white/10 divide-y divide-white/5">
+        <div className="border-t border-[var(--border-color-light)] divide-y divide-[var(--border-color-light)]">
           {rows.map((row) => (
             <div key={row.label} className="grid grid-cols-3 gap-2 px-4 py-2 text-xs hover:bg-white/5 transition-colors">
               <span className="text-white/50">{row.label}</span>
